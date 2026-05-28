@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join as Teacher | THP Home Tutor Prayagraj | ₹200</title>
     
-    <meta name="description" content="Join THP Home Tutor in Prayagraj. Register as a home tutor for just ₹200 one-time fee.">
-    <meta name="keywords" content="home tutor Prayagraj, tuition teacher Prayagraj, home tuition Allahabad">
+    <meta name="title" content="Join as Teacher - THP Home Tutor | Register in ₹200">
+    <meta name="description" content="Join India's fastest-growing home tutor network. Register as a teacher in just ₹200 one-time fee.">
     
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <title>Join as Teacher | THP Home Tutor | Register in ₹200</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,7 +19,14 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Razorpay -->
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Razorpay Standard Checkout -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     
     <!-- Firebase SDKs -->
@@ -29,755 +39,478 @@
             --primary: #6C5CE7;
             --primary-dark: #5A4BD1;
             --secondary: #00C9A7;
-            --accent: #FF6B6B;
-            --gold: #FFD93D;
             --gradient-1: linear-gradient(135deg, #6C5CE7 0%, #00C9A7 100%);
-            --gradient-2: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
-            position: relative;
             overflow-x: hidden;
         }
         
         /* Animated Background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(108, 92, 231, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 201, 167, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.2) 0%, transparent 50%);
-            z-index: -1;
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
-        
-        .container {
-            max-width: 750px;
-            margin: 0 auto;
+        .bg-animation .circle {
+            position: absolute; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float-circle 20s infinite;
+        }
+        @keyframes float-circle {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -100px) scale(1.1); }
+            50% { transform: translate(-50px, -200px) scale(0.9); }
+            75% { transform: translate(-150px, -50px) scale(1.05); }
         }
         
         /* Glass Card */
         .glass-card {
-            background: rgba(255, 255, 255, 0.97);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 35px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            margin-bottom: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            border-radius: 30px;
         }
         
-        /* Header */
-        .brand-header {
-            text-align: center;
-            margin-bottom: 30px;
+        /* Input Styles */
+        .input-group { position: relative; margin-bottom: 1.5rem; }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%; padding: 15px 20px; border: 2px solid #e2e8f0;
+            border-radius: 15px; font-size: 16px; transition: all 0.3s ease;
+            background: white; outline: none; font-family: 'Inter', sans-serif;
         }
-        
-        .brand-logo {
-            width: 70px;
-            height: 70px;
-            background: white;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            border-color: #6C5CE7; box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+            transform: translateY(-2px);
         }
-        
-        .brand-header h1 {
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 900;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        
-        .brand-header .subtitle {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.1rem;
-        }
-        
-        .city-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            padding: 8px 20px;
-            border-radius: 25px;
-            color: white;
-            font-weight: 600;
-            margin: 10px 0;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        
-        .price-tag {
-            background: var(--gold);
-            color: #333;
-            padding: 6px 18px;
-            border-radius: 25px;
-            font-weight: 700;
-            display: inline-block;
-        }
-        
-        /* Section Titles */
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #444;
-            font-size: 0.9rem;
-        }
-        
-        .form-group label .required {
-            color: #FF6B6B;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.3s;
-            background: #fafafa;
-            font-family: inherit;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
-            background: white;
-            transform: translateY(-1px);
-        }
-        
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        /* Checkbox Styles */
-        .checkbox-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .checkbox-grid input[type="checkbox"] {
-            display: none;
-        }
-        
-        .checkbox-grid label {
-            padding: 10px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            background: white;
-            user-select: none;
-            font-weight: 500;
-        }
-        
-        .checkbox-grid label:hover {
-            border-color: var(--primary);
-            background: #f8f7ff;
-        }
-        
-        .checkbox-grid input[type="checkbox"]:checked + label {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
-            transform: scale(1.05);
+        .input-group label {
+            position: absolute; left: 20px; top: -12px; background: white;
+            padding: 0 10px; font-size: 14px; font-weight: 600;
+            color: #6C5CE7; border-radius: 5px;
         }
         
         /* Upload Zone */
         .upload-zone {
-            border: 3px dashed #c0c0ff;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: #fafaff;
-            position: relative;
+            border: 3px dashed #6C5CE7; border-radius: 20px; padding: 40px;
+            text-align: center; cursor: pointer; transition: all 0.3s ease;
+            background: rgba(108, 92, 231, 0.05);
+        }
+        .upload-zone:hover { background: rgba(108, 92, 231, 0.1); transform: scale(1.02); }
+        .upload-zone.dragover { background: rgba(108, 92, 231, 0.2); border-color: #00C9A7; }
+        
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%; height: 8px; background: #e2e8f0;
+            border-radius: 10px; overflow: hidden; margin-top: 15px;
+        }
+        .progress-fill {
+            height: 100%; background: var(--gradient-1); width: 0%;
+            transition: width 0.3s ease; border-radius: 10px;
         }
         
-        .upload-zone:hover {
-            border-color: var(--primary);
-            background: #f0efff;
+        /* Checkbox Group */
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
+        .checkbox-item input[type="checkbox"] { display: none; }
+        .checkbox-item label {
+            padding: 10px 20px; border: 2px solid #e2e8f0; border-radius: 25px;
+            cursor: pointer; transition: all 0.3s ease; display: inline-block;
+            font-size: 14px; font-weight: 500; user-select: none;
+        }
+        .checkbox-item input[type="checkbox"]:checked + label {
+            background: #6C5CE7; color: white; border-color: #6C5CE7;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
         }
         
-        .upload-zone.has-file {
-            border-style: solid;
-            border-color: var(--secondary);
-            background: #f0fff8;
+        /* Premium Button */
+        .premium-btn {
+            background: var(--gradient-1); color: white; padding: 18px 40px;
+            border-radius: 50px; font-size: 18px; font-weight: 700; border: none;
+            cursor: pointer; transition: all 0.4s ease; position: relative;
+            overflow: hidden; letter-spacing: 1px;
         }
+        .premium-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(108, 92, 231, 0.4); }
+        .premium-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         
-        /* Buttons */
-        .btn {
-            padding: 15px 35px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
+        /* Step Indicator */
+        .step-indicator {
+            display: flex; justify-content: space-between; margin-bottom: 40px; position: relative;
         }
-        
-        .btn-primary {
-            background: var(--gradient-1);
-            color: white;
-            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.3);
+        .step-indicator::before {
+            content: ''; position: absolute; top: 50%; left: 0; width: 100%;
+            height: 3px; background: #e2e8f0; transform: translateY(-50%); z-index: 0;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.4);
-        }
-        
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #555;
-        }
-        
-        .btn-secondary:hover {
-            background: #e5e5e5;
-        }
-        
-        .btn-full {
-            width: 100%;
-        }
-        
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-        
-        /* Payment Summary */
-        .payment-card {
-            background: linear-gradient(135deg, #f8f7ff 0%, #f0fff8 100%);
-            border-radius: 20px;
-            padding: 25px;
-            border: 2px solid #e8e5ff;
-        }
-        
-        .payment-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-        }
-        
-        .payment-total {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary);
-            border-top: 2px solid #e0e0e0;
-            padding-top: 15px;
-            margin-top: 10px;
-        }
-        
-        /* Steps */
-        .steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        .steps::before {
-            content: '';
-            position: absolute;
-            top: 22px;
-            left: 10%;
-            width: 80%;
-            height: 3px;
-            background: #e0e0e0;
-            z-index: 0;
-        }
-        
         .step {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            z-index: 1;
-            transition: all 0.3s;
+            width: 45px; height: 45px; border-radius: 50%; background: white;
+            border: 3px solid #e2e8f0; display: flex; align-items: center;
+            justify-content: center; font-weight: 700; font-size: 18px;
+            z-index: 1; transition: all 0.3s ease; position: relative;
         }
-        
-        .step.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(108, 92, 231, 0.4);
-        }
-        
-        .step.completed {
-            background: var(--secondary);
-            color: white;
-            border-color: var(--secondary);
+        .step.active { background: #6C5CE7; color: white; border-color: #6C5CE7; }
+        .step.completed { background: #00C9A7; color: white; border-color: #00C9A7; }
+        .step-label {
+            position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+            font-size: 12px; font-weight: 600; white-space: nowrap; color: #64748b;
         }
         
         /* Toast */
         .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 15px;
-            color: white;
-            font-weight: 600;
-            z-index: 10000;
-            animation: slideIn 0.5s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            max-width: 400px;
+            position: fixed; top: 30px; right: 30px; padding: 20px 30px;
+            border-radius: 15px; color: white; font-weight: 600; z-index: 10000;
+            animation: slideInRight 0.5s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex; align-items: center; gap: 15px;
         }
-        
         .toast.success { background: linear-gradient(135deg, #00C9A7, #00B894); }
         .toast.error { background: linear-gradient(135deg, #FF6B6B, #EE5A24); }
         .toast.info { background: linear-gradient(135deg, #6C5CE7, #764ba2); }
-        
-        @keyframes slideIn {
+        @keyframes slideInRight {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
         
-        /* Success Step */
-        .success-icon {
-            width: 100px;
-            height: 100px;
-            background: #e8fff5;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 3rem;
-            color: var(--secondary);
+        /* Preview Card */
+        .preview-card { position: sticky; top: 30px; }
+        .teacher-preview {
+            background: white; border-radius: 25px; padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); text-align: center;
+        }
+        .preview-avatar {
+            width: 120px; height: 120px; border-radius: 50%;
+            margin: 0 auto 20px; border: 5px solid #6C5CE7; object-fit: cover;
         }
         
-        /* Spinner */
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(108, 92, 231, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0); }
+        }
+        
         .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white; border-radius: 50%; animation: spin 0.8s linear infinite;
             display: inline-block;
         }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Hidden */
-        .hidden-step {
-            display: none;
-        }
-        
-        /* Responsive */
-        @media (max-width: 600px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .glass-card {
-                padding: 20px;
-            }
-            
-            .brand-header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .checkbox-grid label {
-                padding: 8px 15px;
-                font-size: 13px;
-            }
-        }
-        
-        .preview-photo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--primary);
-            margin: 10px auto;
-            display: block;
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     
-    <div class="container">
-        
-        <!-- Brand Header -->
-        <div class="brand-header">
-            <div class="brand-logo">🎓</div>
-            <h1>THP Home Tutor</h1>
-            <p class="subtitle">India's Most Trusted Home Tutor Platform</p>
-            <div class="city-badge">
-                <i class="fas fa-map-marker-alt"></i> Prayagraj (Allahabad)
-            </div>
-            <br>
-            <span class="price-tag">Registration Fee: ₹200 Only</span>
-        </div>
-        
-        <!-- Main Form Card -->
-        <div class="glass-card">
-            
-            <!-- Steps Indicator -->
-            <div class="steps">
-                <div class="step active" id="stepDot1">1</div>
-                <div class="step" id="stepDot2">2</div>
-                <div class="step" id="stepDot3">3</div>
-                <div class="step" id="stepDot4">✓</div>
-            </div>
-            
-            <!-- ==================== STEP 1: PERSONAL INFO ==================== -->
-            <div id="step1Content">
-                <div class="section-title">
-                    <i class="fas fa-user-circle"></i> Personal Information
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Full Name <span class="required">*</span></label>
-                        <input type="text" id="fullName" placeholder="Enter your full name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Email Address <span class="required">*</span></label>
-                        <input type="email" id="email" placeholder="your@email.com" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Phone Number <span class="required">*</span></label>
-                        <input type="tel" id="phone" placeholder="10-digit number" maxlength="10" pattern="[0-9]{10}" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Create Password <span class="required">*</span></label>
-                        <input type="password" id="password" placeholder="Min 6 characters" minlength="6" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Area/Locality in Prayagraj <span class="required">*</span></label>
-                        <select id="area" required>
-                            <option value="">-- Select Your Area --</option>
-                            <optgroup label="🏙️ Central Prayagraj">
-                                <option value="Civil Lines">Civil Lines</option>
-                                <option value="Katra">Katra</option>
-                                <option value="Chowk">Chowk</option>
-                                <option value="Johnstonganj">Johnstonganj</option>
-                                <option value="Muir Road">Muir Road</option>
-                                <option value="Khuldabad">Khuldabad</option>
-                                <option value="Zero Road">Zero Road</option>
-                            </optgroup>
-                            <optgroup label="🏘️ South Prayagraj">
-                                <option value="Colonelganj">Colonelganj</option>
-                                <option value="Mumfordganj">Mumfordganj</option>
-                                <option value="George Town">George Town</option>
-                                <option value="Dhoomanganj">Dhoomanganj</option>
-                                <option value="Kareli">Kareli</option>
-                                <option value="Bai Ka Bagh">Bai Ka Bagh</option>
-                            </optgroup>
-                            <optgroup label="🏡 North Prayagraj">
-                                <option value="Allahpur">Allahpur</option>
-                                <option value="Bairhana">Bairhana</option>
-                                <option value="Tagore Town">Tagore Town</option>
-                                <option value="Ashok Nagar">Ashok Nagar</option>
-                                <option value="Rajapur">Rajapur</option>
-                            </optgroup>
-                            <optgroup label="🌳 West Prayagraj">
-                                <option value="Naini">Naini</option>
-                                <option value="Shankargarh Road">Shankargarh Road</option>
-                                <option value="Rewa Road">Rewa Road</option>
-                                <option value="Jhunsi">Jhunsi</option>
-                            </optgroup>
-                            <optgroup label="🏫 University Area">
-                                <option value="University Road">University Road</option>
-                                <option value="MNNIT Area">MNNIT Area</option>
-                                <option value="IIIT Area">IIIT Area</option>
-                                <option value="Teliarganj">Teliarganj</option>
-                            </optgroup>
-                            <optgroup label="🏠 Suburban">
-                                <option value="Phaphamau">Phaphamau</option>
-                                <option value="Soraon">Soraon</option>
-                                <option value="Handia">Handia</option>
-                                <option value="Bamrauli">Bamrauli</option>
-                                <option value="Manauri">Manauri</option>
-                            </optgroup>
-                            <optgroup label="🆕 New Areas">
-                                <option value="Sulem Sarai">Sulem Sarai</option>
-                                <option value="Preetam Nagar">Preetam Nagar</option>
-                                <option value="Kalindipuram">Kalindipuram</option>
-                                <option value="Rajrooppur">Rajrooppur</option>
-                                <option value="Old Katra">Old Katra</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>City <span class="required">*</span></label>
-                        <select id="city" required>
-                            <option value="">-- Select City --</option>
-                            <option value="Prayagraj" selected>Prayagraj (Allahabad)</option>
-                            <option value="Naini">Naini</option>
-                            <option value="Phaphamau">Phaphamau</option>
-                            <option value="Jhunsi">Jhunsi</option>
-                            <option value="Other">Other Nearby</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Profile Photo -->
-                <div class="form-group">
-                    <label>Profile Photo <span class="required">*</span> <span style="font-weight:400;color:#999;">(Max 5MB)</span></label>
-                    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('profilePhoto').click()">
-                        <input type="file" id="profilePhoto" accept="image/*" hidden>
-                        <div id="uploadPlaceholder">
-                            <i class="fas fa-cloud-upload-alt" style="font-size:3rem;color:#b0b0ff;"></i>
-                            <p style="font-weight:600;margin-top:10px;">Click or Drag & Drop Photo</p>
-                            <p style="font-size:0.85rem;color:#999;">JPG, PNG, WebP accepted</p>
-                        </div>
-                        <div id="uploadPreviewDiv" style="display:none;">
-                            <img id="photoPreview" src="" alt="Preview" class="preview-photo">
-                            <p style="color:green;font-weight:600;margin-top:5px;" id="fileNameDisplay"></p>
-                            <button type="button" onclick="event.stopPropagation(); removePhoto()" style="color:red;border:none;background:none;cursor:pointer;font-size:0.85rem;">
-                                <i class="fas fa-trash"></i> Remove
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="text-align:right;margin-top:25px;">
-                    <button type="button" class="btn btn-primary" onclick="goToStep(2)">
-                        Next <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- ==================== STEP 2: PROFESSIONAL INFO ==================== -->
-            <div id="step2Content" class="hidden-step">
-                <div class="section-title">
-                    <i class="fas fa-briefcase"></i> Professional Details
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Highest Qualification <span class="required">*</span></label>
-                        <select id="qualification" required>
-                            <option value="">-- Select --</option>
-                            <option value="B.Ed">B.Ed</option>
-                            <option value="M.Ed">M.Ed</option>
-                            <option value="PhD">PhD</option>
-                            <option value="M.Sc">M.Sc</option>
-                            <option value="B.Tech">B.Tech</option>
-                            <option value="M.Tech">M.Tech</option>
-                            <option value="M.A">M.A</option>
-                            <option value="B.A">B.A</option>
-                            <option value="B.Sc">B.Sc</option>
-                            <option value="MBA">MBA</option>
-                            <option value="Other">Other Degree</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Expected Fees (₹/hour) <span class="required">*</span></label>
-                        <input type="number" id="expectedFees" placeholder="e.g., 300" min="100" max="5000" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Teaching Experience <span class="required">*</span></label>
-                    <textarea id="experience" placeholder="Describe your teaching experience...&#10;e.g., 5 years teaching CBSE Mathematics for classes 9-12 in Prayagraj" required></textarea>
-                </div>
-                
-                <!-- Subjects -->
-                <div class="form-group">
-                    <label>Subjects You Teach <span class="required">*</span></label>
-                    <div class="checkbox-grid" id="subjectsGroup">
-                        <input type="checkbox" id="s1" value="Mathematics"><label for="s1">📐 Mathematics</label>
-                        <input type="checkbox" id="s2" value="Physics"><label for="s2">⚡ Physics</label>
-                        <input type="checkbox" id="s3" value="Chemistry"><label for="s3">🧪 Chemistry</label>
-                        <input type="checkbox" id="s4" value="Biology"><label for="s4">🧬 Biology</label>
-                        <input type="checkbox" id="s5" value="English"><label for="s5">📖 English</label>
-                        <input type="checkbox" id="s6" value="Hindi"><label for="s6">📝 Hindi</label>
-                        <input type="checkbox" id="s7" value="Sanskrit"><label for="s7">🕉️ Sanskrit</label>
-                        <input type="checkbox" id="s8" value="History"><label for="s8">📜 History</label>
-                        <input type="checkbox" id="s9" value="Geography"><label for="s9">🌍 Geography</label>
-                        <input type="checkbox" id="s10" value="Computer Science"><label for="s10">💻 Computer</label>
-                        <input type="checkbox" id="s11" value="Economics"><label for="s11">📊 Economics</label>
-                        <input type="checkbox" id="s12" value="Accounts"><label for="s12">🧮 Accounts</label>
-                    </div>
-                </div>
-                
-                <!-- Classes -->
-                <div class="form-group">
-                    <label>Classes You Teach <span class="required">*</span></label>
-                    <div class="checkbox-grid" id="classesGroup">
-                        <input type="checkbox" id="c1" value="1-5"><label for="c1">Class 1-5</label>
-                        <input type="checkbox" id="c2" value="6-8"><label for="c2">Class 6-8</label>
-                        <input type="checkbox" id="c3" value="9-10"><label for="c3">Class 9-10</label>
-                        <input type="checkbox" id="c4" value="11-12"><label for="c4">Class 11-12</label>
-                    </div>
-                </div>
-                
-                <!-- Courses/Boards -->
-                <div class="form-group">
-                    <label>Boards/Courses <span class="required">*</span></label>
-                    <div class="checkbox-grid" id="coursesGroup">
-                        <input type="checkbox" id="b1" value="CBSE"><label for="b1">CBSE</label>
-                        <input type="checkbox" id="b2" value="ICSE"><label for="b2">ICSE</label>
-                        <input type="checkbox" id="b3" value="UP Board"><label for="b3">UP Board</label>
-                        <input type="checkbox" id="b4" value="JEE"><label for="b4">JEE</label>
-                        <input type="checkbox" id="b5" value="NEET"><label for="b5">NEET</label>
-                    </div>
-                </div>
-                
-                <div style="display:flex;justify-content:space-between;margin-top:25px;">
-                    <button type="button" class="btn btn-secondary" onclick="goToStep(1)">
-                        <i class="fas fa-arrow-left"></i> Previous
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="goToStep(3)">
-                        Continue to Payment <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- ==================== STEP 3: PAYMENT ==================== -->
-            <div id="step3Content" class="hidden-step">
-                <div class="section-title">
-                    <i class="fas fa-credit-card"></i> Registration Payment
-                </div>
-                
-                <div class="payment-card">
-                    <h4 style="font-weight:700;margin-bottom:15px;">📋 Payment Summary</h4>
-                    <div class="payment-row"><span>Registration Fee</span><span>₹200.00</span></div>
-                    <div class="payment-row"><span>Platform Fee</span><span style="color:#00C9A7;">FREE</span></div>
-                    <div class="payment-row"><span>GST</span><span style="color:#00C9A7;">Included</span></div>
-                    <div class="payment-total payment-row"><span>Total Amount</span><span>₹200.00</span></div>
-                </div>
-                
-                <div style="background:#fffbf0;border:1px solid #ffe0a0;border-radius:12px;padding:15px;margin:20px 0;">
-                    <p style="font-size:0.9rem;color:#8b6914;">
-                        <i class="fas fa-info-circle"></i> 
-                        <strong>One-time payment.</strong> No hidden charges. Register once, teach forever!
-                    </p>
-                </div>
-                
-                <div style="background:#f0fff8;border:1px solid #b0e8d0;border-radius:12px;padding:15px;margin:20px 0;">
-                    <p style="font-size:0.9rem;color:#0d6b3d;">
-                        <strong>✅ After registration, you can:</strong>
-                    </p>
-                    <ul style="font-size:0.85rem;color:#0d6b3d;padding-left:20px;margin-top:5px;">
-                        <li>Connect with students across Prayagraj</li>
-                        <li>Set your own schedule & fees</li>
-                        <li>Keep 100% of your teaching income</li>
-                    </ul>
-                </div>
-                
-                <div style="margin:20px 0;">
-                    <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
-                        <input type="checkbox" id="termsAgree" style="margin-top:3px;width:18px;height:18px;">
-                        <span style="font-size:0.85rem;color:#555;">
-                            I agree to the <a href="#" style="color:#6C5CE7;">Terms & Conditions</a> and understand that the ₹200 registration fee is <strong>non-refundable</strong> once paid.
-                        </span>
-                    </label>
-                </div>
-                
-                <div style="display:flex;justify-content:space-between;margin-top:25px;">
-                    <button type="button" class="btn btn-secondary" onclick="goToStep(2)">
-                        <i class="fas fa-arrow-left"></i> Previous
-                    </button>
-                    <button type="button" class="btn btn-primary" id="payButton" onclick="startPayment()">
-                        <i class="fas fa-lock"></i> Pay ₹200 & Register
-                    </button>
-                </div>
-            </div>
-            
-            <!-- ==================== STEP 4: SUCCESS ==================== -->
-            <div id="step4Content" class="hidden-step" style="text-align:center;">
-                <div class="success-icon">✅</div>
-                <h2 style="font-size:2rem;font-weight:800;color:#333;margin-bottom:10px;">Registration Successful!</h2>
-                <p style="font-size:1.1rem;color:#666;margin-bottom:20px;">Welcome to THP Home Tutor, Prayagraj! 🎉</p>
-                
-                <div style="background:#f0f0ff;border-radius:15px;padding:20px;display:inline-block;margin-bottom:25px;">
-                    <p style="color:#666;font-size:0.9rem;">Your Teacher ID</p>
-                    <p style="font-size:1.5rem;font-weight:700;color:#6C5CE7;" id="teacherIdDisplay">---</p>
-                </div>
-                
-                <p style="color:#666;margin-bottom:25px;">Your profile is now live. Students in Prayagraj can find you!</p>
-                
-                <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                    <a href="dashboard.html" class="btn btn-primary">Go to Dashboard <i class="fas fa-arrow-right"></i></a>
-                    <a href="index.html" class="btn btn-secondary">Back to Home</a>
-                </div>
-            </div>
-            
-        </div>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="circle" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+        <div class="circle" style="width: 200px; height: 200px; top: 50%; right: -50px; animation-delay: -5s;"></div>
+        <div class="circle" style="width: 400px; height: 400px; bottom: -200px; left: 50%; animation-delay: -10s;"></div>
+        <div class="circle" style="width: 150px; height: 150px; top: 20%; left: 60%; animation-delay: -15s;"></div>
     </div>
+    
+    <!-- Header -->
+    <nav class="relative z-10 py-6">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+                        <i class="fas fa-graduation-cap text-purple-600 text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">THP</h1>
+                        <p class="text-xs text-purple-200">Home Tutor</p>
+                    </div>
+                </a>
+                <a href="index.html" class="text-white hover:text-purple-200 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Section -->
+    <section class="relative z-10 py-10">
+        <div class="container mx-auto px-6">
+            
+            <div class="text-center text-white mb-12" data-aos="fade-up">
+                <span class="inline-block bg-white/20 backdrop-blur-sm px-6 py-2 rounded-full text-sm font-semibold mb-4">
+                    <i class="fas fa-user-graduate mr-2"></i> Teacher Registration
+                </span>
+                <h2 class="text-5xl font-black mb-4">Start Your Teaching Journey</h2>
+                <p class="text-xl text-purple-200">One-time registration fee of <span class="text-yellow-400 font-bold">₹200</span> only</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                
+                <!-- Form - 2 columns -->
+                <div class="lg:col-span-2">
+                    <div class="glass-card p-8 md:p-10" data-aos="fade-right">
+                        
+                        <!-- Step Indicator -->
+                        <div class="step-indicator">
+                            <div class="step active" id="step1">1<span class="step-label">Personal</span></div>
+                            <div class="step" id="step2">2<span class="step-label">Professional</span></div>
+                            <div class="step" id="step3">3<span class="step-label">Payment</span></div>
+                            <div class="step" id="step4">4<span class="step-label">Complete</span></div>
+                        </div>
+                        
+                        <form id="teacherRegistrationForm" onsubmit="return false;">
+                            
+                            <!-- STEP 1: Personal Info -->
+                            <div id="formStep1">
+                                <h3 class="text-2xl font-bold mb-6">
+                                    <i class="fas fa-user-circle text-purple-600 mr-3"></i>Personal Information
+                                </h3>
+                                
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div class="input-group">
+                                        <input type="text" id="fullName" required placeholder=" ">
+                                        <label for="fullName">Full Name *</label>
+                                    </div>
+                                    
+                                    <div class="input-group">
+                                        <input type="email" id="email" required placeholder=" ">
+                                        <label for="email">Email Address *</label>
+                                    </div>
+                                    
+                                    <div class="input-group">
+                                        <input type="tel" id="phone" required placeholder=" " maxlength="10" pattern="[0-9]{10}">
+                                        <label for="phone">Phone Number *</label>
+                                    </div>
+                                    
+                                    <div class="input-group">
+                                        <input type="password" id="password" required placeholder=" " minlength="6">
+                                        <label for="password">Create Password *</label>
+                                    </div>
+                                    
+                                    <div class="input-group">
+                                        <input type="text" id="area" required placeholder=" ">
+                                        <label for="area">Area/Locality *</label>
+                                    </div>
+                                    
+                                    <div class="input-group">
+                                        <select id="city" required>
+                                            <option value="">Select City</option>
+                                            <option>Delhi</option><option>Mumbai</option><option>Bangalore</option>
+                                            <option>Chennai</option><option>Hyderabad</option><option>Pune</option>
+                                            <option>Jaipur</option><option>Lucknow</option><option>Kolkata</option>
+                                            <option>Ahmedabad</option>
+                                        </select>
+                                        <label for="city">City *</label>
+                                    </div>
+                                    
+                                    <!-- Profile Photo -->
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                            Profile Photo * <span class="text-gray-400">(Max 5MB)</span>
+                                        </label>
+                                        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('profilePhoto').click()">
+                                            <input type="file" id="profilePhoto" accept="image/*" hidden required>
+                                            <div id="uploadContent">
+                                                <i class="fas fa-cloud-upload-alt text-5xl text-purple-400 mb-4"></i>
+                                                <p class="text-lg font-semibold text-gray-700">Click or Drag & Drop</p>
+                                                <p class="text-sm text-gray-500">Upload your photo</p>
+                                            </div>
+                                            <div id="uploadPreview" class="hidden">
+                                                <img id="previewImage" src="" alt="Preview" class="w-32 h-32 rounded-full mx-auto object-cover border-4 border-purple-500">
+                                                <p class="text-sm text-green-600 font-semibold mt-2" id="uploadFileName"></p>
+                                                <button type="button" class="text-red-500 text-sm mt-1" onclick="event.stopPropagation(); resetUpload()">
+                                                    <i class="fas fa-times"></i> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="progress-bar hidden" id="uploadProgress">
+                                            <div class="progress-fill" id="progressFill"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-end mt-8">
+                                    <button type="button" class="premium-btn" onclick="nextStep(2)">
+                                        Next Step <i class="fas fa-arrow-right ml-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- STEP 2: Professional Info -->
+                            <div id="formStep2" class="hidden">
+                                <h3 class="text-2xl font-bold mb-6">
+                                    <i class="fas fa-briefcase text-purple-600 mr-3"></i>Professional Details
+                                </h3>
+                                
+                                <div class="input-group">
+                                    <select id="qualification" required>
+                                        <option value="">Select Qualification</option>
+                                        <option>B.Ed</option><option>M.Ed</option><option>PhD</option>
+                                        <option>M.Sc</option><option>B.Tech</option><option>M.Tech</option>
+                                        <option>M.A</option><option>B.A</option><option>B.Sc</option>
+                                        <option>MBA</option><option>Other</option>
+                                    </select>
+                                    <label for="qualification">Highest Qualification *</label>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <textarea id="experience" rows="3" placeholder=" " required></textarea>
+                                    <label for="experience">Teaching Experience *</label>
+                                </div>
+                                
+                                <!-- Subjects -->
+                                <div class="mb-6">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Subjects *</label>
+                                    <div class="checkbox-group" id="subjectsGroup">
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_math" value="Mathematics"><label for="sub_math">📐 Mathematics</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_physics" value="Physics"><label for="sub_physics">⚡ Physics</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_chemistry" value="Chemistry"><label for="sub_chemistry">🧪 Chemistry</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_biology" value="Biology"><label for="sub_biology">🧬 Biology</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_english" value="English"><label for="sub_english">📖 English</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_hindi" value="Hindi"><label for="sub_hindi">📝 Hindi</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_sanskrit" value="Sanskrit"><label for="sub_sanskrit">🕉️ Sanskrit</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_history" value="History"><label for="sub_history">📜 History</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_geography" value="Geography"><label for="sub_geography">🌍 Geography</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_cs" value="Computer Science"><label for="sub_cs">💻 Computer Science</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_economics" value="Economics"><label for="sub_economics">📊 Economics</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="sub_accounts" value="Accounts"><label for="sub_accounts">🧮 Accounts</label></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Classes -->
+                                <div class="mb-6">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Classes *</label>
+                                    <div class="checkbox-group" id="classesGroup">
+                                        <div class="checkbox-item"><input type="checkbox" id="class_1_5" value="1-5"><label for="class_1_5">Class 1-5</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="class_6_8" value="6-8"><label for="class_6_8">Class 6-8</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="class_9_10" value="9-10"><label for="class_9_10">Class 9-10</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="class_11_12" value="11-12"><label for="class_11_12">Class 11-12</label></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Courses -->
+                                <div class="mb-6">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Boards/Courses *</label>
+                                    <div class="checkbox-group" id="coursesGroup">
+                                        <div class="checkbox-item"><input type="checkbox" id="course_cbse" value="CBSE"><label for="course_cbse">CBSE</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="course_icse" value="ICSE"><label for="course_icse">ICSE</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="course_state" value="State Board"><label for="course_state">State Board</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="course_jee" value="JEE"><label for="course_jee">JEE</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="course_neet" value="NEET"><label for="course_neet">NEET</label></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <input type="number" id="expectedFees" placeholder=" " required min="100" max="5000">
+                                    <label for="expectedFees">Expected Fees (₹/hour) *</label>
+                                </div>
+                                
+                                <div class="flex justify-between mt-8">
+                                    <button type="button" class="px-8 py-4 border-2 border-gray-300 rounded-full font-semibold hover:bg-gray-50 transition-all" onclick="nextStep(1)">
+                                        <i class="fas fa-arrow-left mr-2"></i> Previous
+                                    </button>
+                                    <button type="button" class="premium-btn" onclick="nextStep(3)">
+                                        Next Step <i class="fas fa-arrow-right ml-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- STEP 3: Payment -->
+                            <div id="formStep3" class="hidden">
+                                <h3 class="text-2xl font-bold mb-6">
+                                    <i class="fas fa-credit-card text-purple-600 mr-3"></i>Registration Payment
+                                </h3>
+                                
+                                <div class="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-8 mb-8">
+                                    <h4 class="text-lg font-bold mb-4">Payment Summary</h4>
+                                    <div class="space-y-3 mb-6">
+                                        <div class="flex justify-between"><span class="text-gray-600">Registration Fee</span><span class="font-semibold">₹200.00</span></div>
+                                        <div class="flex justify-between"><span class="text-gray-600">Platform Fee</span><span class="font-semibold text-green-600">FREE</span></div>
+                                        <div class="flex justify-between"><span class="text-gray-600">GST</span><span class="font-semibold text-green-600">Included</span></div>
+                                        <hr class="border-gray-300">
+                                        <div class="flex justify-between text-lg"><span class="font-bold">Total</span><span class="font-bold text-purple-600">₹200.00</span></div>
+                                    </div>
+                                    
+                                    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-4">
+                                        <p class="text-sm text-yellow-800"><i class="fas fa-info-circle mr-2"></i>One-time payment. No hidden charges!</p>
+                                    </div>
+                                    
+                                    <ul class="space-y-2 text-sm text-gray-600">
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Lifetime access</li>
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Connect with unlimited students</li>
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Keep 100% of your fees</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label class="flex items-start space-x-3 cursor-pointer">
+                                        <input type="checkbox" id="termsAgree" class="mt-1 w-5 h-5 text-purple-600">
+                                        <span class="text-sm text-gray-600">I agree to Terms & Conditions and understand ₹200 is non-refundable.</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex justify-between mt-8">
+                                    <button type="button" class="px-8 py-4 border-2 border-gray-300 rounded-full font-semibold hover:bg-gray-50 transition-all" onclick="nextStep(2)">
+                                        <i class="fas fa-arrow-left mr-2"></i> Previous
+                                    </button>
+                                    <button type="button" class="premium-btn pulse" id="payButton" onclick="initiateRazorpayPayment()">
+                                        <i class="fas fa-lock mr-2"></i> Pay ₹200 & Register
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- STEP 4: Success -->
+                            <div id="formStep4" class="hidden text-center">
+                                <div class="py-10">
+                                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <i class="fas fa-check-circle text-green-500 text-6xl"></i>
+                                    </div>
+                                    <h3 class="text-3xl font-black mb-4">Registration Successful! 🎉</h3>
+                                    <p class="text-xl text-gray-600 mb-6">Welcome to THP Home Tutor! Your profile is now live.</p>
+                                    <div class="bg-purple-50 rounded-2xl p-6 mb-8 inline-block">
+                                        <p class="text-sm text-gray-600 mb-2">Your Teacher ID</p>
+                                        <p class="text-2xl font-bold text-purple-600" id="teacherIdDisplay">---</p>
+                                    </div>
+                                    <div class="flex justify-center space-x-4">
+                                        <a href="dashboard.html" class="premium-btn">Go to Dashboard <i class="fas fa-arrow-right ml-2"></i></a>
+                                        <a href="index.html" class="px-8 py-4 border-2 border-gray-300 rounded-full font-semibold hover:bg-gray-50 transition-all">Back to Home</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Preview Card -->
+                <div class="hidden lg:block">
+                    <div class="preview-card" data-aos="fade-left">
+                        <div class="teacher-preview">
+                            <h3 class="text-lg font-bold mb-4">Live Profile Preview</h3>
+                            <img id="previewAvatar" src="https://via.placeholder.com/120" alt="Preview" class="preview-avatar">
+                            <h4 class="text-xl font-bold" id="previewName">Your Name</h4>
+                            <p class="text-purple-600 font-semibold" id="previewQualification">Qualification</p>
+                            <div class="flex justify-center space-x-1 my-3">
+                                <i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                            <div class="space-y-2 text-left text-sm mt-4">
+                                <p><i class="fas fa-map-marker-alt text-purple-500 mr-2"></i><span id="previewArea">Area, City</span></p>
+                                <p><i class="fas fa-book text-purple-500 mr-2"></i><span id="previewSubjects">Subjects</span></p>
+                                <p><i class="fas fa-graduation-cap text-purple-500 mr-2"></i><span id="previewClasses">Classes</span></p>
+                                <p><i class="fas fa-rupee-sign text-purple-500 mr-2"></i><span id="previewFees">Fees/hour</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <!-- ==================== SCRIPTS ==================== -->
     <script>
         // ============ CONFIGURATION ============
-        const RAZORPAY_KEY = 'rzp_test_SurD5cvO25Zbxy';
+        const RAZORPAY_KEY_ID = 'rzp_test_SurD5cvO25Zbxy';
         const IMGBB_API_KEY = '53fb01955a45c5462724b8f7d238500a';
-        const BACKEND_URL = window.location.origin;
+        const BACKEND_URL = window.location.origin; // Same origin for server.js
         
         // ============ FIREBASE INIT ============
         const firebaseConfig = {
@@ -786,7 +519,8 @@
             projectId: "hometutor-a5c4d",
             storageBucket: "hometutor-a5c4d.firebasestorage.app",
             messagingSenderId: "367381523059",
-            appId: "1:367381523059:web:f4732dcbf1cf6f7993d806"
+            appId: "1:367381523059:web:f4732dcbf1cf6f7993d806",
+            measurementId: "G-26DKSTBCH7"
         };
         
         firebase.initializeApp(firebaseConfig);
@@ -795,338 +529,456 @@
         
         // ============ GLOBAL VARIABLES ============
         let currentStep = 1;
-        let selectedFile = null;
         let uploadedImageUrl = '';
+        let uploadedImageFile = null;
+        let registrationData = {};
+        
+        // ============ AOS INIT ============
+        AOS.init({ duration: 1000, once: true });
         
         // ============ STEP NAVIGATION ============
-        function goToStep(step) {
-            // Validate before proceeding
-            if (step > currentStep) {
-                if (currentStep === 1 && !validateStep1()) return;
-                if (currentStep === 2 && !validateStep2()) return;
-                if (currentStep === 3 && !validateStep3()) return;
-            }
+        function nextStep(step) {
+            if (step > currentStep && !validateStep(currentStep)) return;
             
-            // Hide all steps
-            document.querySelectorAll('[id$="Content"]').forEach(el => el.classList.add('hidden-step'));
-            
-            // Show target step
-            document.getElementById('step' + step + 'Content').classList.remove('hidden-step');
-            
-            // Update step dots
+            document.querySelectorAll('[id^="formStep"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`formStep${step}`).classList.remove('hidden');
             currentStep = step;
-            updateStepDots();
-            
-            // Scroll to top
-            window.scrollTo({ top: 200, behavior: 'smooth' });
+            updateStepIndicator();
+            document.getElementById('teacherRegistrationForm').scrollIntoView({ behavior: 'smooth' });
         }
         
-        function updateStepDots() {
+        function updateStepIndicator() {
             for (let i = 1; i <= 4; i++) {
-                const dot = document.getElementById('stepDot' + i);
-                dot.classList.remove('active', 'completed');
-                if (i < currentStep) dot.classList.add('completed');
-                if (i === currentStep) dot.classList.add('active');
+                const stepEl = document.getElementById(`step${i}`);
+                stepEl.classList.remove('active', 'completed');
+                if (i < currentStep) { stepEl.classList.add('completed'); stepEl.innerHTML = '<i class="fas fa-check"></i>'; }
+                else if (i === currentStep) { stepEl.classList.add('active'); stepEl.innerHTML = i; }
+                else { stepEl.innerHTML = i; }
             }
         }
         
         // ============ VALIDATION ============
-        function validateStep1() {
-            const name = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const area = document.getElementById('area').value;
-            const city = document.getElementById('city').value;
+        function validateStep(step) {
+            if (step === 1) {
+                const fullName = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const area = document.getElementById('area').value.trim();
+                const city = document.getElementById('city').value;
+                
+                if (!fullName) { showToast('Enter your full name', 'error'); return false; }
+                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Enter valid email', 'error'); return false; }
+                if (!phone || phone.length !== 10) { showToast('Enter valid 10-digit phone', 'error'); return false; }
+                if (!password || password.length < 6) { showToast('Password min 6 characters', 'error'); return false; }
+                if (!area) { showToast('Enter your area', 'error'); return false; }
+                if (!city) { showToast('Select your city', 'error'); return false; }
+                if (!uploadedImageFile) { showToast('Upload profile photo', 'error'); return false; }
+                return true;
+            }
             
-            if (!name) return toast('Please enter your full name', 'error');
-            if (!email || !email.includes('@')) return toast('Please enter a valid email', 'error');
-            if (!phone || phone.length !== 10) return toast('Please enter a valid 10-digit phone', 'error');
-            if (!password || password.length < 6) return toast('Password must be at least 6 characters', 'error');
-            if (!area) return toast('Please select your area in Prayagraj', 'error');
-            if (!city) return toast('Please select your city', 'error');
-            if (!selectedFile) return toast('Please upload your profile photo', 'error');
+            if (step === 2) {
+                const qualification = document.getElementById('qualification').value;
+                const experience = document.getElementById('experience').value.trim();
+                const expectedFees = document.getElementById('expectedFees').value;
+                const subjects = getCheckedValues('subjectsGroup');
+                const classes = getCheckedValues('classesGroup');
+                const courses = getCheckedValues('coursesGroup');
+                
+                if (!qualification) { showToast('Select qualification', 'error'); return false; }
+                if (!experience) { showToast('Enter experience', 'error'); return false; }
+                if (subjects.length === 0) { showToast('Select at least one subject', 'error'); return false; }
+                if (classes.length === 0) { showToast('Select at least one class', 'error'); return false; }
+                if (courses.length === 0) { showToast('Select at least one board', 'error'); return false; }
+                if (!expectedFees || expectedFees < 100) { showToast('Enter valid fees (min ₹100)', 'error'); return false; }
+                return true;
+            }
             
-            return true;
-        }
-        
-        function validateStep2() {
-            const qualification = document.getElementById('qualification').value;
-            const experience = document.getElementById('experience').value.trim();
-            const fees = document.getElementById('expectedFees').value;
-            
-            const subjects = getChecked('subjectsGroup');
-            const classes = getChecked('classesGroup');
-            const courses = getChecked('coursesGroup');
-            
-            if (!qualification) return toast('Please select qualification', 'error');
-            if (!experience) return toast('Please enter teaching experience', 'error');
-            if (subjects.length === 0) return toast('Select at least one subject', 'error');
-            if (classes.length === 0) return toast('Select at least one class', 'error');
-            if (courses.length === 0) return toast('Select at least one board', 'error');
-            if (!fees || fees < 100) return toast('Enter valid fees (min ₹100)', 'error');
-            
-            return true;
-        }
-        
-        function validateStep3() {
-            if (!document.getElementById('termsAgree').checked) {
-                return toast('Please agree to Terms & Conditions', 'error');
+            if (step === 3) {
+                if (!document.getElementById('termsAgree').checked) { showToast('Agree to terms', 'error'); return false; }
+                return true;
             }
             return true;
         }
         
-        function getChecked(groupId) {
-            return Array.from(document.querySelectorAll('#' + groupId + ' input:checked')).map(cb => cb.value);
+        function getCheckedValues(groupId) {
+            return Array.from(document.querySelectorAll(`#${groupId} input[type="checkbox"]:checked`)).map(cb => cb.value);
         }
         
-        // ============ PHOTO UPLOAD ============
-        document.getElementById('uploadZone').addEventListener('dragover', e => {
-            e.preventDefault();
-            e.currentTarget.style.borderColor = '#00C9A7';
+        // ============ IMAGE UPLOAD ============
+        document.getElementById('uploadZone').addEventListener('dragover', (e) => {
+            e.preventDefault(); e.target.closest('.upload-zone').classList.add('dragover');
+        });
+        document.getElementById('uploadZone').addEventListener('dragleave', (e) => {
+            e.target.closest('.upload-zone').classList.remove('dragover');
+        });
+        document.getElementById('uploadZone').addEventListener('drop', (e) => {
+            e.preventDefault(); e.target.closest('.upload-zone').classList.remove('dragover');
+            const file = e.dataTransfer.files[0]; if (file) handleFileSelect(file);
+        });
+        document.getElementById('profilePhoto').addEventListener('change', (e) => {
+            if (e.target.files[0]) handleFileSelect(e.target.files[0]);
         });
         
-        document.getElementById('uploadZone').addEventListener('dragleave', e => {
-            e.currentTarget.style.borderColor = '#c0c0ff';
-        });
-        
-        document.getElementById('uploadZone').addEventListener('drop', e => {
-            e.preventDefault();
-            e.currentTarget.style.borderColor = '#c0c0ff';
-            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
-        });
-        
-        document.getElementById('profilePhoto').addEventListener('change', e => {
-            if (e.target.files[0]) handleFile(e.target.files[0]);
-        });
-        
-        function handleFile(file) {
-            if (!file.type.startsWith('image/')) return toast('Only image files allowed', 'error');
-            if (file.size > 5 * 1024 * 1024) return toast('Max 5MB file size', 'error');
+        function handleFileSelect(file) {
+            if (!file.type.match('image.*')) { showToast('Select an image file', 'error'); return; }
+            if (file.size > 5 * 1024 * 1024) { showToast('Max 5MB', 'error'); return; }
             
-            selectedFile = file;
-            
+            uploadedImageFile = file;
             const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('photoPreview').src = e.target.result;
-                document.getElementById('fileNameDisplay').textContent = file.name;
-                document.getElementById('uploadPlaceholder').style.display = 'none';
-                document.getElementById('uploadPreviewDiv').style.display = 'block';
-                document.getElementById('uploadZone').classList.add('has-file');
+            reader.onload = (e) => {
+                document.getElementById('previewImage').src = e.target.result;
+                document.getElementById('previewAvatar').src = e.target.result;
+                document.getElementById('uploadContent').classList.add('hidden');
+                document.getElementById('uploadPreview').classList.remove('hidden');
+                document.getElementById('uploadFileName').textContent = file.name;
             };
             reader.readAsDataURL(file);
         }
         
-        function removePhoto() {
-            selectedFile = null;
-            uploadedImageUrl = '';
+        function resetUpload() {
+            uploadedImageFile = null; uploadedImageUrl = '';
             document.getElementById('profilePhoto').value = '';
-            document.getElementById('uploadPlaceholder').style.display = 'block';
-            document.getElementById('uploadPreviewDiv').style.display = 'none';
-            document.getElementById('uploadZone').classList.remove('has-file');
+            document.getElementById('uploadContent').classList.remove('hidden');
+            document.getElementById('uploadPreview').classList.add('hidden');
+            document.getElementById('previewAvatar').src = 'https://via.placeholder.com/120';
+            document.getElementById('uploadProgress').classList.add('hidden');
         }
         
-        // ============ IMGBB UPLOAD ============
-        async function uploadToImgBB(file) {
+        async function uploadImageToImgBB(file) {
+            const progressBar = document.getElementById('uploadProgress');
+            const progressFill = document.getElementById('progressFill');
+            progressBar.classList.remove('hidden');
+            progressFill.style.width = '30%';
+            
             const formData = new FormData();
             formData.append('image', file);
             
-            const response = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_API_KEY, {
-                method: 'POST',
-                body: formData
-            });
-            
-            const data = await response.json();
-            if (data.success) return data.data.url;
-            throw new Error('Upload failed');
+            try {
+                const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                    method: 'POST', body: formData
+                });
+                progressFill.style.width = '80%';
+                const data = await response.json();
+                if (data.success) {
+                    progressFill.style.width = '100%';
+                    setTimeout(() => progressBar.classList.add('hidden'), 1000);
+                    return data.data.url;
+                }
+                throw new Error('Upload failed');
+            } catch (error) {
+                progressBar.classList.add('hidden');
+                throw error;
+            }
         }
         
-        // ============ PAYMENT FLOW ============
-        async function startPayment() {
-            if (!validateStep3()) return;
+        // ============ RAZORPAY STANDARD CHECKOUT INTEGRATION ============
+        async function initiateRazorpayPayment() {
+            if (!validateStep(3)) return;
             
-            const btn = document.getElementById('payButton');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Processing...';
+            const payButton = document.getElementById('payButton');
+            payButton.disabled = true;
+            payButton.innerHTML = '<span class="spinner"></span> Creating order...';
+            
+            // Collect registration data
+            registrationData = {
+                fullName: document.getElementById('fullName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                password: document.getElementById('password').value.trim(),
+                area: document.getElementById('area').value.trim(),
+                city: document.getElementById('city').value,
+                qualification: document.getElementById('qualification').value,
+                experience: document.getElementById('experience').value.trim(),
+                subjects: getCheckedValues('subjectsGroup'),
+                classes: getCheckedValues('classesGroup'),
+                courses: getCheckedValues('coursesGroup'),
+                expectedFees: parseInt(document.getElementById('expectedFees').value),
+            };
             
             try {
-                // Step 1: Create order via backend
-                const orderRes = await fetch(BACKEND_URL + '/api/create-order', {
+                // STEP 1: Call backend to create Razorpay order
+                const orderResponse = await fetch(`${BACKEND_URL}/api/create-order`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: 20000, currency: 'INR' })
+                    body: JSON.stringify({
+                        amount: 20000, // ₹200 in paise
+                        currency: 'INR',
+                        receipt: `receipt_${Date.now()}`,
+                        notes: {
+                            teacher_name: registrationData.fullName,
+                            teacher_email: registrationData.email
+                        }
+                    })
                 });
                 
-                if (!orderRes.ok) throw new Error('Failed to create order');
-                const orderData = await orderRes.json();
+                if (!orderResponse.ok) {
+                    const errorData = await orderResponse.json();
+                    throw new Error(errorData.error || 'Failed to create order');
+                }
                 
-                // Step 2: Open Razorpay
+                const orderData = await orderResponse.json();
+                console.log('✅ Order created:', orderData);
+                
+                // STEP 2: Open Razorpay Standard Checkout modal
                 const options = {
-                    key: RAZORPAY_KEY,
+                    key: RAZORPAY_KEY_ID,
                     amount: orderData.amount,
-                    currency: orderData.currency,
+                    currency: orderData.currency || 'INR',
                     name: 'THP Home Tutor',
-                    description: 'Teacher Registration - Prayagraj',
+                    description: 'One Time Teacher Registration Fee',
+                    image: 'https://via.placeholder.com/150',
                     order_id: orderData.id,
                     handler: async function(response) {
-                        btn.innerHTML = '<span class="spinner"></span> Verifying...';
+                        console.log('💳 Payment successful:', response);
                         
-                        // Step 3: Verify payment
-                        const verifyRes = await fetch(BACKEND_URL + '/api/verify-payment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(response)
-                        });
+                        // STEP 3: Verify payment signature via backend
+                        payButton.innerHTML = '<span class="spinner"></span> Verifying payment...';
                         
-                        const verifyData = await verifyRes.json();
-                        
-                        if (verifyData.success) {
-                            await completeRegistration(response);
-                        } else {
-                            throw new Error('Verification failed');
+                        try {
+                            const verifyResponse = await fetch(`${BACKEND_URL}/api/verify-payment`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature
+                                })
+                            });
+                            
+                            const verifyData = await verifyResponse.json();
+                            
+                            if (verifyData.success) {
+                                console.log('✅ Payment verified!');
+                                // Payment verified - now save to Firebase
+                                await completeRegistration(response);
+                            } else {
+                                throw new Error('Payment verification failed');
+                            }
+                        } catch (verifyError) {
+                            console.error('❌ Verification failed:', verifyError);
+                            showToast('Payment verification failed. Contact support.', 'error');
+                            payButton.disabled = false;
+                            payButton.innerHTML = '<i class="fas fa-lock mr-2"></i> Pay ₹200 & Register';
                         }
                     },
                     prefill: {
-                        name: document.getElementById('fullName').value,
-                        email: document.getElementById('email').value,
-                        contact: document.getElementById('phone').value
+                        name: registrationData.fullName,
+                        email: registrationData.email,
+                        contact: registrationData.phone
+                    },
+                    notes: {
+                        teacher_email: registrationData.email,
+                        platform: 'THP Home Tutor'
                     },
                     theme: { color: '#6C5CE7' },
                     modal: {
                         ondismiss: function() {
-                            btn.disabled = false;
-                            btn.innerHTML = '<i class="fas fa-lock"></i> Pay ₹200 & Register';
-                            toast('Payment cancelled', 'error');
-                        }
+                            console.log('Payment cancelled by user');
+                            payButton.disabled = false;
+                            payButton.innerHTML = '<i class="fas fa-lock mr-2"></i> Pay ₹200 & Register';
+                            showToast('Payment cancelled. Please try again.', 'error');
+                        },
+                        escape: true,
+                        animation: true
                     }
                 };
                 
                 const rzp = new Razorpay(options);
+                
+                rzp.on('payment.failed', function(response) {
+                    console.error('❌ Payment failed:', response.error);
+                    showToast('Payment failed: ' + response.error.description, 'error');
+                    payButton.disabled = false;
+                    payButton.innerHTML = '<i class="fas fa-lock mr-2"></i> Pay ₹200 & Register';
+                });
+                
                 rzp.open();
                 
             } catch (error) {
-                console.error(error);
-                toast('Error: ' + error.message, 'error');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-lock"></i> Pay ₹200 & Register';
+                console.error('❌ Error:', error);
+                showToast('Error: ' + error.message, 'error');
+                payButton.disabled = false;
+                payButton.innerHTML = '<i class="fas fa-lock mr-2"></i> Pay ₹200 & Register';
             }
         }
         
-        // ============ COMPLETE REGISTRATION ============
+        // ============ COMPLETE REGISTRATION & SAVE TO FIREBASE ============
         async function completeRegistration(paymentResponse) {
-            const btn = document.getElementById('payButton');
-            btn.innerHTML = '<span class="spinner"></span> Saving...';
+            const payButton = document.getElementById('payButton');
+            payButton.innerHTML = '<span class="spinner"></span> Saving your profile...';
             
             try {
-                // Upload photo
-                if (!uploadedImageUrl && selectedFile) {
-                    toast('Uploading photo...', 'info');
-                    uploadedImageUrl = await uploadToImgBB(selectedFile);
+                // 1. Upload image to imgBB
+                if (!uploadedImageUrl && uploadedImageFile) {
+                    showToast('Uploading photo...', 'info');
+                    uploadedImageUrl = await uploadImageToImgBB(uploadedImageFile);
+                    console.log('📸 Image uploaded:', uploadedImageUrl);
                 }
                 
-                // Create Firebase account
-                const email = document.getElementById('email').value.trim();
-                const password = document.getElementById('password').value.trim();
-                
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                // 2. Create Firebase Auth account
+                showToast('Creating account...', 'info');
+                const userCredential = await auth.createUserWithEmailAndPassword(
+                    registrationData.email,
+                    registrationData.password
+                );
                 const userId = userCredential.user.uid;
+                console.log('👤 Firebase user created:', userId);
                 
-                // Prepare data
+                // 3. Prepare teacher data
                 const teacherData = {
-                    fullName: document.getElementById('fullName').value.trim(),
-                    email: email,
-                    phone: document.getElementById('phone').value.trim(),
-                    profilePhoto: uploadedImageUrl,
-                    area: document.getElementById('area').value,
-                    city: document.getElementById('city').value,
-                    qualification: document.getElementById('qualification').value,
-                    experience: document.getElementById('experience').value.trim(),
-                    subjects: getChecked('subjectsGroup'),
-                    classes: getChecked('classesGroup'),
-                    courses: getChecked('coursesGroup'),
-                    expectedFees: parseInt(document.getElementById('expectedFees').value),
+                    // Personal Info
+                    fullName: registrationData.fullName,
+                    email: registrationData.email,
+                    phone: registrationData.phone,
+                    profilePhoto: uploadedImageUrl || '',
+                    area: registrationData.area,
+                    city: registrationData.city,
                     
+                    // Professional Info
+                    qualification: registrationData.qualification,
+                    experience: registrationData.experience,
+                    subjects: registrationData.subjects,
+                    classes: registrationData.classes,
+                    courses: registrationData.courses,
+                    expectedFees: registrationData.expectedFees,
+                    
+                    // Payment Info
                     paymentStatus: 'completed',
                     paymentAmount: 200,
                     razorpayPaymentId: paymentResponse.razorpay_payment_id,
                     razorpayOrderId: paymentResponse.razorpay_order_id,
                     razorpaySignature: paymentResponse.razorpay_signature,
+                    paymentDate: firebase.firestore.FieldValue.serverTimestamp(),
                     
+                    // Status
                     isActive: true,
                     isVerified: false,
+                    
+                    // Stats
                     rating: 0,
                     totalReviews: 0,
                     totalStudents: 0,
                     profileViews: 0,
+                    contactRequests: 0,
                     
+                    // Timestamps
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    paymentDate: firebase.firestore.FieldValue.serverTimestamp()
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
-                // Save to Firestore
+                // 4. Save to Firestore - teachers collection
                 await db.collection('teachers').doc(userId).set(teacherData);
+                console.log('✅ Teacher profile saved to Firestore');
                 
-                // Save payment record
+                // 5. Save payment record separately
                 await db.collection('payments').add({
                     teacherId: userId,
+                    teacherEmail: registrationData.email,
+                    teacherName: registrationData.fullName,
                     amount: 200,
                     razorpayPaymentId: paymentResponse.razorpay_payment_id,
+                    razorpayOrderId: paymentResponse.razorpay_order_id,
+                    razorpaySignature: paymentResponse.razorpay_signature,
                     status: 'completed',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
+                console.log('✅ Payment record saved');
                 
-                // Success!
+                // 6. Show success!
                 document.getElementById('teacherIdDisplay').textContent = userId.substring(0, 10);
-                goToStep(4);
-                toast('🎉 Registration Successful! Welcome!', 'success');
+                nextStep(4);
                 
-                // Redirect after 3 seconds
+                showToast('🎉 Registration successful! Welcome to THP Home Tutor!', 'success');
+                
+                // 7. Redirect to dashboard after 3 seconds
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
                 }, 3000);
                 
             } catch (error) {
-                console.error(error);
+                console.error('❌ Registration error:', error);
+                
+                // Handle specific Firebase errors
                 if (error.code === 'auth/email-already-in-use') {
-                    toast('Email already registered. Please login.', 'error');
+                    showToast('Email already registered. Please login.', 'error');
+                } else if (error.code === 'auth/weak-password') {
+                    showToast('Password too weak. Use at least 6 characters.', 'error');
                 } else {
-                    toast('Error: ' + error.message, 'error');
+                    showToast('Registration failed: ' + error.message, 'error');
                 }
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-lock"></i> Pay ₹200 & Register';
+                
+                payButton.disabled = false;
+                payButton.innerHTML = '<i class="fas fa-lock mr-2"></i> Pay ₹200 & Register';
             }
         }
         
-        // ============ TOAST ============
-        function toast(message, type) {
-            const existing = document.querySelector('.toast');
-            if (existing) existing.remove();
+        // ============ LIVE PREVIEW UPDATES ============
+        document.getElementById('fullName').addEventListener('input', function() {
+            document.getElementById('previewName').textContent = this.value || 'Your Name';
+        });
+        document.getElementById('qualification').addEventListener('change', function() {
+            document.getElementById('previewQualification').textContent = this.value || 'Qualification';
+        });
+        document.getElementById('area').addEventListener('input', updatePreviewLocation);
+        document.getElementById('city').addEventListener('change', updatePreviewLocation);
+        
+        function updatePreviewLocation() {
+            const area = document.getElementById('area').value;
+            const city = document.getElementById('city').value;
+            document.getElementById('previewArea').textContent = [area, city].filter(Boolean).join(', ') || 'Area, City';
+        }
+        
+        document.querySelectorAll('#subjectsGroup input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                const subjects = getCheckedValues('subjectsGroup');
+                document.getElementById('previewSubjects').textContent = subjects.length > 0 ? subjects.slice(0, 3).join(', ') + (subjects.length > 3 ? '...' : '') : 'Subjects';
+            });
+        });
+        
+        document.querySelectorAll('#classesGroup input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                const classes = getCheckedValues('classesGroup');
+                document.getElementById('previewClasses').textContent = classes.length > 0 ? 'Class ' + classes.join(', ') : 'Classes';
+            });
+        });
+        
+        document.getElementById('expectedFees').addEventListener('input', function() {
+            document.getElementById('previewFees').textContent = this.value ? '₹' + this.value + '/hour' : 'Fees/hour';
+        });
+        
+        // ============ TOAST NOTIFICATION ============
+        function showToast(message, type = 'info') {
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) existingToast.remove();
             
-            const t = document.createElement('div');
-            t.className = 'toast ' + type;
-            t.textContent = message;
-            document.body.appendChild(t);
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle' };
+            toast.innerHTML = `<i class="fas ${icons[type]} text-2xl"></i><span>${message}</span>`;
+            document.body.appendChild(toast);
             
             setTimeout(() => {
-                t.style.opacity = '0';
-                t.style.transition = 'opacity 0.3s';
-                setTimeout(() => t.remove(), 300);
+                toast.style.animation = 'slideInRight 0.5s ease reverse';
+                setTimeout(() => toast.remove(), 500);
             }, 4000);
-            
-            return false; // For validation chaining
         }
         
         // ============ INIT ============
-        updateStepDots();
+        updateStepIndicator();
         
-        // Set default city to Prayagraj
-        document.getElementById('city').value = 'Prayagraj';
+        // Check if already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'dashboard.html';
+            }
+        });
         
-        console.log('✅ THP Home Tutor - Prayagraj Ready!');
-        console.log('📍 City: Prayagraj');
-        console.log('💳 Razorpay:', RAZORPAY_KEY);
-        console.log('🔥 Firebase:', firebaseConfig.projectId);
+        console.log('🔥 THP Home Tutor - Registration Ready');
+        console.log('💳 Razorpay Key:', RAZORPAY_KEY_ID);
+        console.log('📸 imgBB Connected: Yes');
+        console.log('🔥 Firebase Connected:', firebaseConfig.projectId);
+        console.log('🌐 Backend URL:', BACKEND_URL);
     </script>
     
 </body>
