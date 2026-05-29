@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Home Tutors in Prayagraj | THP Home Tutor</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --primary-light: #8B7CF6;
+            --secondary: #00C9A7;
+            --accent: #FF6B6B;
+            --gold: #FFD93D;
+            --dark: #0F0F1A;
+            --surface: rgba(255,255,255,0.95);
+            --glass: rgba(255,255,255,0.1);
+            --glass-border: rgba(255,255,255,0.2);
+            --text-primary: #1a1a2e;
+            --text-secondary: #64748b;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 10px 40px rgba(0,0,0,0.08);
+            --shadow-lg: 0 30px 60px rgba(0,0,0,0.12);
+            --shadow-xl: 0 50px 100px rgba(0,0,0,0.15);
+            --radius-sm: 16px;
+            --radius-md: 24px;
+            --radius-lg: 32px;
+            --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: #f8f9fc;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 3D Background */
+        #threeBg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* Floating Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+        .orb-1 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(108,92,231,0.3), transparent);
+            top: -200px; left: -200px;
+        }
+        .orb-2 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(0,201,167,0.2), transparent);
+            bottom: -150px; right: -150px;
+            animation-delay: -7s;
+        }
+        .orb-3 {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255,107,107,0.15), transparent);
+            top: 50%; left: 60%;
+            animation-delay: -14s;
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.4s var(--transition);
+        }
+        .header.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 48px; height: 48px;
+            background: linear-gradient(135deg, #6C5CE7, #8B7CF6);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            box-shadow: 0 8px 24px rgba(108,92,231,0.3);
+            transition: transform 0.3s var(--transition);
+        }
+        .logo-group:hover .logo-icon {
+            transform: scale(1.05) rotate(-5deg);
+        }
+        .logo-text h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+        .logo-text span {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .city-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0edff;
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .btn-ghost {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-ghost-primary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-ghost-primary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(108,92,231,0.25);
+        }
+
+        /* Hero Search */
+        .hero-search {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease;
+        }
+        .hero-badge .dot {
+            width: 8px; height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            animation: fadeInUp 0.8s ease 0.1s backwards;
+        }
+        .hero-title .highlight {
+            background: linear-gradient(135deg, #6C5CE7, #00C9A7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto 40px;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Premium Filter Bar */
+        .filter-bar {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 60px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+            animation: fadeInUp 0.8s ease 0.3s backwards;
+            position: relative;
+        }
+        .filter-bar:focus-within {
+            box-shadow: 0 20px 50px rgba(108,92,231,0.15), 0 0 0 3px rgba(108,92,231,0.1);
+        }
+        .filter-pill {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 50px;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fc;
+            color: var(--text-primary);
+            font-family: inherit;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+        }
+        .filter-pill:hover { background: #f0edff; }
+        .filter-pill:focus { background: #f0edff; }
+
+        .btn-search-premium {
+            padding: 14px 28px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            background: linear-gradient(135deg, #6C5CE7, #8B7CF6);
+            color: white;
+            transition: all 0.3s var(--transition);
+            white-space: nowrap;
+            box-shadow: 0 8px 25px rgba(108,92,231,0.3);
+        }
+        .btn-search-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(108,92,231,0.4);
+        }
+
+        /* Results */
+        .results-section {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.6s ease backwards;
+        }
+        .results-count {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .results-count strong {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* Cards Grid */
+        .teachers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+            gap: 24px;
+        }
+        @media (max-width: 420px) {
+            .teachers-grid { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; border-radius: 28px; padding: 12px; }
+            .filter-pill { width: 100%; }
+            .btn-search-premium { width: 100%; text-align: center; justify-content: center; }
+        }
+
+        /* Premium Teacher Card */
+        .teacher-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.5s var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.04);
+            animation: fadeInUp 0.6s ease backwards;
+            cursor: default;
+        }
+        .teacher-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(108,92,231,0.15);
+        }
+        .teacher-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, #6C5CE7, #00C9A7, #FF6B6B, #FFD93D);
+            background-size: 300% 100%;
+            animation: gradientShift 4s ease infinite;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .teacher-card:hover::after { opacity: 1; }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .card-top {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .avatar-wrapper {
+            position: relative;
+            flex-shrink: 0;
+        }
+        .teacher-avatar {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .avatar-placeholder {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .verified-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 24px; height: 24px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.6rem;
+            border: 3px solid white;
+            box-shadow: 0 4px 10px rgba(16,185,129,0.3);
+        }
+
+        .teacher-meta h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+        }
+        .teacher-meta .qual {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+        .stars-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #f59e0b;
+            font-size: 0.8rem;
+        }
+        .stars-row .count {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-left: 4px;
+        }
+
+        .card-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .detail-row i {
+            width: 18px;
+            color: var(--primary);
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .subjects-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 12px 0;
+        }
+        .sub-tag {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: #f0edff;
+            color: var(--primary);
+            letter-spacing: -0.2px;
+        }
+
+        .fees-highlight {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #fef3c7, #fef9c3);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #92400e;
+            margin-top: 8px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .btn-action {
+            flex: 1;
+            padding: 12px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-decoration: none;
+            letter-spacing: -0.2px;
+        }
+        .btn-call {
+            background: #ecfdf5;
+            color: #059669;
+        }
+        .btn-call:hover { background: #d1fae5; transform: scale(1.03); }
+        .btn-chat {
+            background: #f0edff;
+            color: var(--primary);
+        }
+        .btn-chat:hover { background: #e0d9ff; transform: scale(1.03); }
+        .btn-profile {
+            background: #f8fafc;
+            color: var(--text-secondary);
+        }
+        .btn-profile:hover { background: #f1f5f9; transform: scale(1.03); }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            grid-column: 1 / -1;
+            animation: fadeInUp 0.6s ease;
+        }
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .empty-state h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 12px;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            border-radius: 16px;
+            color: white;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            animation: toastIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(20px);
+        }
+        .toast.success { background: rgba(16,185,129,0.9); }
+        .toast.error { background: rgba(239,68,68,0.9); }
+        @keyframes toastIn {
+            from { transform: translateX(120%) scale(0.8); opacity: 0; }
+            to { transform: translateX(0) scale(1); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .teachers-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 1.8rem; }
+            .header-inner { flex-wrap: wrap; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 3D Background -->
+    <canvas id="threeBg"></canvas>
+    
+    <!-- Floating Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- ============ HEADER ============ -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-group">
+                <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="logo-text">
+                    <h2>THP</h2>
+                    <span>Home Tutor</span>
+                </div>
+            </a>
+            <div class="header-actions">
+                <span class="city-pill"><i class="fas fa-map-marker-alt"></i> Prayagraj</span>
+                <a href="teacher.html" class="btn-ghost btn-ghost-primary">
+                    <i class="fas fa-user-plus"></i> Join as Teacher
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============ HERO SEARCH ============ -->
+    <section class="hero-search">
+        <div class="hero-badge">
+            <span class="dot"></span> 500+ Verified Tutors in Prayagraj
+        </div>
+        <h1 class="hero-title">
+            Find Your <span class="highlight">Perfect Tutor</span>
+        </h1>
+        <p class="hero-subtitle">
+            Expert home tutors for every subject, class & board. Right in your neighborhood.
+        </p>
+        
+        <!-- Premium Filter Bar - Only 3 Filters -->
+        <div class="filter-bar">
+            <select class="filter-pill" id="filterSubject">
+                <option value="">📚 Any Subject</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Physics">Physics</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="Biology">Biology</option>
+                <option value="English">English</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Economics">Economics</option>
+            </select>
+            
+            <select class="filter-pill" id="filterClass">
+                <option value="">🎓 Any Class</option>
+                <option value="1-5">Class 1-5</option>
+                <option value="6-8">Class 6-8</option>
+                <option value="9-10">Class 9-10</option>
+                <option value="11-12">Class 11-12</option>
+            </select>
+            
+            <select class="filter-pill" id="filterArea">
+                <option value="">📍 Any Area</option>
+                <option value="Civil Lines">Civil Lines</option>
+                <option value="Allahpur">Allahpur</option>
+                <option value="Naini">Naini</option>
+                <option value="Jhunsi">Jhunsi</option>
+                <option value="Kareli">Kareli</option>
+                <option value="Tagore Town">Tagore Town</option>
+                <option value="Near Allahabad University">Near AU</option>
+                <option value="Near MNNIT">Near MNNIT</option>
+            </select>
+            
+            <button class="btn-search-premium" onclick="searchTeachers()">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+    </section>
+
+    <!-- ============ RESULTS ============ -->
+    <section class="results-section">
+        <div class="results-header">
+            <p class="results-count">
+                <strong id="resultCount">0</strong> tutors available
+            </p>
+        </div>
+        
+        <div class="teachers-grid" id="teachersGrid">
+            <!-- Skeleton Loading -->
+            <div class="teacher-card" id="skeleton1">
+                <div class="card-top">
+                    <div class="skeleton" style="width:80px;height:80px;border-radius:50%;"></div>
+                    <div style="flex:1;">
+                        <div class="skeleton" style="width:70%;height:20px;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="width:50%;height:16px;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="width:40%;height:14px;"></div>
+                    </div>
+                </div>
+                <div class="skeleton" style="width:100%;height:14px;margin-bottom:8px;"></div>
+                <div class="skeleton" style="width:80%;height:14px;"></div>
+            </div>
+            <div class="teacher-card" id="skeleton2">
+                <div class="card-top">
+                    <div class="skeleton" style="width:80px;height:80px;border-radius:50%;"></div>
+                    <div style="flex:1;">
+                        <div class="skeleton" style="width:60%;height:20px;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="width:45%;height:16px;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="width:35%;height:14px;"></div>
+                    </div>
+                </div>
+                <div class="skeleton" style="width:90%;height:14px;margin-bottom:8px;"></div>
+                <div class="skeleton" style="width:70%;height:14px;"></div>
+            </div>
+            <div class="teacher-card" id="skeleton3">
+                <div class="card-top">
+                    <div class="skeleton" style="width:80px;height:80px;border-radius:50%;"></div>
+                    <div style="flex:1;">
+                        <div class="skeleton" style="width:75%;height:20px;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="width:55%;height:16px;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="width:45%;height:14px;"></div>
+                    </div>
+                </div>
+                <div class="skeleton" style="width:85%;height:14px;margin-bottom:8px;"></div>
+                <div class="skeleton" style="width:65%;height:14px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        // ============ 3D BACKGROUND ============
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threeBg'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 50;
+        const posArray = new Float32Array(particlesCount * 3);
+        for (let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 15;
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.03,
+            color: 0x6C5CE7,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+        camera.position.z = 5;
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.x += 0.0003;
+            particlesMesh.rotation.y += 0.0005;
+            renderer.render(scene, camera);
+        }
+        animate();
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ============ FIREBASE ============
+        firebase.initializeApp({
+            apiKey: "AIzaSyABaZZOMR1-oudAzjGnsN6LvClW5VrkIQY",
+            authDomain: "hometutor-a5c4d.firebaseapp.com",
+            projectId: "hometutor-a5c4d",
+            storageBucket: "hometutor-a5c4d.firebasestorage.app",
+            messagingSenderId: "367381523059",
+            appId: "1:367381523059:web:f4732dcbf1cf6f7993d806"
+        });
+        const db = firebase.firestore();
+        
+        let allTeachers = [];
+
+        // ============ GSAP ANIMATIONS ============
+        gsap.from('.hero-badge', { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' });
+        gsap.from('.hero-title', { opacity: 0, y: 40, duration: 0.8, delay: 0.15, ease: 'power3.out' });
+        gsap.from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.8, delay: 0.3, ease: 'power3.out' });
+        gsap.from('.filter-bar', { opacity: 0, y: 40, duration: 0.8, delay: 0.45, ease: 'power3.out' });
+
+        // ============ HEADER SCROLL EFFECT ============
+        window.addEventListener('scroll', () => {
+            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ============ SEARCH ============
+        async function searchTeachers() {
+            const grid = document.getElementById('teachersGrid');
+            grid.innerHTML = `
+                <div class="teacher-card"><div class="card-top">
+                    <div class="skeleton" style="width:80px;height:80px;border-radius:50%;"></div>
+                    <div style="flex:1;"><div class="skeleton" style="width:70%;height:20px;margin-bottom:8px;"></div><div class="skeleton" style="width:50%;height:16px;"></div></div>
+                </div></div>
+            `;
+            
+            try {
+                const subject = document.getElementById('filterSubject').value;
+                const classFilter = document.getElementById('filterClass').value;
+                const area = document.getElementById('filterArea').value.toLowerCase();
+                
+                let query = db.collection('teachers')
+                    .where('isActive', '==', true)
+                    .where('city', '==', 'Prayagraj');
+                
+                if (subject) query = query.where('subjects', 'array-contains', subject);
+                if (classFilter) query = query.where('classes', 'array-contains', classFilter);
+                
+                const snapshot = await query.get();
+                let teachers = [];
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (area && !data.area.toLowerCase().includes(area)) return;
+                    teachers.push({ id: doc.id, ...data });
+                });
+                
+                teachers.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+                allTeachers = teachers;
+                displayTeachers(teachers);
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                grid.innerHTML = `<div class="empty-state"><span class="empty-icon">⚠️</span><h3>Something went wrong</h3><p>Please try again</p></div>`;
+            }
+        }
+
+        function displayTeachers(teachers) {
+            const grid = document.getElementById('teachersGrid');
+            document.getElementById('resultCount').textContent = teachers.length;
+            
+            if (teachers.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">🔍</span>
+                        <h3>No tutors found</h3>
+                        <p>Try a different subject or area</p>
+                    </div>`;
+                return;
+            }
+            
+            grid.innerHTML = teachers.map((t, i) => {
+                const initials = (t.fullName || 'T').split(' ').map(n => n[0]).join('').toUpperCase();
+                const avatar = t.profilePhoto ? `<img src="${t.profilePhoto}" class="teacher-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="avatar-placeholder" style="display:none">${initials}</div>` : `<div class="avatar-placeholder">${initials}</div>`;
+                const stars = Array.from({length:5}, (_,j) => j < Math.floor(t.rating||0) ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>').join('');
+                
+                return `
+                <div class="teacher-card" style="animation-delay:${i*0.1}s">
+                    <div class="card-top">
+                        <div class="avatar-wrapper">
+                            ${avatar}
+                            ${t.isVerified ? '<div class="verified-badge"><i class="fas fa-check"></i></div>' : ''}
+                        </div>
+                        <div class="teacher-meta">
+                            <h3>${t.fullName || 'Tutor'}</h3>
+                            <p class="qual">${t.qualification || 'Qualified Tutor'}</p>
+                            <div class="stars-row">${stars} <span class="count">${(t.rating||0).toFixed(1)} (${t.totalReviews||0})</span></div>
+                        </div>
+                    </div>
+                    <div class="card-details">
+                        <div class="detail-row"><i class="fas fa-map-marker-alt"></i> ${t.area || 'N/A'}, Prayagraj</div>
+                        <div class="detail-row"><i class="fas fa-graduation-cap"></i> ${(t.experience||'').substring(0,50)}...</div>
+                    </div>
+                    <div class="subjects-row">${(t.subjects||[]).slice(0,4).map(s => `<span class="sub-tag">${s}</span>`).join('')}</div>
+                    <div class="fees-highlight"><i class="fas fa-rupee-sign" style="font-size:0.7rem;"></i> ${t.expectedFees||'N/A'}/hour</div>
+                    <div class="card-actions">
+                        <a href="tel:${t.phone||'#'}" class="btn-action btn-call"><i class="fas fa-phone"></i> Call</a>
+                        <button class="btn-action btn-chat" onclick="openChat('${t.id}','${t.fullName}')"><i class="fas fa-comments"></i> Chat</button>
+                        <button class="btn-action btn-profile" onclick="viewProfile('${t.id}')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
+            
+            // Animate cards
+            gsap.from('.teacher-card', {
+                opacity: 0, y: 40, duration: 0.6,
+                stagger: 0.08, ease: 'power3.out'
+            });
+        }
+
+        function viewProfile(id) {
+            const t = allTeachers.find(x => x.id === id);
+            if (t) alert(`👤 ${t.fullName}\n\n📚 ${t.qualification}\n📍 ${t.area}, Prayagraj\n💰 ₹${t.expectedFees}/hr\n📞 ${t.phone}\n✉️ ${t.email}\n\n📖 ${(t.subjects||[]).join(', ')}`);
+        }
+
+        function openChat(id, name) {
+            const user = firebase.auth().currentUser;
+            if (!user) { toast('Please login first', 'error'); return; }
+            window.location.href = `chat.html?teacher=${id}&name=${encodeURIComponent(name)}`;
+        }
+
+        function toast(msg, type) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.innerHTML = msg;
+            document.body.appendChild(t);
+            setTimeout(() => { t.style.animation = 'toastIn 0.5s ease reverse'; setTimeout(() => t.remove(), 400); }, 3500);
+        }
+
+        // ============ INIT ============
+        searchTeachers();
+        console.log('👑 Premium Browse Teachers Ready - Prayagraj');
+    </script>
+</body>
+</html>
