@@ -3,543 +3,563 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | THP Home Tutor</title>
     
-    <meta name="title" content="THP Home Tutor - Find Best Home Tutors in Prayagraj | Verified & Experienced">
-    <meta name="description" content="Connect with qualified, background-verified home tutors in Prayagraj. CBSE, ICSE, JEE, NEET expert tutors. Join as teacher in just ₹200.">
-    <meta name="keywords" content="home tutor Prayagraj, tuition teacher Allahabad, home tuition, private tutor, CBSE tutor, JEE coaching">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
-    <meta name="author" content="THP Home Tutor">
-    
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://thphometutor.com/">
-    <meta property="og:title" content="THP Home Tutor - Prayagraj's Most Trusted Home Tutor Platform">
-    <meta property="og:description" content="Find verified home tutors in Prayagraj. Join as teacher in ₹200.">
-    <meta property="og:image" content="https://i.ibb.co/TDDhqrLq/file-000000003d2872089b72e2e82ebf2787.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://thphometutor.com/">
-    <meta property="twitter:title" content="THP Home Tutor - Prayagraj's Most Trusted Home Tutor Platform">
-    <meta property="twitter:description" content="Find verified home tutors in Prayagraj. Join as teacher in ₹200.">
-    <meta property="twitter:image" content="https://i.ibb.co/TDDhqrLq/file-000000003d2872089b72e2e82ebf2787.png">
-    
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "EducationalOrganization",
-        "name": "THP Home Tutor",
-        "description": "Prayagraj's most trusted platform connecting students with verified home tutors",
-        "url": "https://thphometutor.com",
-        "logo": "https://i.ibb.co/20DRzH4h/IMG-20260530-162843.jpg",
-        "address": { "@type": "PostalAddress", "addressLocality": "Prayagraj", "addressCountry": "India" }
-    }
-    </script>
-    
-    <title>THP Home Tutor | Best Home Tutors in Prayagraj | Join in ₹200</title>
-    <link rel="icon" type="image/jpeg" href="https://i.ibb.co/20DRzH4h/IMG-20260530-162843.jpg">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-    
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+
     <style>
         :root {
             --primary: #6C5CE7;
-            --primary-dark: #5A4BD1;
-            --secondary: #00C9A7;
-            --accent: #FF6B6B;
-            --gold: #FFD93D;
-            --dark: #1A1A2E;
-            --light: #F8F9FA;
-            --gradient-1: linear-gradient(135deg, #6C5CE7 0%, #00C9A7 100%);
-            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            --card-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #f1f5f9;
+            --surface: #ffffff;
+            --text: #1a1a2e;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        .admin-header {
+            background: #1a1a2e;
+            color: white;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .admin-header h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-logout {
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-family: inherit;
+        }
+        .btn-logout:hover { background: rgba(255,255,255,0.1); }
         
-        body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: var(--light); }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px 16px; }
         
-        .glass { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
-        .gradient-text { background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-        .floating { animation: float 3s ease-in-out infinite; }
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(108, 92, 231, 0.5); } 50% { box-shadow: 0 0 40px rgba(108, 92, 231, 0.8); } }
-        .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
-        .magnetic-btn { transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .stat-card .stat-num { font-size: 1.8rem; font-weight: 800; }
+        .stat-card .stat-label { color: #64748b; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-top: 2px; }
         
-        .loader-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark); display: flex; justify-content: center; align-items: center; z-index: 99999; transition: all 0.8s ease; }
-        .loader { width: 60px; height: 60px; border: 4px solid var(--glass-border); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            background: var(--surface);
+            border-radius: 14px;
+            padding: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #64748b;
+            transition: all 0.3s;
+            font-family: inherit;
+            white-space: nowrap;
+            position: relative;
+        }
+        .tab-btn.active { background: var(--primary); color: white; }
+        .tab-badge {
+            position: absolute;
+            top: -4px;
+            right: 4px;
+            background: #ef4444;
+            color: white;
+            padding: 1px 6px;
+            border-radius: 8px;
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
         
-        .toast-notification { position: fixed; bottom: 20px; right: 20px; background: white; border-radius: 12px; padding: 12px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 12px; z-index: 1000; animation: slideIn 0.5s ease; font-size: 0.85rem; }
+        .panel {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+        .panel h3 { font-weight: 700; font-size: 1rem; margin-bottom: 14px; }
+        
+        .section-hide { display: none; }
+        
+        /* Table */
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        th {
+            background: #f8fafc;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.8rem;
+        }
+        tr:hover { background: #fafbff; }
+        
+        .badge {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-pending { background: #fef3c7; color: #92400e; }
+        .badge-paid { background: #d1fae5; color: #065f46; }
+        .badge-rejected { background: #fee2e2; color: #991b1b; }
+        .badge-live { background: #dbeafe; color: #1e40af; }
+        .badge-off { background: #f1f5f9; color: #64748b; }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            margin: 1px;
+        }
+        .btn-approve { background: #10b981; color: white; }
+        .btn-approve:hover { background: #059669; }
+        .btn-reject { background: #ef4444; color: white; }
+        .btn-reject:hover { background: #dc2626; }
+        .btn-view { background: #6C5CE7; color: white; }
+        .btn-view:hover { background: #5A4BD1; }
+        .btn-live { background: #3b82f6; color: white; }
+        .btn-off { background: #f59e0b; color: white; }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 9999;
+            font-size: 0.85rem;
+            animation: slideIn 0.3s ease;
+        }
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
-        .premium-card { background: white; border-radius: 24px; padding: 32px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
-        .premium-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(108,92,231,0.15); }
-        .testimonial-card { background: white; border-radius: 18px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 1px solid #f1f5f9; }
-        .testimonial-card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(108,92,231,0.12); }
-        .trust-badge { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: rgba(255,255,255,0.12); border-radius: 40px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        .login-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+        .login-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-family: inherit;
+        }
+        .login-box input:focus { border-color: var(--primary); outline: none; }
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 15px;
+        }
         
-        @media (max-width: 768px) {
-            .hero-title { font-size: 2.2rem !important; line-height: 1.2 !important; }
-            .section-title { font-size: 1.6rem !important; }
-            .premium-card { padding: 20px; border-radius: 18px; }
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-box {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .empty-state { text-align: center; padding: 30px; color: #94a3b8; }
+        .empty-state i { font-size: 3rem; display: block; margin-bottom: 10px; }
+        
+        @media (max-width: 600px) {
+            .tabs { flex-wrap: wrap; }
+            .tab-btn { font-size: 0.7rem; padding: 8px 10px; }
+            th, td { padding: 6px 8px; font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
-    
-    <div class="loader-wrapper" id="loader">
-        <div class="text-center">
-            <div class="loader"></div>
-            <p class="text-white mt-4 text-lg font-semibold">THP Home Tutor</p>
-            <p class="text-gray-400 mt-2 text-sm">Prayagraj's Trusted Platform</p>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f1f5f9;">
+        <div class="login-box">
+            <div style="font-size:3rem;margin-bottom:8px;">👑</div>
+            <h2 style="font-weight:800;margin-bottom:4px;">Admin Panel</h2>
+            <p style="color:#64748b;font-size:0.85rem;margin-bottom:16px;">Login to manage teachers</p>
+            <input type="email" id="loginEmail" placeholder="Email" value="mgbhaukali@gmail.com">
+            <input type="password" id="loginPassword" placeholder="Password" value="admin123456">
+            <button onclick="adminLogin()"><i class="fas fa-lock"></i> Login</button>
+            <p id="loginError" style="color:#ef4444;font-size:0.8rem;margin-top:8px;display:none;"></p>
+            <p style="font-size:0.7rem;color:#94a3b8;margin-top:12px;cursor:pointer;" onclick="skipLogin()">Skip login (view only)</p>
         </div>
     </div>
-    
-    <div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
-    
-    <!-- ============ NAVIGATION ============ -->
-    <nav class="fixed top-0 left-0 w-full z-50 transition-all duration-500" id="navbar">
-        <div class="container mx-auto px-4 py-3">
-            <div class="glass rounded-full px-5 py-3 flex items-center justify-between">
-                
-                <a href="/" class="flex items-center space-x-2 group flex-shrink-0">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 overflow-hidden">
-                        <img src="https://i.ibb.co/20DRzH4h/IMG-20260530-162843.jpg" alt="THP" class="w-full h-full object-cover">
-                    </div>
-                    <div class="hidden sm:block">
-                        <h1 class="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">THP</h1>
-                        <p class="text-xs text-gray-600 font-medium">Home Tutor</p>
-                    </div>
-                </a>
-                
-                <div class="hidden lg:flex items-center space-x-6">
-                    <a href="#home" class="text-gray-700 hover:text-purple-600 font-medium text-sm transition-colors">Home</a>
-                    <a href="#how-it-works" class="text-gray-700 hover:text-purple-600 font-medium text-sm transition-colors">How It Works</a>
-                    <a href="#features" class="text-gray-700 hover:text-purple-600 font-medium text-sm transition-colors">Features</a>
-                    <a href="#testimonials" class="text-gray-700 hover:text-purple-600 font-medium text-sm transition-colors">Reviews</a>
-                    <a href="#faq" class="text-gray-700 hover:text-purple-600 font-medium text-sm transition-colors">FAQ</a>
-                </div>
-                
-                <div class="flex items-center space-x-2">
-                    <a href="browse-teachers.html" class="hidden md:inline-flex items-center space-x-1 text-gray-700 hover:text-purple-600 font-medium text-sm transition-colors">
-                        <i class="fas fa-search text-xs"></i><span>Find Tutors</span>
-                    </a>
-                    <a href="login.html" class="hidden md:inline-flex items-center space-x-1 text-gray-700 hover:text-purple-600 font-medium text-sm transition-colors">
-                        <i class="fas fa-sign-in-alt text-xs"></i><span>Login</span>
-                    </a>
-                    <a href="teacher.html" class="bg-gradient-to-r from-purple-600 to-blue-500 text-white px-4 py-2 rounded-full font-semibold text-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        Join as Teacher
-                    </a>
-                    <button class="lg:hidden text-xl text-gray-700 p-1" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
-                </div>
-            </div>
-        </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" style="display:none;">
         
-        <div class="lg:hidden hidden absolute top-full left-0 w-full px-4" id="mobileMenu">
-            <div class="bg-white shadow-2xl rounded-2xl p-4 space-y-2">
-                <a href="#home" class="block py-3 px-4 text-gray-700 font-medium rounded-xl hover:bg-gray-50">🏠 Home</a>
-                <a href="#how-it-works" class="block py-3 px-4 text-gray-700 font-medium rounded-xl hover:bg-gray-50">📋 How It Works</a>
-                <a href="#features" class="block py-3 px-4 text-gray-700 font-medium rounded-xl hover:bg-gray-50">⭐ Features</a>
-                <a href="#testimonials" class="block py-3 px-4 text-gray-700 font-medium rounded-xl hover:bg-gray-50">💬 Reviews</a>
-                <a href="#faq" class="block py-3 px-4 text-gray-700 font-medium rounded-xl hover:bg-gray-50">❓ FAQ</a>
-                <a href="browse-teachers.html" class="block py-3 px-4 text-purple-600 font-bold rounded-xl hover:bg-purple-50">🔍 Find Tutors</a>
-                <a href="login.html" class="block py-3 px-4 text-purple-600 font-bold rounded-xl hover:bg-purple-50">🔑 Teacher Login</a>
+        <div class="admin-header">
+            <h1>👑 THP Admin Panel</h1>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-size:0.8rem;opacity:0.8;" id="adminEmail"></span>
+                <button class="btn-logout" onclick="logout()">Logout</button>
             </div>
         </div>
-    </nav>
-    
-    <!-- ============ HERO SECTION ============ -->
-    <section id="home" class="relative min-h-screen flex items-center pt-16 overflow-hidden">
-        <canvas id="threeBg" class="absolute inset-0 z-0"></canvas>
-        <div class="absolute inset-0 bg-gradient-to-br from-purple-900/85 via-blue-900/85 to-black/85 z-10"></div>
-        
-        <div class="container mx-auto px-4 relative z-20">
-            <div class="grid lg:grid-cols-2 gap-8 items-center">
-                
-                <div class="text-white space-y-5" data-aos="fade-up" data-aos-duration="1000">
-                    <div class="inline-flex items-center space-x-2 glass rounded-full px-4 py-2 pulse-glow text-sm">
-                        <span class="w-2 h-2 bg-green-400 rounded-full animate-ping"></span>
-                        <span>🚀 Trusted by 10,000+ Families in Prayagraj</span>
-                    </div>
-                    
-                    <h1 class="hero-title text-5xl lg:text-6xl font-black leading-tight">
-                        Find Your <span class="gradient-text">Perfect Home Tutor</span> in Prayagraj
-                    </h1>
-                    
-                    <p class="text-base lg:text-lg text-gray-200 leading-relaxed max-w-lg">
-                        Connect with <strong class="text-white">500+ qualified, verified & experienced</strong> home tutors in your neighborhood.
-                    </p>
-                    
-                    <div class="flex flex-wrap gap-3">
-                        <a href="browse-teachers.html" class="group bg-white text-purple-700 px-6 py-3 rounded-full font-bold text-sm lg:text-base hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center space-x-2 magnetic-btn">
-                            <i class="fas fa-search"></i><span>Find Your Tutor</span><i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                        <a href="teacher.html" class="group bg-transparent border-2 border-white text-white px-6 py-3 rounded-full font-bold text-sm lg:text-base hover:bg-white hover:text-purple-700 transition-all duration-300 flex items-center space-x-2 magnetic-btn">
-                            <i class="fas fa-user-graduate"></i><span>Join as Teacher</span><span class="bg-yellow-400 text-purple-900 px-2 py-0.5 rounded-full text-xs">₹200</span>
-                        </a>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-3 text-xs">
-                        <span class="trust-badge"><i class="fas fa-shield-check text-green-400"></i> Verified</span>
-                        <span class="trust-badge"><i class="fas fa-star text-yellow-400"></i> 4.8 Rating</span>
-                        <span class="trust-badge"><i class="fas fa-lock text-blue-400"></i> 100% Secure</span>
-                    </div>
-                    
-                    <div class="grid grid-cols-3 gap-4 pt-4">
-                        <div class="text-center"><div class="text-2xl lg:text-3xl font-black counter" data-target="500">0</div><p class="text-xs text-gray-300">Verified Tutors</p></div>
-                        <div class="text-center"><div class="text-2xl lg:text-3xl font-black counter" data-target="10000">0</div><p class="text-xs text-gray-300">Happy Students</p></div>
-                        <div class="text-center"><div class="text-2xl lg:text-3xl font-black counter" data-target="50">0</div><p class="text-xs text-gray-300">Areas Covered</p></div>
-                    </div>
-                </div>
-                
-                <div class="hidden lg:block relative" data-aos="fade-left" data-aos-duration="1000">
-                    <div class="relative floating">
-                        <div class="glass rounded-2xl p-5 transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                            <div class="bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl p-5 text-white">
-                                <div class="flex items-center space-x-3 mb-3">
-                                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-2xl">👨‍🏫</div>
-                                    <div><h3 class="font-bold text-lg">Expert Tutors</h3><p class="text-purple-200 text-sm">In Your Area</p></div>
-                                </div>
-                                <div class="space-y-1 text-sm">
-                                    <div class="flex items-center space-x-2"><i class="fas fa-check-circle text-green-300 text-xs"></i><span>Background Verified</span></div>
-                                    <div class="flex items-center space-x-2"><i class="fas fa-check-circle text-green-300 text-xs"></i><span>Qualified Professionals</span></div>
-                                    <div class="flex items-center space-x-2"><i class="fas fa-check-circle text-green-300 text-xs"></i><span>Affordable Pricing</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce hidden lg:block">
-            <a href="#how-it-works" class="text-white flex flex-col items-center space-y-1 text-sm opacity-70 hover:opacity-100"><span>Scroll</span><i class="fas fa-chevron-down"></i></a>
-        </div>
-    </section>
-    
-    <!-- ============ HOW IT WORKS ============ -->
-    <section id="how-it-works" class="py-16 lg:py-20 bg-white relative overflow-hidden">
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center mb-10 lg:mb-14" data-aos="fade-up">
-                <span class="text-purple-600 font-semibold text-sm uppercase tracking-wider">Simple Process</span>
-                <h2 class="section-title text-3xl lg:text-4xl font-black mt-2 mb-4">How <span class="gradient-text">THP Home Tutor</span> Works</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto text-sm lg:text-base">From finding the perfect tutor to starting your learning journey - simple and effective.</p>
-            </div>
+
+        <div class="container">
             
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
-                <div class="premium-card text-center" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-3"><i class="fas fa-search"></i></div>
-                    <h3 class="text-lg font-bold mb-1">1. Search</h3><p class="text-gray-600 text-xs lg:text-sm">By subject, class & area</p>
-                </div>
-                <div class="premium-card text-center" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-green-400 to-teal-500 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-3"><i class="fas fa-user-check"></i></div>
-                    <h3 class="text-lg font-bold mb-1">2. Compare</h3><p class="text-gray-600 text-xs lg:text-sm">Profiles, ratings & fees</p>
-                </div>
-                <div class="premium-card text-center" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-3"><i class="fas fa-comments"></i></div>
-                    <h3 class="text-lg font-bold mb-1">3. Connect</h3><p class="text-gray-600 text-xs lg:text-sm">Chat & discuss directly</p>
-                </div>
-                <div class="premium-card text-center" data-aos="fade-up" data-aos-delay="400">
-                    <div class="w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-600 to-pink-500 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-3"><i class="fas fa-rocket"></i></div>
-                    <h3 class="text-lg font-bold mb-1">4. Learn</h3><p class="text-gray-600 text-xs lg:text-sm">Begin your journey</p>
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-card"><div class="stat-num" id="statTotal" style="color:#6C5CE7;">0</div><div class="stat-label">Total Teachers</div></div>
+                <div class="stat-card"><div class="stat-num" id="statPending" style="color:#f59e0b;">0</div><div class="stat-label">Pending</div></div>
+                <div class="stat-card"><div class="stat-num" id="statPaid" style="color:#10b981;">0</div><div class="stat-label">Paid</div></div>
+                <div class="stat-card"><div class="stat-num" id="statLive" style="color:#3b82f6;">0</div><div class="stat-label">Live</div></div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('pending')">⏳ Pending <span class="tab-badge" id="badgePending">0</span></button>
+                <button class="tab-btn" onclick="switchTab('all')">📋 All</button>
+                <button class="tab-btn" onclick="switchTab('paid')">✅ Paid</button>
+                <button class="tab-btn" onclick="switchTab('live')">🟢 Live</button>
+            </div>
+
+            <!-- Table -->
+            <div class="panel">
+                <h3 id="tableTitle">⏳ Pending Teachers</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Area</th>
+                                <th>Qualification</th>
+                                <th>Fees</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr><td colspan="10"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div></td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </section>
-    
-    <!-- ============ FEATURES ============ -->
-    <section id="features" class="py-16 lg:py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-10 lg:mb-14" data-aos="fade-up">
-                <span class="text-purple-600 font-semibold text-sm uppercase tracking-wider">Why Choose Us</span>
-                <h2 class="section-title text-3xl lg:text-4xl font-black mt-2 mb-4">Platform <span class="gradient-text">Features</span></h2>
-                <p class="text-gray-600 max-w-2xl mx-auto text-sm lg:text-base">Built with cutting-edge features for the best experience.</p>
-            </div>
-            
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
-                <div class="bg-white rounded-2xl p-4 lg:p-6 shadow-sm hover:shadow-lg transition-all duration-300" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="w-10 h-10 lg:w-12 lg:h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 text-xl mb-3"><i class="fas fa-shield-alt"></i></div>
-                    <h3 class="font-bold text-sm lg:text-base mb-1">Verified Teachers</h3><p class="text-gray-500 text-xs">Background checked professionals</p>
-                </div>
-                <div class="bg-white rounded-2xl p-4 lg:p-6 shadow-sm hover:shadow-lg transition-all duration-300" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 text-xl mb-3"><i class="fas fa-map-marker-alt"></i></div>
-                    <h3 class="font-bold text-sm lg:text-base mb-1">Local Tutors</h3><p class="text-gray-500 text-xs">In your neighborhood</p>
-                </div>
-                <div class="bg-white rounded-2xl p-4 lg:p-6 shadow-sm hover:shadow-lg transition-all duration-300" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="w-10 h-10 lg:w-12 lg:h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-600 text-xl mb-3"><i class="fas fa-comments"></i></div>
-                    <h3 class="font-bold text-sm lg:text-base mb-1">In-App Chat</h3><p class="text-gray-500 text-xs">Communicate directly</p>
-                </div>
-                <div class="bg-white rounded-2xl p-4 lg:p-6 shadow-sm hover:shadow-lg transition-all duration-300" data-aos="zoom-in" data-aos-delay="400">
-                    <div class="w-10 h-10 lg:w-12 lg:h-12 bg-yellow-100 rounded-xl flex items-center justify-center text-yellow-600 text-xl mb-3"><i class="fas fa-star"></i></div>
-                    <h3 class="font-bold text-sm lg:text-base mb-1">Ratings & Reviews</h3><p class="text-gray-500 text-xs">Genuine feedback</p>
-                </div>
-                <div class="bg-white rounded-2xl p-4 lg:p-6 shadow-sm hover:shadow-lg transition-all duration-300" data-aos="zoom-in" data-aos-delay="500">
-                    <div class="w-10 h-10 lg:w-12 lg:h-12 bg-pink-100 rounded-xl flex items-center justify-center text-pink-600 text-xl mb-3"><i class="fas fa-rupee-sign"></i></div>
-                    <h3 class="font-bold text-sm lg:text-base mb-1">Affordable Fees</h3><p class="text-gray-500 text-xs">No hidden charges</p>
-                </div>
-                <div class="bg-white rounded-2xl p-4 lg:p-6 shadow-sm hover:shadow-lg transition-all duration-300" data-aos="zoom-in" data-aos-delay="600">
-                    <div class="w-10 h-10 lg:w-12 lg:h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 text-xl mb-3"><i class="fas fa-headset"></i></div>
-                    <h3 class="font-bold text-sm lg:text-base mb-1">24/7 Support</h3><p class="text-gray-500 text-xs">Always available</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- ============ CTA SECTION ============ -->
-    <section class="relative py-16 lg:py-20 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600"></div>
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-8 items-center">
-                <div class="text-white space-y-4" data-aos="fade-right">
-                    <h2 class="text-3xl lg:text-4xl font-black">Are You a <span class="text-yellow-400">Passionate Teacher?</span></h2>
-                    <p class="text-purple-100 text-sm lg:text-base">Join Prayagraj's fastest-growing home tutor network. Set your own schedule & earn what you deserve.</p>
-                    <ul class="space-y-2 text-sm">
-                        <li class="flex items-center space-x-2"><i class="fas fa-check-circle text-green-400"></i><span>Register in 5 minutes - ₹200 only</span></li>
-                        <li class="flex items-center space-x-2"><i class="fas fa-check-circle text-green-400"></i><span>Get matched with students</span></li>
-                        <li class="flex items-center space-x-2"><i class="fas fa-check-circle text-green-400"></i><span>Set your own fees & schedule</span></li>
-                    </ul>
-                    <a href="teacher.html" class="inline-flex items-center space-x-2 bg-white text-purple-700 px-6 py-3 rounded-full font-bold text-sm hover:shadow-2xl hover:scale-105 transition-all magnetic-btn">
-                        <i class="fas fa-user-plus"></i><span>Register Now</span><span class="bg-yellow-400 text-purple-900 px-2 py-0.5 rounded-full text-xs">₹200</span>
-                    </a>
-                </div>
-                <div class="hidden lg:block" data-aos="fade-left">
-                    <div class="glass rounded-2xl p-6 text-white">
-                        <h3 class="text-xl font-bold mb-4">Why Teachers Love Us?</h3>
-                        <div class="space-y-4">
-                            <div class="flex justify-between"><span>Active Teachers</span><span class="text-2xl font-black text-yellow-400 counter" data-target="500">0</span></div>
-                            <div class="flex justify-between"><span>Monthly Earnings</span><span class="text-2xl font-black text-yellow-400">₹15K-50K</span></div>
-                            <div class="flex justify-between"><span>Satisfaction Rate</span><span class="text-2xl font-black text-yellow-400">98%</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- ============ TESTIMONIALS ============ -->
-    <section id="testimonials" class="py-16 lg:py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-10" data-aos="fade-up">
-                <span class="text-purple-600 font-semibold text-sm uppercase tracking-wider">Testimonials</span>
-                <h2 class="section-title text-3xl lg:text-4xl font-black mt-2 mb-4">What Our <span class="gradient-text">Users Say</span></h2>
-            </div>
-            <div class="swiper testimonialSwiper" data-aos="fade-up">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide"><div class="testimonial-card"><div class="flex space-x-1 mb-3 text-yellow-400 text-sm">★★★★★</div><p class="text-gray-600 text-sm mb-4">"Found an excellent Maths tutor for my daughter. She scored 95% in boards! THP made it so easy."</p><div class="flex items-center space-x-3"><div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-lg">👩‍👧</div><div><h4 class="font-bold text-sm">Priya Sharma</h4><p class="text-xs text-gray-500">Parent, Prayagraj</p></div></div></div></div>
-                    <div class="swiper-slide"><div class="testimonial-card"><div class="flex space-x-1 mb-3 text-yellow-400 text-sm">★★★★★</div><p class="text-gray-600 text-sm mb-4">"As a teacher, THP gave me a platform to connect with serious students. Earning great income!"</p><div class="flex items-center space-x-3"><div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-lg">👨‍🏫</div><div><h4 class="font-bold text-sm">Rajesh Kumar</h4><p class="text-xs text-gray-500">Teacher, Civil Lines</p></div></div></div></div>
-                    <div class="swiper-slide"><div class="testimonial-card"><div class="flex space-x-1 mb-3 text-yellow-400 text-sm">★★★★★</div><p class="text-gray-600 text-sm mb-4">"The chat feature is amazing! Discussed with multiple tutors before finalizing. Best platform!"</p><div class="flex items-center space-x-3"><div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-lg">👨‍👦</div><div><h4 class="font-bold text-sm">Amit Patel</h4><p class="text-xs text-gray-500">Parent, Allahpur</p></div></div></div></div>
-                </div>
-                <div class="swiper-pagination mt-6"></div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- ============ FAQ ============ -->
-    <section id="faq" class="py-16 lg:py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-10" data-aos="fade-up">
-                <span class="text-purple-600 font-semibold text-sm uppercase tracking-wider">FAQ</span>
-                <h2 class="section-title text-3xl lg:text-4xl font-black mt-2 mb-4">Frequently Asked <span class="gradient-text">Questions</span></h2>
-            </div>
-            <div class="max-w-2xl mx-auto space-y-3" data-aos="fade-up">
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <button class="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors faq-button"><span class="font-semibold text-sm">How do I find a tutor?</span><i class="fas fa-chevron-down text-xs transition-transform"></i></button>
-                    <div class="px-5 pb-4 hidden faq-content"><p class="text-gray-600 text-sm">Browse our platform, use filters for subject, class, and area. View profiles, check qualifications and reviews. Chat with tutors before deciding.</p></div>
-                </div>
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <button class="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors faq-button"><span class="font-semibold text-sm">Are teachers verified?</span><i class="fas fa-chevron-down text-xs transition-transform"></i></button>
-                    <div class="px-5 pb-4 hidden faq-content"><p class="text-gray-600 text-sm">Yes! Every teacher undergoes document verification and background checks before being listed.</p></div>
-                </div>
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <button class="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors faq-button"><span class="font-semibold text-sm">What is the teacher registration fee?</span><i class="fas fa-chevron-down text-xs transition-transform"></i></button>
-                    <div class="px-5 pb-4 hidden faq-content"><p class="text-gray-600 text-sm">One-time ₹200. No hidden charges or commissions. You keep 100% of your teaching fees.</p></div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- ============ FOOTER ============ -->
-    <footer class="bg-gray-900 text-white pt-12 lg:pt-16 pb-6">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 mb-10">
-                <div class="col-span-2 lg:col-span-1">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden">
-                            <img src="https://i.ibb.co/20DRzH4h/IMG-20260530-162843.jpg" alt="THP Logo" class="w-full h-full object-cover">
-                        </div>
-                        <div><h3 class="text-xl font-bold">THP</h3><p class="text-xs text-gray-400">Home Tutor</p></div>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Prayagraj's most trusted platform connecting students with verified home tutors.</p>
-                    <div class="flex space-x-3">
-                        <a href="#" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors text-xs"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors text-xs"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors text-xs"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold text-sm mb-3">Quick Links</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="browse-teachers.html" class="text-gray-400 hover:text-white transition-colors">Find Tutors</a></li>
-                        <li><a href="teacher.html" class="text-gray-400 hover:text-white transition-colors">Join as Teacher</a></li>
-                        <li><a href="login.html" class="text-gray-400 hover:text-white transition-colors">Teacher Login</a></li>
-                        <li><a href="admin.html" class="text-gray-400 hover:text-white transition-colors">Admin Panel</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold text-sm mb-3">Subjects</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Mathematics</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Physics</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Chemistry</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">English</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold text-sm mb-3">Contact</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li class="flex items-center space-x-2 text-gray-400"><i class="fas fa-phone text-xs"></i><a href="tel:+919648837922" class="hover:text-white">+91 9648837922</a></li>
-                        <li class="flex items-center space-x-2 text-gray-400"><i class="fas fa-envelope text-xs"></i><span>support@thphometutor.com</span></li>
-                        <li class="flex items-center space-x-2 text-gray-400"><i class="fas fa-map-marker-alt text-xs"></i><span>Prayagraj, India</span></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
-                <p class="text-gray-500 text-xs">© 2024 THP Home Tutor • Prayagraj, India. All rights reserved.</p>
-                <div class="flex space-x-4 text-xs">
-                    <a href="#" class="text-gray-500 hover:text-white">Privacy</a>
-                    <a href="#" class="text-gray-500 hover:text-white">Terms</a>
-                    <a href="#" class="text-gray-500 hover:text-white">Refund</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-    <!-- ============ SCRIPTS ============ -->
-    <script>AOS.init({ duration: 800, once: true });</script>
-    
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="detailModal" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+        <div class="modal-box" id="modalContent"></div>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
     <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                loader.style.opacity = '0';
-                setTimeout(() => { loader.style.display = 'none'; }, 600);
-            }, 1200);
+        // ============ FIREBASE ============
+        firebase.initializeApp({
+            apiKey: "AIzaSyABaZZOMR1-oudAzjGnsN6LvClW5VrkIQY",
+            authDomain: "hometutor-a5c4d.firebaseapp.com",
+            projectId: "hometutor-a5c4d",
+            storageBucket: "hometutor-a5c4d.firebasestorage.app",
+            messagingSenderId: "367381523059",
+            appId: "1:367381523059:web:f4732dcbf1cf6f7993d806"
         });
-    </script>
-    
-    <script>
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 50, density: { enable: true, value_area: 800 } },
-                color: { value: '#6C5CE7' }, shape: { type: 'circle' },
-                opacity: { value: 0.4 }, size: { value: 2, random: true },
-                line_linked: { enable: true, distance: 120, color: '#6C5CE7', opacity: 0.3, width: 1 },
-                move: { enable: true, speed: 1.5, direction: 'none', random: false, straight: false, out_mode: 'out' }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
-                modes: { repulse: { distance: 80 }, push: { particles_nb: 3 } }
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        
+        let allTeachers = [];
+        let currentTab = 'pending';
+        let isAdmin = false;
+
+        // ============ CHECK AUTH ============
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                isAdmin = true;
+                showDashboard(user.email);
             }
         });
-    </script>
-    
-    <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threeBg'), alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        const geometry = new THREE.IcosahedronGeometry(1, 0);
-        const material = new THREE.MeshPhongMaterial({ color: 0x6C5CE7, wireframe: true, transparent: true, opacity: 0.25 });
-        const shapes = [];
-        for (let i = 0; i < 5; i++) {
-            const shape = new THREE.Mesh(geometry, material);
-            shape.position.x = (Math.random() - 0.5) * 8;
-            shape.position.y = (Math.random() - 0.5) * 8;
-            shape.position.z = (Math.random() - 0.5) * 4;
-            shapes.push(shape); scene.add(shape);
+
+        function skipLogin() {
+            isAdmin = false;
+            showDashboard('Viewer Mode');
         }
-        scene.add(new THREE.DirectionalLight(0x6C5CE7, 1).position.set(5,5,5));
-        scene.add(new THREE.AmbientLight(0x404040));
-        camera.position.z = 5;
-        function animate() { requestAnimationFrame(animate); shapes.forEach((s,i) => { s.rotation.x += 0.001*(i+1); s.rotation.y += 0.002*(i+1); }); renderer.render(scene, camera); }
-        animate();
-        window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+
+        async function adminLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorEl = document.getElementById('loginError');
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                errorEl.style.display = 'none';
+            } catch (e) {
+                errorEl.textContent = '❌ ' + e.message;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        function showDashboard(email) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('adminEmail').textContent = email;
+            loadTeachers();
+        }
+
+        function logout() {
+            auth.signOut().then(() => {
+                isAdmin = false;
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('dashboard').style.display = 'none';
+            });
+        }
+
+        // ============ LOAD TEACHERS ============
+        async function loadTeachers() {
+            try {
+                const snapshot = await db.collection('teachers').orderBy('submittedAt', 'desc').get();
+                allTeachers = [];
+                snapshot.forEach(doc => {
+                    allTeachers.push({ id: doc.id, ...doc.data() });
+                });
+                console.log('✅ Loaded teachers:', allTeachers.length);
+                updateStats();
+                renderTable();
+            } catch (error) {
+                console.error('❌ Load error:', error);
+                document.getElementById('tableBody').innerHTML = 
+                    `<tr><td colspan="10"><div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Error: ${error.message}</p></div></td></tr>`;
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('statTotal').textContent = allTeachers.length;
+            document.getElementById('statPending').textContent = allTeachers.filter(t => t.paymentStatus === 'pending').length;
+            document.getElementById('statPaid').textContent = allTeachers.filter(t => t.paymentStatus === 'paid').length;
+            document.getElementById('statLive').textContent = allTeachers.filter(t => t.isActive === true).length;
+            document.getElementById('badgePending').textContent = allTeachers.filter(t => t.paymentStatus === 'pending').length;
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.target.closest('.tab-btn').classList.add('active');
+            
+            const titles = { pending: '⏳ Pending Teachers', all: '📋 All Teachers', paid: '✅ Paid Teachers', live: '🟢 Live Teachers' };
+            document.getElementById('tableTitle').textContent = titles[tab] || 'Teachers';
+            renderTable();
+        }
+
+        function getFiltered() {
+            let filtered = [...allTeachers];
+            if (currentTab === 'pending') filtered = filtered.filter(t => t.paymentStatus === 'pending');
+            if (currentTab === 'paid') filtered = filtered.filter(t => t.paymentStatus === 'paid');
+            if (currentTab === 'live') filtered = filtered.filter(t => t.isActive === true);
+            return filtered;
+        }
+
+        function renderTable() {
+            const teachers = getFiltered();
+            const tbody = document.getElementById('tableBody');
+            
+            if (teachers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><i class="fas fa-inbox"></i><p>No teachers found</p></div></td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = teachers.map(t => {
+                const date = t.submittedAt ? new Date(t.submittedAt.toDate()).toLocaleDateString() : 'N/A';
+                return `
+                <tr>
+                    <td><strong>${t.fullName || 'N/A'}</strong></td>
+                    <td>${t.email || 'N/A'}</td>
+                    <td>${t.phone || 'N/A'}</td>
+                    <td>${t.area || 'N/A'}</td>
+                    <td>${t.qualification || 'N/A'}</td>
+                    <td>₹${t.expectedFees || 'N/A'}</td>
+                    <td><span class="badge badge-${t.paymentStatus || 'pending'}">${t.paymentStatus || 'pending'}</span></td>
+                    <td><span class="badge ${t.isActive ? 'badge-live' : 'badge-off'}">${t.isActive ? 'LIVE' : 'OFF'}</span></td>
+                    <td>${date}</td>
+                    <td>
+                        ${isAdmin ? `
+                            ${t.paymentStatus === 'pending' ? `<button class="btn-sm btn-approve" onclick="approveTeacher('${t.id}')">✅</button><button class="btn-sm btn-reject" onclick="rejectTeacher('${t.id}')">❌</button>` : ''}
+                            ${t.paymentStatus === 'paid' && !t.isActive ? `<button class="btn-sm btn-live" onclick="makeLive('${t.id}')">🟢 Go Live</button>` : ''}
+                            ${t.isActive ? `<button class="btn-sm btn-off" onclick="deactivateTeacher('${t.id}')">⏸️ Off</button>` : ''}
+                        ` : '<span style="font-size:0.7rem;color:#94a3b8;">View only</span>'}
+                        <button class="btn-sm btn-view" onclick="viewDetails('${t.id}')">👁️</button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ============ ACTIONS ============
+        async function approveTeacher(id) {
+            if (!confirm('Approve & make LIVE?')) return;
+            await db.collection('teachers').doc(id).update({
+                paymentStatus: 'paid',
+                isActive: true,
+                adminApproved: true,
+                isVerified: true,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            toast('✅ Approved!', 'success');
+            loadTeachers();
+        }
+
+        async function rejectTeacher(id) {
+            if (!confirm('Reject permanently?')) return;
+            await db.collection('teachers').doc(id).update({
+                paymentStatus: 'rejected',
+                isActive: false,
+                adminApproved: false,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            toast('❌ Rejected', 'success');
+            loadTeachers();
+        }
+
+        async function makeLive(id) {
+            await db.collection('teachers').doc(id).update({
+                isActive: true,
+                adminApproved: true,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            toast('🟢 LIVE!', 'success');
+            loadTeachers();
+        }
+
+        async function deactivateTeacher(id) {
+            if (!confirm('Deactivate?')) return;
+            await db.collection('teachers').doc(id).update({
+                isActive: false,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            toast('⏸️ Deactivated', 'success');
+            loadTeachers();
+        }
+
+        function viewDetails(id) {
+            const t = allTeachers.find(x => x.id === id);
+            if (!t) return;
+            document.getElementById('modalContent').innerHTML = `
+                <h3 style="font-weight:800;margin-bottom:12px;">👤 ${t.fullName || 'N/A'}</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;">
+                    <p><strong>Email:</strong> ${t.email}</p><p><strong>Phone:</strong> ${t.phone}</p>
+                    <p><strong>City:</strong> ${t.city || 'Prayagraj'}</p><p><strong>Area:</strong> ${t.area}</p>
+                    <p><strong>Qualification:</strong> ${t.qualification}</p><p><strong>Fees:</strong> ₹${t.expectedFees}/hr</p>
+                    <p><strong>Subjects:</strong> ${(t.subjects||[]).join(', ')}</p>
+                    <p><strong>Classes:</strong> ${(t.classes||[]).join(', ')}</p>
+                    <p><strong>Boards:</strong> ${(t.courses||[]).join(', ')}</p>
+                    <p><strong>Payment:</strong> <span class="badge badge-${t.paymentStatus}">${t.paymentStatus}</span></p>
+                    <p><strong>Status:</strong> <span class="badge ${t.isActive?'badge-live':'badge-off'}">${t.isActive?'LIVE':'OFF'}</span></p>
+                    <p><strong>Submitted:</strong> ${t.submittedAt?new Date(t.submittedAt.toDate()).toLocaleString():'N/A'}</p>
+                </div>
+                <button onclick="document.getElementById('detailModal').style.display='none'" style="width:100%;margin-top:12px;padding:10px;border-radius:8px;background:#f1f5f9;border:none;cursor:pointer;font-weight:600;">Close</button>`;
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        function toast(msg, type) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            const t = document.createElement('div');
+            t.className = 'toast ' + type;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
+        console.log('👑 Admin Panel Ready!');
+        console.log('📧 Login: mgbhaukali@gmail.com / admin123456');
+        console.log('👁️ Or click "Skip login" for view-only mode');
     </script>
-    
-    <script>
-        const counters = document.querySelectorAll('.counter');
-        const startCounting = () => { counters.forEach(counter => { const target = +counter.getAttribute('data-target'); const count = +counter.innerText; const increment = target/150; if (count < target) { counter.innerText = Math.ceil(count + increment); setTimeout(startCounting, 1); } else { counter.innerText = target.toLocaleString(); } }); };
-        new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { startCounting(); } }); }).observe(document.querySelector('.counter').parentElement);
-    </script>
-    
-    <script>
-        new Swiper('.testimonialSwiper', { slidesPerView: 1, spaceBetween: 16, loop: true, autoplay: { delay: 3000 }, pagination: { el: '.swiper-pagination', clickable: true }, breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } } });
-    </script>
-    
-    <script>
-        document.querySelectorAll('.faq-button').forEach(button => { button.addEventListener('click', () => { const content = button.nextElementSibling; const icon = button.querySelector('i'); content.classList.toggle('hidden'); icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)'; }); });
-    </script>
-    
-    <script>
-        document.getElementById('mobileMenuBtn').addEventListener('click', () => { document.getElementById('mobileMenu').classList.toggle('hidden'); });
-    </script>
-    
-    <script>
-        window.addEventListener('scroll', () => { const navbar = document.getElementById('navbar'); if (window.scrollY > 50) { navbar.style.background = 'rgba(255,255,255,0.9)'; navbar.style.backdropFilter = 'blur(20px)'; navbar.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)'; } else { navbar.style.background = 'transparent'; navbar.style.backdropFilter = 'none'; navbar.style.boxShadow = 'none'; } });
-    </script>
-    
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.to('.floating', { y: 80, scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom top', scrub: true } });
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) { gsap.to(window, { duration: 1.2, scrollTo: target, ease: 'power3.inOut' }); } }); });
-    </script>
-    
-    <script>
-        const notifications = [
-            { name: 'Rahul S.', action: 'joined as teacher', location: 'Civil Lines' },
-            { name: 'Priya M.', action: 'found a tutor', location: 'Allahpur' },
-            { name: 'Amit K.', action: 'registered', location: 'Naini' },
-            { name: 'Neha G.', action: 'hired a tutor', location: 'Jhunsi' },
-        ];
-        function showNotification() { const n = notifications[Math.floor(Math.random()*notifications.length)]; const toast = document.createElement('div'); toast.className = 'toast-notification'; toast.innerHTML = `<div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-sm">${n.action.includes('teacher')?'👨‍🏫':'👩‍🎓'}</div><div><p class="font-semibold text-xs">${n.name}</p><p class="text-xs text-gray-500">${n.action} in ${n.location}</p></div>`; document.body.appendChild(toast); setTimeout(() => { toast.style.animation = 'slideIn 0.5s ease reverse'; setTimeout(() => toast.remove(), 500); }, 4000); }
-        setInterval(showNotification, 10000);
-        setTimeout(showNotification, 4000);
-    </script>
-    
-    <script>
-        const firebaseConfig = { apiKey: "AIzaSyABaZZOMR1-oudAzjGnsN6LvClW5VrkIQY", authDomain: "hometutor-a5c4d.firebaseapp.com", projectId: "hometutor-a5c4d", storageBucket: "hometutor-a5c4d.firebasestorage.app", messagingSenderId: "367381523059", appId: "1:367381523059:web:f4732dcbf1cf6f7993d806" };
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        const db = firebase.firestore();
-        db.collection('teachers').where('isActive', '==', true).onSnapshot((snapshot) => { const count = snapshot.size || 124; document.querySelectorAll('.counter[data-target="500"]').forEach(el => { el.setAttribute('data-target', count); }); });
-    </script>
-    
 </body>
 </html>
