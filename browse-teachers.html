@@ -23,22 +23,16 @@
             --gold: #FFD93D;
             --dark: #0F0F1A;
             --surface: rgba(255,255,255,0.95);
-            --glass: rgba(255,255,255,0.1);
-            --glass-border: rgba(255,255,255,0.2);
             --text-primary: #1a1a2e;
             --text-secondary: #64748b;
             --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
             --shadow-md: 0 10px 40px rgba(0,0,0,0.08);
             --shadow-lg: 0 30px 60px rgba(0,0,0,0.12);
-            --shadow-xl: 0 50px 100px rgba(0,0,0,0.15);
             --radius-sm: 16px;
             --radius-md: 24px;
-            --radius-lg: 32px;
             --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
             background: #f8f9fc;
@@ -47,565 +41,104 @@
             color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
         }
+        #threeBg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.3; }
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: 0; pointer-events: none; animation: orbFloat 20s ease-in-out infinite; }
+        .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(108,92,231,0.25), transparent); top: -200px; left: -200px; }
+        .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,201,167,0.18), transparent); bottom: -150px; right: -150px; animation-delay: -7s; }
+        .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,107,107,0.12), transparent); top: 50%; left: 60%; animation-delay: -14s; }
+        @keyframes orbFloat { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(50px,-50px) scale(1.1); } 66% { transform: translate(-30px,30px) scale(0.9); } }
 
-        /* 3D Background */
-        #threeBg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.4;
-        }
+        .header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.75); backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%); border-bottom: 1px solid rgba(0,0,0,0.05); transition: all 0.4s var(--transition); }
+        .header.scrolled { box-shadow: var(--shadow-md); }
+        .header-inner { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .logo-group { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #6C5CE7, #8B7CF6); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; box-shadow: 0 8px 24px rgba(108,92,231,0.3); transition: transform 0.3s; }
+        .logo-group:hover .logo-icon { transform: scale(1.05) rotate(-5deg); }
+        .logo-text h2 { font-size: 1.4rem; font-weight: 800; color: var(--text-primary); line-height: 1; letter-spacing: -0.5px; }
+        .logo-text span { font-size: 0.7rem; color: var(--text-secondary); font-weight: 500; }
+        .city-pill { display: flex; align-items: center; gap: 6px; background: #f0edff; color: var(--primary); padding: 8px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; }
+        .btn-ghost-primary { padding: 10px 20px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; border: 2px solid var(--primary); background: transparent; color: var(--primary); cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-ghost-primary:hover { background: var(--primary); color: white; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108,92,231,0.25); }
 
-        /* Floating Orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-            pointer-events: none;
-            animation: orbFloat 20s ease-in-out infinite;
-        }
-        .orb-1 {
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(108,92,231,0.3), transparent);
-            top: -200px; left: -200px;
-        }
-        .orb-2 {
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(0,201,167,0.2), transparent);
-            bottom: -150px; right: -150px;
-            animation-delay: -7s;
-        }
-        .orb-3 {
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(255,107,107,0.15), transparent);
-            top: 50%; left: 60%;
-            animation-delay: -14s;
-        }
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(50px, -50px) scale(1.1); }
-            66% { transform: translate(-30px, 30px) scale(0.9); }
-        }
+        .hero-search { position: relative; z-index: 10; text-align: center; padding: 50px 20px 30px; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; margin-bottom: 20px; }
+        .hero-badge .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } }
+        .hero-title { font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 12px; }
+        .hero-title .highlight { background: linear-gradient(135deg, #6C5CE7, #00C9A7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-subtitle { color: var(--text-secondary); font-size: 1rem; max-width: 450px; margin: 0 auto 30px; }
 
-        /* Header */
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            transition: all 0.4s var(--transition);
-        }
-        .header.scrolled {
-            box-shadow: var(--shadow-md);
-        }
-
-        .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-        .logo-icon {
-            width: 48px; height: 48px;
-            background: linear-gradient(135deg, #6C5CE7, #8B7CF6);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 22px;
-            box-shadow: 0 8px 24px rgba(108,92,231,0.3);
-            transition: transform 0.3s var(--transition);
-        }
-        .logo-group:hover .logo-icon {
-            transform: scale(1.05) rotate(-5deg);
-        }
-        .logo-text h2 {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            line-height: 1;
-            letter-spacing: -0.5px;
-        }
-        .logo-text span {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .city-pill {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #f0edff;
-            color: var(--primary);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        .btn-ghost {
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s var(--transition);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-ghost-primary {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-        .btn-ghost-primary:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(108,92,231,0.25);
-        }
-
-        /* Hero Search */
-        .hero-search {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            padding: 60px 20px 40px;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            color: #92400e;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin-bottom: 24px;
-            animation: fadeInUp 0.8s ease;
-        }
-        .hero-badge .dot {
-            width: 8px; height: 8px;
-            background: #10b981;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.5); }
-        }
-
-        .hero-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 900;
-            letter-spacing: -1px;
-            line-height: 1.1;
-            margin-bottom: 16px;
-            animation: fadeInUp 0.8s ease 0.1s backwards;
-        }
-        .hero-title .highlight {
-            background: linear-gradient(135deg, #6C5CE7, #00C9A7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .hero-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 500px;
-            margin: 0 auto 40px;
-            animation: fadeInUp 0.8s ease 0.2s backwards;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Premium Filter Bar */
-        .filter-bar {
-            max-width: 700px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 60px;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
-            animation: fadeInUp 0.8s ease 0.3s backwards;
-            position: relative;
-        }
-        .filter-bar:focus-within {
-            box-shadow: 0 20px 50px rgba(108,92,231,0.15), 0 0 0 3px rgba(108,92,231,0.1);
-        }
-        .filter-pill {
-            flex: 1;
-            padding: 14px 20px;
-            border-radius: 50px;
-            border: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #f8f9fc;
-            color: var(--text-primary);
-            font-family: inherit;
-            appearance: none;
-            -webkit-appearance: none;
-            outline: none;
-        }
+        .filter-bar { max-width: 650px; margin: 0 auto; background: white; border-radius: 60px; padding: 7px; display: flex; align-items: center; gap: 6px; box-shadow: 0 20px 50px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04); }
+        .filter-pill { flex: 1; padding: 14px 18px; border-radius: 50px; border: none; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.3s; background: #f8f9fc; color: var(--text-primary); font-family: inherit; appearance: none; -webkit-appearance: none; outline: none; }
         .filter-pill:hover { background: #f0edff; }
         .filter-pill:focus { background: #f0edff; }
+        .btn-search-premium { padding: 14px 24px; border-radius: 50px; border: none; font-weight: 700; font-size: 0.9rem; cursor: pointer; background: linear-gradient(135deg, #6C5CE7, #8B7CF6); color: white; transition: all 0.3s; white-space: nowrap; box-shadow: 0 8px 25px rgba(108,92,231,0.3); font-family: inherit; }
+        .btn-search-premium:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(108,92,231,0.4); }
+        @media (max-width: 550px) { .filter-bar { flex-direction: column; border-radius: 28px; padding: 10px; gap: 6px; } .filter-pill { width: 100%; } .btn-search-premium { width: 100%; } }
 
-        .btn-search-premium {
-            padding: 14px 28px;
-            border-radius: 50px;
-            border: none;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            background: linear-gradient(135deg, #6C5CE7, #8B7CF6);
-            color: white;
-            transition: all 0.3s var(--transition);
-            white-space: nowrap;
-            box-shadow: 0 8px 25px rgba(108,92,231,0.3);
-        }
-        .btn-search-premium:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(108,92,231,0.4);
-        }
+        .results-section { position: relative; z-index: 10; max-width: 1200px; margin: 0 auto; padding: 0 20px 50px; }
+        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+        .results-count { font-weight: 600; color: var(--text-secondary); font-size: 0.9rem; }
+        .results-count strong { color: var(--primary); font-size: 1.2rem; }
 
-        /* Results */
-        .results-section {
-            position: relative;
-            z-index: 10;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px 60px;
-        }
-        .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-            animation: fadeInUp 0.6s ease backwards;
-        }
-        .results-count {
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        .results-count strong {
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
+        .teachers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+        @media (max-width: 420px) { .teachers-grid { grid-template-columns: 1fr; } }
 
-        /* Cards Grid */
-        .teachers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-            gap: 24px;
-        }
-        @media (max-width: 420px) {
-            .teachers-grid { grid-template-columns: 1fr; }
-            .filter-bar { flex-direction: column; border-radius: 28px; padding: 12px; }
-            .filter-pill { width: 100%; }
-            .btn-search-premium { width: 100%; text-align: center; justify-content: center; }
-        }
-
-        /* Premium Teacher Card */
-        .teacher-card {
-            background: white;
-            border-radius: var(--radius-md);
-            padding: 28px;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.5s var(--transition);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.04);
-            animation: fadeInUp 0.6s ease backwards;
-            cursor: default;
-        }
-        .teacher-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-lg);
-            border-color: rgba(108,92,231,0.15);
-        }
-        .teacher-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 4px;
-            background: linear-gradient(90deg, #6C5CE7, #00C9A7, #FF6B6B, #FFD93D);
-            background-size: 300% 100%;
-            animation: gradientShift 4s ease infinite;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
+        .teacher-card { background: white; border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); transition: all 0.4s var(--transition); position: relative; overflow: hidden; border: 1px solid rgba(0,0,0,0.04); }
+        .teacher-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: rgba(108,92,231,0.12); }
+        .teacher-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, #6C5CE7, #00C9A7); opacity: 0; transition: opacity 0.4s; }
         .teacher-card:hover::after { opacity: 1; }
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
 
-        .card-top {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-        .avatar-wrapper {
-            position: relative;
-            flex-shrink: 0;
-        }
-        .teacher-avatar {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid white;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-        }
-        .avatar-placeholder {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            border: 3px solid white;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-        }
-        .verified-badge {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 24px; height: 24px;
-            background: #10b981;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.6rem;
-            border: 3px solid white;
-            box-shadow: 0 4px 10px rgba(16,185,129,0.3);
-        }
+        .card-top { display: flex; gap: 14px; margin-bottom: 16px; }
+        .avatar-wrapper { position: relative; flex-shrink: 0; }
+        .teacher-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+        .avatar-placeholder { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #e0e7ff, #c7d2fe); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--primary); border: 3px solid white; box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+        .verified-badge { position: absolute; bottom: -2px; right: -2px; width: 22px; height: 22px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.55rem; border: 3px solid white; }
+        .teacher-meta h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+        .teacher-meta .qual { color: var(--primary); font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; }
+        .stars-row { display: flex; align-items: center; gap: 3px; color: #f59e0b; font-size: 0.75rem; }
+        .stars-row .count { color: var(--text-secondary); font-weight: 500; margin-left: 4px; }
 
-        .teacher-meta h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-            letter-spacing: -0.3px;
-        }
-        .teacher-meta .qual {
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-bottom: 6px;
-        }
-        .stars-row {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            color: #f59e0b;
-            font-size: 0.8rem;
-        }
-        .stars-row .count {
-            color: var(--text-secondary);
-            font-weight: 500;
-            margin-left: 4px;
-        }
+        .card-details { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+        .detail-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-secondary); }
+        .detail-row i { width: 16px; color: var(--primary); text-align: center; font-size: 0.75rem; }
 
-        .card-details {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        .detail-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-        .detail-row i {
-            width: 18px;
-            color: var(--primary);
-            font-size: 0.8rem;
-            text-align: center;
-        }
+        .subjects-row { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0; }
+        .sub-tag { padding: 4px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 600; background: #f0edff; color: var(--primary); }
+        .fees-highlight { display: inline-flex; align-items: center; gap: 3px; background: linear-gradient(135deg, #fef3c7, #fef9c3); padding: 5px 12px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; color: #92400e; margin-top: 6px; }
 
-        .subjects-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin: 12px 0;
-        }
-        .sub-tag {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            background: #f0edff;
-            color: var(--primary);
-            letter-spacing: -0.2px;
-        }
+        .card-actions { display: flex; gap: 6px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #f1f5f9; }
+        .btn-action { flex: 1; padding: 10px; border-radius: 12px; font-weight: 600; font-size: 0.75rem; border: none; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 4px; text-decoration: none; font-family: inherit; }
+        .btn-call { background: #ecfdf5; color: #059669; }
+        .btn-call:hover { background: #d1fae5; }
+        .btn-chat { background: #f0edff; color: var(--primary); }
+        .btn-chat:hover { background: #e0d9ff; }
+        .btn-profile { background: #f8fafc; color: var(--text-secondary); }
+        .btn-profile:hover { background: #f1f5f9; }
 
-        .fees-highlight {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: linear-gradient(135deg, #fef3c7, #fef9c3);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: #92400e;
-            margin-top: 8px;
-        }
+        .empty-state { text-align: center; padding: 60px 20px; grid-column: 1 / -1; }
+        .empty-icon { font-size: 4rem; margin-bottom: 15px; display: block; }
+        .empty-state h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; }
+        .empty-state p { color: var(--text-secondary); }
 
-        .card-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 18px;
-            padding-top: 16px;
-            border-top: 1px solid #f1f5f9;
-        }
-        .btn-action {
-            flex: 1;
-            padding: 12px;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            text-decoration: none;
-            letter-spacing: -0.2px;
-        }
-        .btn-call {
-            background: #ecfdf5;
-            color: #059669;
-        }
-        .btn-call:hover { background: #d1fae5; transform: scale(1.03); }
-        .btn-chat {
-            background: #f0edff;
-            color: var(--primary);
-        }
-        .btn-chat:hover { background: #e0d9ff; transform: scale(1.03); }
-        .btn-profile {
-            background: #f8fafc;
-            color: var(--text-secondary);
-        }
-        .btn-profile:hover { background: #f1f5f9; transform: scale(1.03); }
+        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 12px; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 80px 20px;
-            grid-column: 1 / -1;
-            animation: fadeInUp 0.6s ease;
-        }
-        .empty-icon {
-            font-size: 5rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-        .empty-state h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-        .empty-state p {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
-        /* Loading Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 12px;
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            padding: 16px 24px;
-            border-radius: 16px;
-            color: white;
-            font-weight: 600;
-            z-index: 9999;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            animation: toastIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            backdrop-filter: blur(20px);
-        }
+        .toast { position: fixed; top: 20px; right: 20px; padding: 14px 20px; border-radius: 14px; color: white; font-weight: 600; z-index: 9999; font-size: 0.85rem; animation: toastIn 0.4s ease; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
         .toast.success { background: rgba(16,185,129,0.9); }
         .toast.error { background: rgba(239,68,68,0.9); }
-        @keyframes toastIn {
-            from { transform: translateX(120%) scale(0.8); opacity: 0; }
-            to { transform: translateX(0) scale(1); opacity: 1; }
-        }
+        @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .teachers-grid { grid-template-columns: 1fr; }
-            .hero-title { font-size: 1.8rem; }
-            .header-inner { flex-wrap: wrap; gap: 12px; }
-        }
+        /* Quick View Modal */
+        .quick-view-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.3s; }
+        .quick-view-box { background: white; border-radius: 24px; padding: 30px; max-width: 450px; width: 90%; box-shadow: 0 30px 60px rgba(0,0,0,0.3); animation: popIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <!-- 3D Background -->
     <canvas id="threeBg"></canvas>
-    
-    <!-- Floating Orbs -->
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
@@ -615,303 +148,145 @@
         <div class="header-inner">
             <a href="index.html" class="logo-group">
                 <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
-                <div class="logo-text">
-                    <h2>THP</h2>
-                    <span>Home Tutor</span>
-                </div>
+                <div class="logo-text"><h2>THP</h2><span>Home Tutor</span></div>
             </a>
-            <div class="header-actions">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                 <span class="city-pill"><i class="fas fa-map-marker-alt"></i> Prayagraj</span>
-                <a href="teacher.html" class="btn-ghost btn-ghost-primary">
-                    <i class="fas fa-user-plus"></i> Join as Teacher
-                </a>
+                <a href="teacher.html" class="btn-ghost-primary"><i class="fas fa-user-plus"></i> Join as Teacher</a>
             </div>
         </div>
     </header>
 
-    <!-- ============ HERO SEARCH ============ -->
+    <!-- ============ HERO ============ -->
     <section class="hero-search">
-        <div class="hero-badge">
-            <span class="dot"></span> 500+ Verified Tutors in Prayagraj
-        </div>
-        <h1 class="hero-title">
-            Find Your <span class="highlight">Perfect Tutor</span>
-        </h1>
-        <p class="hero-subtitle">
-            Expert home tutors for every subject, class & board. Right in your neighborhood.
-        </p>
+        <div class="hero-badge"><span class="dot"></span> Trusted by 10,000+ Families in Prayagraj</div>
+        <h1 class="hero-title">Find Your <span class="highlight">Perfect Tutor</span></h1>
+        <p class="hero-subtitle">Verified home tutors for every subject & class. Right in your neighborhood.</p>
         
-        <!-- Premium Filter Bar - Only 3 Filters -->
         <div class="filter-bar">
-            <select class="filter-pill" id="filterSubject">
-                <option value="">📚 Any Subject</option>
-                <option value="Mathematics">Mathematics</option>
-                <option value="Physics">Physics</option>
-                <option value="Chemistry">Chemistry</option>
-                <option value="Biology">Biology</option>
-                <option value="English">English</option>
-                <option value="Hindi">Hindi</option>
-                <option value="Computer Science">Computer Science</option>
-                <option value="Economics">Economics</option>
-            </select>
-            
-            <select class="filter-pill" id="filterClass">
-                <option value="">🎓 Any Class</option>
-                <option value="1-5">Class 1-5</option>
-                <option value="6-8">Class 6-8</option>
-                <option value="9-10">Class 9-10</option>
-                <option value="11-12">Class 11-12</option>
-            </select>
-            
-            <select class="filter-pill" id="filterArea">
-                <option value="">📍 Any Area</option>
-                <option value="Civil Lines">Civil Lines</option>
-                <option value="Allahpur">Allahpur</option>
-                <option value="Naini">Naini</option>
-                <option value="Jhunsi">Jhunsi</option>
-                <option value="Kareli">Kareli</option>
-                <option value="Tagore Town">Tagore Town</option>
-                <option value="Near Allahabad University">Near AU</option>
-                <option value="Near MNNIT">Near MNNIT</option>
-            </select>
-            
-            <button class="btn-search-premium" onclick="searchTeachers()">
-                <i class="fas fa-search"></i> Search
-            </button>
+            <select class="filter-pill" id="filterSubject"><option value="">📚 Any Subject</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option><option value="Biology">Biology</option><option value="English">English</option><option value="Hindi">Hindi</option><option value="Computer Science">Computer Science</option><option value="Economics">Economics</option></select>
+            <select class="filter-pill" id="filterClass"><option value="">🎓 Any Class</option><option value="1-5">Class 1-5</option><option value="6-8">Class 6-8</option><option value="9-10">Class 9-10</option><option value="11-12">Class 11-12</option></select>
+            <select class="filter-pill" id="filterArea"><option value="">📍 Any Area</option><option value="Civil Lines">Civil Lines</option><option value="Allahpur">Allahpur</option><option value="Naini">Naini</option><option value="Jhunsi">Jhunsi</option><option value="Kareli">Kareli</option><option value="Tagore Town">Tagore Town</option><option value="Near Allahabad University">Near AU</option><option value="Near MNNIT">Near MNNIT</option></select>
+            <button class="btn-search-premium" onclick="searchTeachers()"><i class="fas fa-search"></i> Search</button>
         </div>
     </section>
 
     <!-- ============ RESULTS ============ -->
     <section class="results-section">
-        <div class="results-header">
-            <p class="results-count">
-                <strong id="resultCount">0</strong> tutors available
-            </p>
-        </div>
-        
-        <div class="teachers-grid" id="teachersGrid">
-            <!-- Skeleton Loading -->
-            <div class="teacher-card" id="skeleton1">
-                <div class="card-top">
-                    <div class="skeleton" style="width:80px;height:80px;border-radius:50%;"></div>
-                    <div style="flex:1;">
-                        <div class="skeleton" style="width:70%;height:20px;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="width:50%;height:16px;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="width:40%;height:14px;"></div>
-                    </div>
-                </div>
-                <div class="skeleton" style="width:100%;height:14px;margin-bottom:8px;"></div>
-                <div class="skeleton" style="width:80%;height:14px;"></div>
-            </div>
-            <div class="teacher-card" id="skeleton2">
-                <div class="card-top">
-                    <div class="skeleton" style="width:80px;height:80px;border-radius:50%;"></div>
-                    <div style="flex:1;">
-                        <div class="skeleton" style="width:60%;height:20px;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="width:45%;height:16px;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="width:35%;height:14px;"></div>
-                    </div>
-                </div>
-                <div class="skeleton" style="width:90%;height:14px;margin-bottom:8px;"></div>
-                <div class="skeleton" style="width:70%;height:14px;"></div>
-            </div>
-            <div class="teacher-card" id="skeleton3">
-                <div class="card-top">
-                    <div class="skeleton" style="width:80px;height:80px;border-radius:50%;"></div>
-                    <div style="flex:1;">
-                        <div class="skeleton" style="width:75%;height:20px;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="width:55%;height:16px;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="width:45%;height:14px;"></div>
-                    </div>
-                </div>
-                <div class="skeleton" style="width:85%;height:14px;margin-bottom:8px;"></div>
-                <div class="skeleton" style="width:65%;height:14px;"></div>
-            </div>
-        </div>
+        <div class="results-header"><p class="results-count"><strong id="resultCount">0</strong> tutors available</p></div>
+        <div class="teachers-grid" id="teachersGrid"></div>
     </section>
+
+    <!-- Quick View Modal -->
+    <div class="quick-view-overlay" id="quickViewModal" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+        <div class="quick-view-box" id="quickViewContent"></div>
+    </div>
 
     <!-- ==================== SCRIPTS ==================== -->
     <script>
-        // ============ 3D BACKGROUND ============
+        // ============ 3D ============
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threeBg'), alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 50;
-        const posArray = new Float32Array(particlesCount * 3);
-        for (let i = 0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 15;
-        }
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.03,
-            color: 0x6C5CE7,
-            transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending
-        });
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
-        camera.position.z = 5;
-        
-        function animate() {
-            requestAnimationFrame(animate);
-            particlesMesh.rotation.x += 0.0003;
-            particlesMesh.rotation.y += 0.0005;
-            renderer.render(scene, camera);
-        }
-        animate();
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        renderer.setSize(innerWidth, innerHeight);
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        const geom = new THREE.BufferGeometry();
+        const arr = new Float32Array(50*3);
+        for(let i=0;i<50*3;i++) arr[i]=(Math.random()-0.5)*15;
+        geom.setAttribute('position',new THREE.BufferAttribute(arr,3));
+        const mesh = new THREE.Points(geom,new THREE.PointsMaterial({size:0.03,color:0x6C5CE7,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending}));
+        scene.add(mesh); camera.position.z=5;
+        (function a(){requestAnimationFrame(a);mesh.rotation.x+=0.0003;mesh.rotation.y+=0.0005;renderer.render(scene,camera);})();
+        addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 
         // ============ FIREBASE ============
-        firebase.initializeApp({
-            apiKey: "AIzaSyABaZZOMR1-oudAzjGnsN6LvClW5VrkIQY",
-            authDomain: "hometutor-a5c4d.firebaseapp.com",
-            projectId: "hometutor-a5c4d",
-            storageBucket: "hometutor-a5c4d.firebasestorage.app",
-            messagingSenderId: "367381523059",
-            appId: "1:367381523059:web:f4732dcbf1cf6f7993d806"
-        });
+        firebase.initializeApp({apiKey:"AIzaSyABaZZOMR1-oudAzjGnsN6LvClW5VrkIQY",authDomain:"hometutor-a5c4d.firebaseapp.com",projectId:"hometutor-a5c4d",storageBucket:"hometutor-a5c4d.firebasestorage.app",messagingSenderId:"367381523059",appId:"1:367381523059:web:f4732dcbf1cf6f7993d806"});
         const db = firebase.firestore();
-        
         let allTeachers = [];
 
-        // ============ GSAP ANIMATIONS ============
-        gsap.from('.hero-badge', { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' });
-        gsap.from('.hero-title', { opacity: 0, y: 40, duration: 0.8, delay: 0.15, ease: 'power3.out' });
-        gsap.from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.8, delay: 0.3, ease: 'power3.out' });
-        gsap.from('.filter-bar', { opacity: 0, y: 40, duration: 0.8, delay: 0.45, ease: 'power3.out' });
-
-        // ============ HEADER SCROLL EFFECT ============
-        window.addEventListener('scroll', () => {
-            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-        });
+        // ============ GSAP ============
+        gsap.from('.hero-badge',{opacity:0,y:30,duration:0.8,ease:'power3.out'});
+        gsap.from('.hero-title',{opacity:0,y:40,duration:0.8,delay:0.15,ease:'power3.out'});
+        gsap.from('.hero-subtitle',{opacity:0,y:30,duration:0.8,delay:0.3,ease:'power3.out'});
+        gsap.from('.filter-bar',{opacity:0,y:40,duration:0.8,delay:0.45,ease:'power3.out'});
+        addEventListener('scroll',()=>document.getElementById('header').classList.toggle('scrolled',scrollY>50));
 
         // ============ SEARCH ============
-        async function searchTeachers() {
-            const grid = document.getElementById('teachersGrid');
-            grid.innerHTML = `
-                <div class="teacher-card"><div class="card-top">
-                    <div class="skeleton" style="width:80px;height:80px;border-radius:50%;"></div>
-                    <div style="flex:1;"><div class="skeleton" style="width:70%;height:20px;margin-bottom:8px;"></div><div class="skeleton" style="width:50%;height:16px;"></div></div>
-                </div></div>
-            `;
+        async function searchTeachers(){
+            const grid=document.getElementById('teachersGrid');
+            grid.innerHTML='<div class="teacher-card"><div class="card-top"><div class="skeleton" style="width:72px;height:72px;border-radius:50%;"></div><div style="flex:1;"><div class="skeleton" style="width:70%;height:18px;margin-bottom:8px;"></div><div class="skeleton" style="width:50%;height:14px;"></div></div></div></div>'.repeat(3);
             
-            try {
-                const subject = document.getElementById('filterSubject').value;
-                const classFilter = document.getElementById('filterClass').value;
-                const area = document.getElementById('filterArea').value.toLowerCase();
+            try{
+                const subject=document.getElementById('filterSubject').value;
+                const classFilter=document.getElementById('filterClass').value;
+                const area=document.getElementById('filterArea').value.toLowerCase();
                 
-                let query = db.collection('teachers')
-                    .where('isActive', '==', true)
-                    .where('city', '==', 'Prayagraj');
+                let q=db.collection('teachers').where('isActive','==',true).where('city','==','Prayagraj');
+                if(subject) q=q.where('subjects','array-contains',subject);
+                if(classFilter) q=q.where('classes','array-contains',classFilter);
                 
-                if (subject) query = query.where('subjects', 'array-contains', subject);
-                if (classFilter) query = query.where('classes', 'array-contains', classFilter);
-                
-                const snapshot = await query.get();
-                let teachers = [];
-                
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    if (area && !data.area.toLowerCase().includes(area)) return;
-                    teachers.push({ id: doc.id, ...data });
-                });
-                
-                teachers.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-                allTeachers = teachers;
-                displayTeachers(teachers);
-                
-            } catch (error) {
-                console.error('Search error:', error);
-                grid.innerHTML = `<div class="empty-state"><span class="empty-icon">⚠️</span><h3>Something went wrong</h3><p>Please try again</p></div>`;
+                const snap=await q.get();
+                let teachers=[];
+                snap.forEach(d=>{const dt=d.data();if(area&&!dt.area.toLowerCase().includes(area))return;teachers.push({id:d.id,...dt});});
+                teachers.sort((a,b)=>(b.rating||0)-(a.rating||0));
+                allTeachers=teachers;
+                display(teachers);
+            }catch(e){
+                console.error(e);
+                grid.innerHTML='<div class="empty-state"><span class="empty-icon">⚠️</span><h3>Error loading</h3><p>Please try again</p></div>';
             }
         }
 
-        function displayTeachers(teachers) {
-            const grid = document.getElementById('teachersGrid');
-            document.getElementById('resultCount').textContent = teachers.length;
+        function display(teachers){
+            const grid=document.getElementById('teachersGrid');
+            document.getElementById('resultCount').textContent=teachers.length;
+            if(!teachers.length){grid.innerHTML='<div class="empty-state"><span class="empty-icon">🔍</span><h3>No tutors found</h3><p>Try different filters</p></div>';return;}
             
-            if (teachers.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <span class="empty-icon">🔍</span>
-                        <h3>No tutors found</h3>
-                        <p>Try a different subject or area</p>
-                    </div>`;
-                return;
-            }
-            
-            grid.innerHTML = teachers.map((t, i) => {
-                const initials = (t.fullName || 'T').split(' ').map(n => n[0]).join('').toUpperCase();
-                const avatar = t.profilePhoto ? `<img src="${t.profilePhoto}" class="teacher-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="avatar-placeholder" style="display:none">${initials}</div>` : `<div class="avatar-placeholder">${initials}</div>`;
-                const stars = Array.from({length:5}, (_,j) => j < Math.floor(t.rating||0) ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>').join('');
-                
-                return `
-                <div class="teacher-card" style="animation-delay:${i*0.1}s">
-                    <div class="card-top">
-                        <div class="avatar-wrapper">
-                            ${avatar}
-                            ${t.isVerified ? '<div class="verified-badge"><i class="fas fa-check"></i></div>' : ''}
-                        </div>
-                        <div class="teacher-meta">
-                            <h3>${t.fullName || 'Tutor'}</h3>
-                            <p class="qual">${t.qualification || 'Qualified Tutor'}</p>
-                            <div class="stars-row">${stars} <span class="count">${(t.rating||0).toFixed(1)} (${t.totalReviews||0})</span></div>
-                        </div>
-                    </div>
-                    <div class="card-details">
-                        <div class="detail-row"><i class="fas fa-map-marker-alt"></i> ${t.area || 'N/A'}, Prayagraj</div>
-                        <div class="detail-row"><i class="fas fa-graduation-cap"></i> ${(t.experience||'').substring(0,50)}...</div>
-                    </div>
-                    <div class="subjects-row">${(t.subjects||[]).slice(0,4).map(s => `<span class="sub-tag">${s}</span>`).join('')}</div>
-                    <div class="fees-highlight"><i class="fas fa-rupee-sign" style="font-size:0.7rem;"></i> ${t.expectedFees||'N/A'}/hour</div>
+            grid.innerHTML=teachers.map((t,i)=>{
+                const inits=(t.fullName||'T').split(' ').map(n=>n[0]).join('').toUpperCase();
+                const av=t.profilePhoto?`<img src="${t.profilePhoto}" class="teacher-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="avatar-placeholder" style="display:none">${inits}</div>`:`<div class="avatar-placeholder">${inits}</div>`;
+                const stars=Array.from({length:5},(_,j)=>j<Math.floor(t.rating||0)?'<i class="fas fa-star"></i>':'<i class="far fa-star"></i>').join('');
+                return`<div class="teacher-card" style="animation-delay:${i*0.08}s">
+                    <div class="card-top"><div class="avatar-wrapper">${av}${t.isVerified?'<div class="verified-badge"><i class="fas fa-check"></i></div>':''}</div>
+                    <div class="teacher-meta"><h3>${t.fullName||'Tutor'}</h3><p class="qual">${t.qualification||'Qualified'}</p><div class="stars-row">${stars}<span class="count">${(t.rating||0).toFixed(1)} (${t.totalReviews||0})</span></div></div></div>
+                    <div class="card-details"><div class="detail-row"><i class="fas fa-map-marker-alt"></i>${t.area||'N/A'}, Prayagraj</div><div class="detail-row"><i class="fas fa-graduation-cap"></i>${(t.experience||'').substring(0,50)}...</div></div>
+                    <div class="subjects-row">${(t.subjects||[]).slice(0,4).map(s=>`<span class="sub-tag">${s}</span>`).join('')}</div>
+                    <div class="fees-highlight"><i class="fas fa-rupee-sign" style="font-size:0.65rem;"></i>${t.expectedFees||'N/A'}/hour</div>
                     <div class="card-actions">
-                        <a href="tel:${t.phone||'#'}" class="btn-action btn-call"><i class="fas fa-phone"></i> Call</a>
-                        <button class="btn-action btn-chat" onclick="openChat('${t.id}','${t.fullName}')"><i class="fas fa-comments"></i> Chat</button>
-                        <button class="btn-action btn-profile" onclick="viewProfile('${t.id}')"><i class="fas fa-eye"></i></button>
-                    </div>
-                </div>`;
+                        <a href="tel:${t.phone||'#'}" class="btn-action btn-call"><i class="fas fa-phone"></i>Call</a>
+                        <a href="chat.html?teacher=${t.id}&name=${encodeURIComponent(t.fullName||'')}" class="btn-action btn-chat"><i class="fas fa-comments"></i>Chat</a>
+                        <button class="btn-action btn-profile" onclick="quickView('${t.id}')"><i class="fas fa-eye"></i></button>
+                    </div></div>`;
             }).join('');
             
-            // Animate cards
-            gsap.from('.teacher-card', {
-                opacity: 0, y: 40, duration: 0.6,
-                stagger: 0.08, ease: 'power3.out'
-            });
+            gsap.from('.teacher-card',{opacity:0,y:40,duration:0.5,stagger:0.06,ease:'power3.out'});
         }
 
-        function viewProfile(id) {
-            const t = allTeachers.find(x => x.id === id);
-            if (t) alert(`👤 ${t.fullName}\n\n📚 ${t.qualification}\n📍 ${t.area}, Prayagraj\n💰 ₹${t.expectedFees}/hr\n📞 ${t.phone}\n✉️ ${t.email}\n\n📖 ${(t.subjects||[]).join(', ')}`);
+        function quickView(id){
+            const t=allTeachers.find(x=>x.id===id);
+            if(!t)return;
+            document.getElementById('quickViewContent').innerHTML=`
+                <h3 style="font-weight:800;margin-bottom:16px;">👤 ${t.fullName||'Tutor'}</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.85rem;">
+                    <p><strong>Email:</strong> ${t.email||'N/A'}</p><p><strong>Phone:</strong> ${t.phone||'N/A'}</p>
+                    <p><strong>Qualification:</strong> ${t.qualification||'N/A'}</p><p><strong>Fees:</strong> ₹${t.expectedFees||'N/A'}/hr</p>
+                    <p><strong>Area:</strong> ${t.area||'N/A'}</p><p><strong>City:</strong> ${t.city||'Prayagraj'}</p>
+                    <p><strong>Subjects:</strong> ${(t.subjects||[]).join(', ')}</p><p><strong>Classes:</strong> ${(t.classes||[]).join(', ')}</p>
+                    <p><strong>Boards:</strong> ${(t.courses||[]).join(', ')}</p>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:16px;">
+                    <a href="tel:${t.phone||'#'}" style="flex:1;padding:10px;border-radius:12px;background:#ecfdf5;color:#059669;text-align:center;font-weight:600;text-decoration:none;"><i class="fas fa-phone"></i> Call</a>
+                    <a href="chat.html?teacher=${t.id}&name=${encodeURIComponent(t.fullName||'')}" style="flex:1;padding:10px;border-radius:12px;background:#f0edff;color:#6C5CE7;text-align:center;font-weight:600;text-decoration:none;"><i class="fas fa-comments"></i> Chat</a>
+                </div>
+                <button onclick="document.getElementById('quickViewModal').style.display='none'" style="width:100%;margin-top:12px;padding:10px;border-radius:12px;background:#f1f5f9;border:none;cursor:pointer;font-weight:600;">Close</button>`;
+            document.getElementById('quickViewModal').style.display='flex';
         }
 
-        function openChat(id, name) {
-            const user = firebase.auth().currentUser;
-            if (!user) { toast('Please login first', 'error'); return; }
-            window.location.href = `chat.html?teacher=${id}&name=${encodeURIComponent(name)}`;
-        }
-
-        function toast(msg, type) {
-            const existing = document.querySelector('.toast');
-            if (existing) existing.remove();
-            const t = document.createElement('div');
-            t.className = `toast ${type}`;
-            t.innerHTML = msg;
-            document.body.appendChild(t);
-            setTimeout(() => { t.style.animation = 'toastIn 0.5s ease reverse'; setTimeout(() => t.remove(), 400); }, 3500);
-        }
+        function toast(m,t){const e=document.querySelector('.toast');if(e)e.remove();const d=document.createElement('div');d.className='toast '+t;d.textContent=m;document.body.appendChild(d);setTimeout(()=>{d.style.animation='toastIn 0.4s ease reverse';setTimeout(()=>d.remove(),400);},3000);}
 
         // ============ INIT ============
         searchTeachers();
-        console.log('👑 Premium Browse Teachers Ready - Prayagraj');
+        console.log('👑 Ultimate Browse Ready - Prayagraj');
     </script>
 </body>
 </html>
