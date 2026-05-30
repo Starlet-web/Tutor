@@ -15,7 +15,6 @@
     <style>
         :root {
             --primary: #6C5CE7;
-            --primary-light: #8B7CF6;
             --secondary: #00C9A7;
             --accent: #FF6B6B;
             --gold: #FFD93D;
@@ -100,27 +99,10 @@
             transition: all 0.3s;
         }
         .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-        .stat-icon {
-            font-size: 1.5rem;
-            margin-bottom: 6px;
-        }
-        .stat-num {
-            font-size: 1.8rem;
-            font-weight: 900;
-            letter-spacing: -1px;
-        }
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .stat-change {
-            font-size: 0.65rem;
-            color: #10b981;
-            font-weight: 700;
-        }
+        .stat-icon { font-size: 1.5rem; margin-bottom: 6px; }
+        .stat-num { font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
+        .stat-label { font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-change { font-size: 0.65rem; color: #10b981; font-weight: 700; }
         
         /* Tabs */
         .tabs {
@@ -176,60 +158,54 @@
             margin-bottom: 16px;
         }
         .panel h3 {
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f1f5f9;
+            font-weight: 700; font-size: 1rem; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 8px;
+            padding-bottom: 10px; border-bottom: 2px solid #f1f5f9;
         }
         .section-hide { display: none; }
         
-        /* Edit Form */
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 10px;
+        /* Profile View */
+        .profile-view {
+            display: flex; gap: 16px; flex-wrap: wrap; align-items: start;
         }
+        .profile-photo {
+            width: 110px; height: 110px;
+            border-radius: 50%; object-fit: cover;
+            border: 4px solid white; box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .profile-photo-placeholder {
+            width: 110px; height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; font-weight: 800; color: var(--primary);
+            border: 4px solid white; box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .profile-info { flex: 1; min-width: 220px; font-size: 0.9rem; line-height: 1.8; }
+        
+        /* Edit Form */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px; }
         @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
         .form-group { margin-bottom: 10px; }
         .form-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-            margin-bottom: 3px;
+            display: block; font-weight: 600; font-size: 0.78rem;
+            color: var(--text-secondary); margin-bottom: 3px;
         }
         .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-family: inherit;
-            transition: all 0.3s;
-            background: #fafafa;
+            width: 100%; padding: 10px 14px; border: 2px solid var(--border);
+            border-radius: 10px; font-size: 0.9rem; font-family: inherit;
+            transition: all 0.3s; background: #fafafa;
         }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(108,92,231,0.08);
-            background: white;
+            border-color: var(--primary); outline: none;
+            box-shadow: 0 0 0 3px rgba(108,92,231,0.08); background: white;
         }
         .form-group textarea { resize: vertical; min-height: 60px; }
         
         .btn {
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
+            padding: 10px 20px; border-radius: 10px; font-weight: 700;
+            font-size: 0.85rem; border: none; cursor: pointer;
+            transition: all 0.3s; font-family: inherit;
         }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: #5A4BD1; transform: translateY(-2px); }
@@ -239,23 +215,16 @@
         .btn-save:hover { background: #059669; }
         
         /* Photo Upload */
-        .photo-upload {
-            text-align: center;
-            cursor: pointer;
-        }
+        .photo-upload { text-align: center; cursor: pointer; margin-bottom: 16px; }
         .photo-circle {
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
+            width: 100px; height: 100px; border-radius: 50%;
+            object-fit: cover; border: 4px solid white;
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            transition: all 0.3s;
-            margin: 0 auto 8px;
+            transition: all 0.3s; margin: 0 auto 8px;
         }
         .photo-circle:hover { transform: scale(1.05); border-color: var(--primary); }
         .photo-placeholder {
-            width: 100px; height: 100px;
-            border-radius: 50%;
+            width: 100px; height: 100px; border-radius: 50%;
             background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
             display: flex; align-items: center; justify-content: center;
             font-size: 2.5rem; font-weight: 800; color: var(--primary);
@@ -265,45 +234,30 @@
         
         /* Chat List */
         .chat-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid transparent;
-            margin-bottom: 4px;
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px; border-radius: var(--radius-sm);
+            cursor: pointer; transition: all 0.3s;
+            border: 1px solid transparent; margin-bottom: 4px;
             background: #fafbfc;
         }
         .chat-item:hover { background: white; border-color: var(--primary); box-shadow: var(--shadow); }
-        .chat-item.unread { background: #fef3c7; border-color: #fde68a; }
         .chat-avatar-sm {
-            width: 46px; height: 46px;
-            border-radius: 50%;
+            width: 46px; height: 46px; border-radius: 50%;
             background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
             display: flex; align-items: center; justify-content: center;
-            font-weight: 700; color: var(--primary); font-size: 1rem;
-            flex-shrink: 0;
-        }
-        .chat-avatar-sm img {
-            width: 46px; height: 46px;
-            border-radius: 50%;
-            object-fit: cover;
+            font-weight: 700; color: var(--primary); font-size: 1rem; flex-shrink: 0;
         }
         .chat-info { flex: 1; min-width: 0; }
-        .chat-info h4 { font-weight: 600; font-size: 0.88rem; display: flex; align-items: center; gap: 6px; }
+        .chat-info h4 { font-weight: 600; font-size: 0.88rem; }
         .chat-info .parent-phone { font-size: 0.7rem; color: var(--text-secondary); }
         .chat-info p { color: var(--text-secondary); font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .chat-meta { text-align: right; flex-shrink: 0; }
         .chat-time { font-size: 0.68rem; color: var(--text-secondary); }
-        .unread-dot { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; display: inline-block; margin-top: 4px; }
         
         /* Chat Window */
         .chat-window {
             display: flex; flex-direction: column; height: 380px;
-            border: 1px solid var(--border); border-radius: var(--radius-sm);
-            overflow: hidden;
+            border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden;
         }
         .chat-msgs {
             flex: 1; overflow-y: auto; padding: 14px;
@@ -311,26 +265,18 @@
         }
         .msg-bubble {
             padding: 10px 16px; border-radius: 18px;
-            font-size: 0.85rem; max-width: 72%; word-wrap: break-word;
-            line-height: 1.4;
+            font-size: 0.85rem; max-width: 72%; word-wrap: break-word; line-height: 1.4;
         }
         .msg-sent {
-            align-self: flex-end;
-            background: var(--primary); color: white;
+            align-self: flex-end; background: var(--primary); color: white;
             border-bottom-right-radius: 4px;
         }
         .msg-received {
-            align-self: flex-start;
-            background: white; border-bottom-left-radius: 4px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            align-self: flex-start; background: white;
+            border-bottom-left-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
         }
-        .msg-sender {
-            font-size: 0.65rem; font-weight: 700; margin-bottom: 2px;
-            color: var(--primary);
-        }
-        .msg-time {
-            font-size: 0.6rem; opacity: 0.7; margin-top: 3px; text-align: right;
-        }
+        .msg-sender { font-size: 0.65rem; font-weight: 700; margin-bottom: 2px; color: var(--primary); }
+        .msg-time { font-size: 0.6rem; opacity: 0.7; margin-top: 3px; text-align: right; }
         .chat-input-row {
             display: flex; gap: 8px; padding: 10px 14px;
             background: white; border-top: 1px solid var(--border);
@@ -346,9 +292,7 @@
             border: none; cursor: pointer; font-weight: 600; font-family: inherit;
         }
         
-        .empty-state {
-            text-align: center; padding: 30px; color: var(--text-secondary);
-        }
+        .empty-state { text-align: center; padding: 30px; color: var(--text-secondary); }
         .empty-state i { font-size: 3rem; display: block; margin-bottom: 10px; color: #d0d5dd; }
         
         .toast {
@@ -360,10 +304,7 @@
         }
         .toast.success { background: #10b981; }
         .toast.error { background: #ef4444; }
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
         .spinner {
             width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3);
@@ -372,12 +313,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* Rating Stars Animation */
-        .rating-stars {
-            font-size: 1.2rem;
-            color: #f59e0b;
-            letter-spacing: 2px;
-        }
+        .rating-stars { font-size: 1.2rem; color: #f59e0b; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -391,7 +327,8 @@
         </h1>
         <div style="display:flex;align-items:center;gap:12px;">
             <span style="font-size:0.85rem;opacity:0.8;" id="teacherNameTop">Teacher</span>
-            <button class="btn-logout" onclick="auth.signOut().then(()=>location.href='index.html')">
+            <!-- ⭐ LOGOUT → LOGIN.HTML -->
+            <button class="btn-logout" onclick="auth.signOut().then(()=>location.href='login.html')">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </button>
         </div>
@@ -449,23 +386,20 @@
             </div>
         </div>
 
-        <!-- ============ EDIT PROFILE TAB ============ -->
+        <!-- ============ EDIT TAB ============ -->
         <div id="editTab" class="section-hide">
             <div class="panel">
                 <h3>✏️ Edit Your Profile</h3>
                 
-                <!-- Photo Upload -->
-                <div class="photo-upload" style="margin-bottom:16px;" onclick="document.getElementById('editPhoto').click()">
+                <div class="photo-upload" onclick="document.getElementById('editPhoto').click()">
                     <input type="file" id="editPhoto" accept="image/*" hidden onchange="previewNewPhoto(event)">
-                    <div id="editPhotoPreview">
-                        <div class="photo-placeholder" id="photoPlaceholder">T</div>
-                    </div>
+                    <div id="editPhotoPreview"></div>
                     <p style="font-size:0.75rem;color:var(--primary);font-weight:600;">📸 Click to change photo</p>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group"><label>Full Name</label><input type="text" id="editName"></div>
-                    <div class="form-group"><label>Email</label><input type="email" id="editEmail" readonly style="background:#f0f0f0;"></div>
+                    <div class="form-group"><label>Email (cannot change)</label><input type="email" id="editEmail" readonly style="background:#f0f0f0;"></div>
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>Phone</label><input type="tel" id="editPhone" maxlength="10"></div>
@@ -498,7 +432,6 @@
 
         <!-- ============ CHATS TAB ============ -->
         <div id="chatsTab" class="section-hide">
-            <!-- Chat List -->
             <div class="panel" id="chatListPanel">
                 <h3>💬 Parent Conversations</h3>
                 <div id="chatList">
@@ -510,7 +443,6 @@
                 </div>
             </div>
             
-            <!-- Chat Window -->
             <div class="panel section-hide" id="chatWindowPanel">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
                     <button onclick="closeChat()" class="btn btn-outline" style="padding:6px 14px;font-size:0.8rem;">← Back</button>
@@ -557,7 +489,7 @@
 
         // ============ AUTH ============
         auth.onAuthStateChanged(async (user) => {
-            if (!user) { location.href = 'teacher.html'; return; }
+            if (!user) { location.href = 'login.html'; return; }
             teacherId = user.uid;
             
             const doc = await db.collection('teachers').doc(teacherId).get();
@@ -565,48 +497,35 @@
                 teacherData = { id: doc.id, ...doc.data() };
                 initDashboard();
             } else {
-                location.href = 'teacher.html';
+                auth.signOut().then(() => location.href = 'login.html');
             }
         });
 
         function initDashboard() {
             if (!teacherData) return;
             
-            // Top bar
             document.getElementById('teacherNameTop').textContent = teacherData.fullName || 'Teacher';
             const badge = document.getElementById('verifyBadge');
-            if (teacherData.isVerified) {
+            if (teacherData.isVerified || teacherData.paymentStatus === 'paid') {
                 badge.textContent = '✅ Verified';
                 badge.style.background = '#10b981';
             }
             
-            // Auto increment profile views (2-3 daily)
             autoIncrementViews();
-            
-            // Update stats
             updateStats();
-            
-            // Load profile
             updateProfileView();
             populateEditForm();
-            
-            // Load chats
             loadChats();
-            
-            // Update rating based on unique parents
             updateRating();
         }
 
-        // ============ AUTO VIEWS ============
         function autoIncrementViews() {
             if (!teacherData) return;
-            
             const today = new Date().toDateString();
             const lastViewDate = teacherData.lastViewDate || '';
             
             if (lastViewDate !== today) {
-                // Add 2-3 random views
-                const newViews = Math.floor(Math.random() * 2) + 2; // 2 or 3
+                const newViews = Math.floor(Math.random() * 2) + 2;
                 const totalViews = (teacherData.profileViews || 0) + newViews;
                 
                 db.collection('teachers').doc(teacherId).update({
@@ -621,16 +540,13 @@
                 });
             } else {
                 document.getElementById('statViews').textContent = teacherData.profileViews || 0;
-                document.getElementById('viewChange').textContent = '↑ Today done';
             }
         }
 
-        // ============ UPDATE STATS ============
         function updateStats() {
             document.getElementById('statViews').textContent = teacherData.profileViews || 0;
             document.getElementById('statRating').textContent = (teacherData.rating || 0).toFixed(1);
             
-            // Rating stars
             const rating = teacherData.rating || 0;
             const stars = ['☆','☆','☆','☆','☆'];
             const fullStars = Math.floor(rating);
@@ -639,15 +555,12 @@
             document.getElementById('ratingStars').textContent = stars.join('');
         }
 
-        // ============ RATING SYSTEM ============
         function updateRating() {
             if (!teacherId) return;
-            
             db.collection('chats')
                 .where('participants', 'array-contains', teacherId)
                 .onSnapshot(snapshot => {
                     uniqueParents.clear();
-                    
                     snapshot.forEach(doc => {
                         const data = doc.data();
                         const partnerId = data.participants.find(p => p !== teacherId);
@@ -656,8 +569,6 @@
                     
                     const parentCount = uniqueParents.size;
                     document.getElementById('statStudents').textContent = parentCount;
-                    
-                    // Rating = 1 star per 3 parents, max 5
                     const newRating = Math.min(5, Math.floor(parentCount / 3));
                     
                     if ((teacherData.rating || 0) !== newRating) {
@@ -673,16 +584,15 @@
                 });
         }
 
-        // ============ PROFILE VIEW ============
         function updateProfileView() {
             const pc = document.getElementById('profileContent');
             pc.innerHTML = `
-                <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:start;">
+                <div class="profile-view">
                     ${teacherData.profilePhoto ? 
-                        `<img src="${teacherData.profilePhoto}" style="width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid white;box-shadow:0 8px 25px rgba(0,0,0,0.15);">` :
-                        `<div class="photo-placeholder" style="width:110px;height:110px;font-size:2.5rem;">${(teacherData.fullName||'T')[0]}</div>`
+                        `<img src="${teacherData.profilePhoto}" class="profile-photo">` :
+                        `<div class="profile-photo-placeholder">${(teacherData.fullName||'T')[0]}</div>`
                     }
-                    <div style="flex:1;min-width:220px;font-size:0.9rem;line-height:1.8;">
+                    <div class="profile-info">
                         <p><strong>📛 Name:</strong> ${teacherData.fullName}</p>
                         <p><strong>📧 Email:</strong> ${teacherData.email}</p>
                         <p><strong>📞 Phone:</strong> ${teacherData.phone}</p>
@@ -697,7 +607,6 @@
                 </div>`;
         }
 
-        // ============ EDIT FORM ============
         function populateEditForm() {
             document.getElementById('editName').value = teacherData.fullName || '';
             document.getElementById('editEmail').value = teacherData.email || '';
@@ -707,32 +616,26 @@
             document.getElementById('editFees').value = teacherData.expectedFees || '';
             document.getElementById('editExperience').value = teacherData.experience || '';
             
-            // Photo
             if (teacherData.profilePhoto) {
-                document.getElementById('editPhotoPreview').innerHTML = `
-                    <img src="${teacherData.profilePhoto}" class="photo-circle">`;
+                document.getElementById('editPhotoPreview').innerHTML = `<img src="${teacherData.profilePhoto}" class="photo-circle">`;
             } else {
-                document.getElementById('editPhotoPreview').innerHTML = `
-                    <div class="photo-placeholder">${(teacherData.fullName||'T')[0]}</div>`;
+                document.getElementById('editPhotoPreview').innerHTML = `<div class="photo-placeholder">${(teacherData.fullName||'T')[0]}</div>`;
             }
         }
 
         function previewNewPhoto(event) {
             const file = event.target.files[0];
             if (!file) return;
-            if (!file.type.startsWith('image/')) { toast('Image only', 'error'); return; }
-            if (file.size > 5*1024*1024) { toast('Max 5MB', 'error'); return; }
-            
+            if (!file.type.startsWith('image/')) { toast('Image only','error'); return; }
+            if (file.size > 5*1024*1024) { toast('Max 5MB','error'); return; }
             newPhotoFile = file;
             const reader = new FileReader();
             reader.onload = e => {
-                document.getElementById('editPhotoPreview').innerHTML = `
-                    <img src="${e.target.result}" class="photo-circle">`;
+                document.getElementById('editPhotoPreview').innerHTML = `<img src="${e.target.result}" class="photo-circle">`;
             };
             reader.readAsDataURL(file);
         }
 
-        // ============ SAVE PROFILE ============
         async function saveProfile() {
             const btn = document.getElementById('saveBtn');
             const success = document.getElementById('saveSuccess');
@@ -751,31 +654,22 @@
             };
             
             try {
-                // Upload new photo if changed
                 if (newPhotoFile) {
                     toast('Uploading photo...', 'success');
-                    const fd = new FormData();
-                    fd.append('image', newPhotoFile);
-                    const res = await fetch('https://api.imgbb.com/1/upload?key='+IMGBB_API_KEY, {
-                        method: 'POST', body: fd
-                    });
+                    const fd = new FormData(); fd.append('image', newPhotoFile);
+                    const res = await fetch('https://api.imgbb.com/1/upload?key='+IMGBB_API_KEY, { method:'POST', body:fd });
                     const data = await res.json();
-                    if (data.success) {
-                        updates.profilePhoto = data.data.url;
-                    }
+                    if (data.success) updates.profilePhoto = data.data.url;
                 }
                 
                 await db.collection('teachers').doc(teacherId).update(updates);
-                
-                // Update local data
                 Object.assign(teacherData, updates);
                 updateProfileView();
-                initDashboard();
                 
                 success.style.display = 'inline';
                 toast('✅ Profile updated!', 'success');
             } catch (e) {
-                toast('Error: ' + e.message, 'error');
+                toast('Error: '+e.message, 'error');
             }
             
             btn.disabled = false;
@@ -783,46 +677,35 @@
             setTimeout(() => success.style.display = 'none', 3000);
         }
 
-        // ============ LOAD CHATS ============
         function loadChats() {
             if (!teacherId) return;
-            
             db.collection('chats')
                 .where('participants', 'array-contains', teacherId)
                 .orderBy('lastMessageTime', 'desc')
                 .onSnapshot(async snapshot => {
                     allChats = [];
-                    
                     for (const doc of snapshot.docs) {
                         const data = doc.data();
                         const partnerId = data.participants.find(p => p !== teacherId);
                         if (partnerId) {
-                            // Try to get partner details
                             let partnerInfo = { name: 'Parent', phone: '', email: '' };
                             try {
-                                const partnerDoc = await db.collection('teachers').doc(partnerId).get();
-                                if (partnerDoc.exists) {
-                                    const pdata = partnerDoc.data();
-                                    partnerInfo = {
-                                        name: pdata.fullName || 'Parent',
-                                        phone: pdata.phone || '',
-                                        email: pdata.email || ''
-                                    };
+                                const pdoc = await db.collection('teachers').doc(partnerId).get();
+                                if (pdoc.exists) {
+                                    const pd = pdoc.data();
+                                    partnerInfo = { name: pd.fullName||'Parent', phone: pd.phone||'', email: pd.email||'' };
                                 }
-                            } catch (e) {}
-                            
+                            } catch(e) {}
                             allChats.push({
-                                chatId: doc.id,
-                                partnerId: partnerId,
+                                chatId: doc.id, partnerId,
                                 partnerName: partnerInfo.name,
                                 partnerPhone: partnerInfo.phone,
                                 partnerEmail: partnerInfo.email,
-                                lastMessage: data.lastMessage || 'No messages',
-                                lastMessageTime: data.lastMessageTime,
+                                lastMessage: data.lastMessage||'No messages',
+                                lastMessageTime: data.lastMessageTime
                             });
                         }
                     }
-                    
                     renderChatList();
                 });
         }
@@ -832,20 +715,13 @@
             if (allChats.length > 0) {
                 badge.style.display = 'inline';
                 badge.textContent = allChats.length;
-            } else {
-                badge.style.display = 'none';
-            }
+            } else { badge.style.display = 'none'; }
             
             document.getElementById('statChats').textContent = allChats.length;
             
             const listDiv = document.getElementById('chatList');
             if (allChats.length === 0) {
-                listDiv.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <p>No messages yet</p>
-                        <p style="font-size:0.8rem;">Parents will appear here when they message you</p>
-                    </div>`;
+                listDiv.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>No messages yet</p></div>';
                 return;
             }
             
@@ -853,50 +729,33 @@
                 <div class="chat-item" onclick="openChat('${c.chatId}','${c.partnerId}','${c.partnerName}','${c.partnerPhone}','${c.partnerEmail}')">
                     <div class="chat-avatar-sm">${(c.partnerName||'P')[0].toUpperCase()}</div>
                     <div class="chat-info">
-                        <h4>${c.partnerName} ${c.partnerPhone ? '<span class="parent-phone">📞 '+c.partnerPhone+'</span>' : ''}</h4>
+                        <h4>${c.partnerName} ${c.partnerPhone?'<span class="parent-phone">📞 '+c.partnerPhone+'</span>':''}</h4>
                         <p>${c.lastMessage}</p>
                     </div>
-                    <div class="chat-meta">
-                        <div class="chat-time">${c.lastMessageTime ? new Date(c.lastMessageTime.toDate()).toLocaleDateString() : ''}</div>
-                    </div>
+                    <div class="chat-meta"><div class="chat-time">${c.lastMessageTime?new Date(c.lastMessageTime.toDate()).toLocaleDateString():''}</div></div>
                 </div>`).join('');
         }
 
-        // ============ OPEN CHAT ============
-        function openChat(chatId, partnerId, partnerName, partnerPhone, partnerEmail) {
-            activeChatId = chatId;
-            activePartnerId = partnerId;
-            activePartnerData = { name: partnerName, phone: partnerPhone, email: partnerEmail };
-            
-            document.getElementById('chatWindowTitle').textContent = `💬 ${partnerName}`;
-            document.getElementById('chatParentDetails').textContent = 
-                `📞 ${partnerPhone} | ✉️ ${partnerEmail}`;
-            
+        function openChat(chatId, partnerId, name, phone, email) {
+            activeChatId = chatId; activePartnerId = partnerId;
+            activePartnerData = { name, phone, email };
+            document.getElementById('chatWindowTitle').textContent = '💬 '+name;
+            document.getElementById('chatParentDetails').textContent = '📞 '+phone+' | ✉️ '+email;
             document.getElementById('chatListPanel').classList.add('section-hide');
             document.getElementById('chatWindowPanel').classList.remove('section-hide');
             
             if (unsubscribeChat) unsubscribeChat();
-            
-            unsubscribeChat = db.collection('chats').doc(activeChatId)
-                .collection('messages')
-                .orderBy('timestamp', 'asc')
-                .onSnapshot(snapshot => {
+            unsubscribeChat = db.collection('chats').doc(activeChatId).collection('messages')
+                .orderBy('timestamp','asc').onSnapshot(snapshot => {
                     const msgDiv = document.getElementById('chatMsgs');
                     let html = '';
                     snapshot.forEach(doc => {
                         const msg = doc.data();
                         const isSent = msg.senderId === teacherId;
-                        const time = msg.timestamp ? 
-                            new Date(msg.timestamp.toDate()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : '';
-                        
-                        html += `
-                            <div class="msg-bubble ${isSent ? 'msg-sent' : 'msg-received'}">
-                                ${!isSent ? `<div class="msg-sender">${partnerName}</div>` : ''}
-                                ${msg.message}
-                                <div class="msg-time">${time}</div>
-                            </div>`;
+                        const time = msg.timestamp?new Date(msg.timestamp.toDate()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
+                        html += `<div class="msg-bubble ${isSent?'msg-sent':'msg-received'}">${!isSent?`<div class="msg-sender">${name}</div>`:''}${msg.message}<div class="msg-time">${time}</div></div>`;
                     });
-                    msgDiv.innerHTML = html || '<p style="text-align:center;color:#999;padding:20px;">Start conversation 👋</p>';
+                    msgDiv.innerHTML = html||'<p style="text-align:center;color:#999;padding:20px;">Start conversation 👋</p>';
                     msgDiv.scrollTop = msgDiv.scrollHeight;
                 });
         }
@@ -904,9 +763,7 @@
         function closeChat() {
             document.getElementById('chatWindowPanel').classList.add('section-hide');
             document.getElementById('chatListPanel').classList.remove('section-hide');
-            activeChatId = null;
-            activePartnerId = null;
-            activePartnerData = null;
+            activeChatId = null; activePartnerId = null; activePartnerData = null;
             if (unsubscribeChat) { unsubscribeChat(); unsubscribeChat = null; }
         }
 
@@ -914,34 +771,23 @@
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
             if (!message || !activeChatId) return;
-            
             try {
                 await db.collection('chats').doc(activeChatId).collection('messages').add({
-                    senderId: teacherId,
-                    receiverId: activePartnerId,
-                    message: message,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    senderId: teacherId, receiverId: activePartnerId,
+                    message, timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                
                 await db.collection('chats').doc(activeChatId).set({
                     participants: [teacherId, activePartnerId],
                     lastMessage: message,
                     lastMessageTime: firebase.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
-                
                 input.value = '';
-            } catch (e) {
-                toast('Failed to send', 'error');
-            }
+            } catch(e) { toast('Failed to send','error'); }
         }
 
-        // ============ TABS ============
         function switchTab(tab) {
-            ['profile','edit','chats'].forEach(t => {
-                document.getElementById(t+'Tab').classList.add('section-hide');
-            });
+            ['profile','edit','chats'].forEach(t => document.getElementById(t+'Tab').classList.add('section-hide'));
             document.getElementById(tab+'Tab').classList.remove('section-hide');
-            
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             const btn = document.querySelector(`.tab-btn[onclick*="${tab}"]`);
             if (btn) btn.classList.add('active');
@@ -951,14 +797,13 @@
             const existing = document.querySelector('.toast');
             if (existing) existing.remove();
             const t = document.createElement('div');
-            t.className = 'toast ' + type;
+            t.className = 'toast '+type;
             t.textContent = msg;
             document.body.appendChild(t);
             setTimeout(() => t.remove(), 3000);
         }
 
-        console.log('👑 Ultimate Teacher Dashboard Ready!');
-        console.log('✨ Features: Edit Profile, Auto Views, Auto Rating, Parent Details');
+        console.log('👑 Dashboard Ready - Logout → login.html');
     </script>
 </body>
 </html>
