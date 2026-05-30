@@ -17,10 +17,6 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     
-    <!-- Razorpay Checkout -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
@@ -29,21 +25,23 @@
         :root {
             --primary: #6C5CE7;
             --secondary: #00C9A7;
-            --gradient: linear-gradient(135deg, #6C5CE7 0%, #00C9A7 100%);
-            --glass-bg: rgba(255,255,255,0.95);
+            --accent: #FF6B6B;
+            --gold: #FFD93D;
+            --gradient-1: linear-gradient(135deg, #6C5CE7 0%, #00C9A7 100%);
+            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255,255,255,0.15);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-hero);
             min-height: 100vh;
+            overflow-x: hidden;
         }
         
-        .bg-animation {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-        }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .bg-animation .circle {
             position: absolute; border-radius: 50%;
             background: rgba(255,255,255,0.1);
@@ -51,11 +49,11 @@
         }
         @keyframes float-circle {
             0%,100% { transform: translate(0,0) scale(1); }
-            50% { transform: translate(50px,-100px) scale(1.1); }
+            50% { transform: translate(80px,-80px) scale(1.1); }
         }
         
         .glass-card {
-            background: var(--glass-bg);
+            background: rgba(255,255,255,0.95);
             backdrop-filter: blur(20px);
             border-radius: 30px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.2);
@@ -63,16 +61,12 @@
         }
         
         .input-group { position: relative; margin-bottom: 1.2rem; }
-        .input-group input,
-        .input-group select,
-        .input-group textarea {
+        .input-group input, .input-group select, .input-group textarea {
             width: 100%; padding: 14px 18px; border: 2px solid #e0e0e0;
             border-radius: 14px; font-size: 15px; transition: all 0.3s;
             background: #fafafa; outline: none; font-family: inherit;
         }
-        .input-group input:focus,
-        .input-group select:focus,
-        .input-group textarea:focus {
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
             border-color: #6C5CE7; box-shadow: 0 0 0 4px rgba(108,92,231,0.08);
             background: white;
         }
@@ -82,18 +76,19 @@
             font-weight: 600; color: #6C5CE7; border-radius: 4px;
         }
         
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
         
-        .checkbox-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-        .checkbox-pills input[type="checkbox"] { display: none; }
-        .checkbox-pills label {
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
+        .checkbox-item input[type="checkbox"] { display: none; }
+        .checkbox-item label {
             padding: 8px 16px; border: 2px solid #e0e0e0; border-radius: 25px;
             cursor: pointer; font-size: 13px; font-weight: 500;
             transition: all 0.3s; background: white; user-select: none;
         }
-        .checkbox-pills input:checked+label {
+        .checkbox-item input:checked+label {
             background: #6C5CE7; color: white; border-color: #6C5CE7;
+            box-shadow: 0 5px 15px rgba(108,92,231,0.3);
         }
         
         .upload-zone {
@@ -103,54 +98,66 @@
         }
         .upload-zone:hover { background: rgba(108,92,231,0.07); }
         
-        .btn {
-            padding: 15px 28px; border-radius: 50px; font-size: 16px;
+        .premium-btn {
+            background: var(--gradient-1); color: white;
+            padding: 16px 32px; border-radius: 50px; font-size: 16px;
             font-weight: 700; border: none; cursor: pointer;
-            transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.4s; display: inline-flex; align-items: center; gap: 8px;
         }
-        .btn-primary {
-            background: var(--gradient); color: white; width: 100%;
-            justify-content: center;
-        }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(108,92,231,0.3); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .btn-outline { background: white; color: #666; border: 2px solid #e0e0e0; }
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .premium-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(108,92,231,0.4); }
+        .premium-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         
-        .steps {
-            display: flex; justify-content: space-between; margin-bottom: 30px;
+        .btn-outline {
+            background: white; color: #666; border: 2px solid #e0e0e0;
+            padding: 16px 32px; border-radius: 50px; font-size: 16px;
+            font-weight: 600; cursor: pointer; transition: all 0.3s;
+        }
+        .btn-outline:hover { background: #f5f5f5; }
+        
+        .step-indicator {
+            display: flex; justify-content: space-between; margin-bottom: 35px;
             position: relative;
         }
-        .steps::before {
+        .step-indicator::before {
             content: ''; position: absolute; top: 22px; left: 0;
             width: 100%; height: 3px; background: #e0e0e0; z-index: 0;
         }
-        .step-dot {
+        .step {
             width: 44px; height: 44px; border-radius: 50%; background: white;
             border: 3px solid #e0e0e0; display: flex; align-items: center;
-            justify-content: center; font-weight: 700; z-index: 1;
-            position: relative; transition: all 0.3s;
+            justify-content: center; font-weight: 700; font-size: 16px;
+            z-index: 1; position: relative; transition: all 0.3s;
         }
-        .step-dot.active { background: #6C5CE7; color: white; border-color: #6C5CE7; }
-        .step-dot.done { background: #00C9A7; color: white; border-color: #00C9A7; }
+        .step.active { background: #6C5CE7; color: white; border-color: #6C5CE7; }
+        .step.completed { background: #00C9A7; color: white; border-color: #00C9A7; }
         .step-label {
-            position: absolute; top: 50px; left: 50%; transform: translateX(-50%);
-            font-size: 10px; font-weight: 600; white-space: nowrap; color: #888;
+            position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
+            font-size: 11px; font-weight: 600; white-space: nowrap; color: #888;
         }
         
         .hidden-step { display: none; }
         
         .payment-card {
             background: linear-gradient(135deg, #f8f4ff, #f0f8ff);
-            border-radius: 20px; padding: 24px; border: 2px solid #e8e0ff;
+            border-radius: 18px; padding: 24px; border: 2px solid #e8e0ff;
             margin-bottom: 20px;
         }
         .payment-row { display: flex; justify-content: space-between; padding: 6px 0; }
         .payment-divider { border-top: 1px dashed #d0c8e0; margin: 8px 0; }
         
+        .preview-card { position: sticky; top: 30px; }
+        .teacher-preview {
+            background: white; border-radius: 25px; padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); text-align: center;
+        }
+        .preview-avatar {
+            width: 120px; height: 120px; border-radius: 50%;
+            margin: 0 auto 20px; border: 5px solid #6C5CE7; object-fit: cover;
+        }
+        
         .toast {
-            position: fixed; top: 20px; right: 20px; padding: 14px 22px;
-            border-radius: 14px; color: white; font-weight: 600; z-index: 9999;
+            position: fixed; top: 25px; right: 25px; padding: 16px 24px;
+            border-radius: 14px; color: white; font-weight: 600; z-index: 10000;
             animation: slideIn 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         .toast.success { background: #10b981; }
@@ -172,12 +179,7 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.7); z-index: 9998;
             display: flex; align-items: center; justify-content: center;
-            flex-direction: column; color: white; gap: 16px;
-        }
-        .big-spinner {
-            width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.3);
-            border-top: 4px solid white; border-radius: 50%;
-            animation: spin 1s linear infinite;
+            flex-direction: column; color: white; gap: 15px;
         }
     </style>
 </head>
@@ -188,9 +190,8 @@
         <div class="circle" style="width:200px;height:200px;top:50%;right:-50px;"></div>
     </div>
     
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay" style="display:none;">
-        <div class="big-spinner"></div>
+        <div class="spinner" style="width:50px;height:50px;border-width:4px;"></div>
         <p style="font-size:1.1rem;font-weight:600;" id="loadingText">Processing...</p>
     </div>
     
@@ -207,7 +208,7 @@
                         <p class="text-xs text-purple-200">Home Tutor</p>
                     </div>
                 </a>
-                <a href="index.html" class="text-white hover:text-purple-200 transition-colors text-sm">
+                <a href="index.html" class="text-white hover:text-purple-200 text-sm">
                     <i class="fas fa-arrow-left mr-1"></i> Back
                 </a>
             </div>
@@ -216,7 +217,7 @@
     
     <!-- Main -->
     <section class="relative z-10 py-6">
-        <div class="container mx-auto px-4 max-w-2xl">
+        <div class="container mx-auto px-4 max-w-5xl">
             
             <div class="text-center text-white mb-8" data-aos="fade-up">
                 <span class="inline-block bg-white/20 px-5 py-2 rounded-full text-sm font-semibold mb-3">
@@ -226,193 +227,210 @@
                 <p class="text-lg text-purple-200">One-time fee: <span class="text-yellow-400 font-bold">₹200</span> only</p>
             </div>
             
-            <div class="glass-card" data-aos="fade-up">
+            <div class="grid lg:grid-cols-3 gap-8">
                 
-                <!-- Steps -->
-                <div class="steps">
-                    <div class="step-dot active" id="stepDot1">1<span class="step-label">Personal</span></div>
-                    <div class="step-dot" id="stepDot2">2<span class="step-label">Professional</span></div>
-                    <div class="step-dot" id="stepDot3">3<span class="step-label">Payment</span></div>
-                    <div class="step-dot" id="stepDot4">4<span class="step-label">Done ✓</span></div>
+                <!-- Form -->
+                <div class="lg:col-span-2">
+                    <div class="glass-card" data-aos="fade-right">
+                        
+                        <div class="step-indicator">
+                            <div class="step active" id="step1">1<span class="step-label">Personal</span></div>
+                            <div class="step" id="step2">2<span class="step-label">Professional</span></div>
+                            <div class="step" id="step3">3<span class="step-label">Payment</span></div>
+                            <div class="step" id="step4">4<span class="step-label">Done ✓</span></div>
+                        </div>
+                        
+                        <form id="teacherRegistrationForm" onsubmit="return false;">
+                            
+                            <!-- STEP 1 -->
+                            <div id="formStep1">
+                                <h3 class="text-xl font-bold mb-5 text-purple-600"><i class="fas fa-user-circle mr-2"></i>Personal Information</h3>
+                                
+                                <div class="form-row">
+                                    <div class="input-group"><input type="text" id="fullName" required placeholder=" "><label>Full Name *</label></div>
+                                    <div class="input-group"><input type="email" id="email" required placeholder=" "><label>Email *</label></div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="input-group"><input type="tel" id="phone" required placeholder=" " maxlength="10"><label>Phone *</label></div>
+                                    <div class="input-group"><input type="password" id="password" required placeholder=" " minlength="6"><label>Password *</label></div>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <input type="text" value="Prayagraj" readonly style="background:#f0edff;border-color:#6C5CE7;font-weight:600;color:#6C5CE7;">
+                                    <label>City *</label>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <select id="area" required>
+                                        <option value="">-- Select Area --</option>
+                                        <option>Civil Lines</option><option>Katra</option><option>Chowk</option>
+                                        <option>Allahpur</option><option>Teliyarganj</option><option>Mumfordganj</option>
+                                        <option>Naini</option><option>Kareli</option><option>Dhoomanganj</option>
+                                        <option>Jhunsi</option><option>Tagore Town</option><option>Ashok Nagar</option>
+                                        <option>Preetam Nagar</option><option>Near Allahabad University</option><option>Near MNNIT</option>
+                                    </select>
+                                    <label>Area in Prayagraj *</label>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Profile Photo *</label>
+                                    <div class="upload-zone" onclick="document.getElementById('profilePhoto').click()">
+                                        <input type="file" id="profilePhoto" accept="image/*" hidden>
+                                        <div id="uploadContent">
+                                            <i class="fas fa-cloud-upload-alt text-4xl text-purple-400 mb-2"></i>
+                                            <p class="font-semibold">Click or Drag to Upload</p>
+                                        </div>
+                                        <div id="uploadPreview" style="display:none;">
+                                            <img id="previewImage" src="" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #6C5CE7;margin:0 auto;">
+                                            <p style="color:green;font-size:0.8rem;margin-top:5px;" id="uploadFileName"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="premium-btn w-full justify-center" onclick="nextStep(2)">Next <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                            
+                            <!-- STEP 2 -->
+                            <div id="formStep2" class="hidden-step">
+                                <h3 class="text-xl font-bold mb-5 text-purple-600"><i class="fas fa-briefcase mr-2"></i>Professional Details</h3>
+                                
+                                <div class="input-group">
+                                    <select id="qualification" required>
+                                        <option value="">-- Select --</option>
+                                        <option>B.Ed</option><option>M.Ed</option><option>PhD</option>
+                                        <option>M.Sc</option><option>B.Tech</option><option>M.Tech</option>
+                                        <option>M.A</option><option>B.A</option><option>B.Sc</option><option>MBA</option><option>Other</option>
+                                    </select>
+                                    <label>Qualification *</label>
+                                </div>
+                                
+                                <div class="input-group"><textarea id="experience" rows="2" required placeholder=" "></textarea><label>Experience *</label></div>
+                                
+                                <div class="mb-4"><label class="block text-sm font-semibold text-gray-700 mb-2">Subjects *</label>
+                                    <div class="checkbox-group" id="subjectsGroup">
+                                        <div class="checkbox-item"><input type="checkbox" id="s1" value="Mathematics"><label for="s1">📐 Math</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="s2" value="Physics"><label for="s2">⚡ Physics</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="s3" value="Chemistry"><label for="s3">🧪 Chemistry</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="s4" value="Biology"><label for="s4">🧬 Biology</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="s5" value="English"><label for="s5">📖 English</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="s6" value="Hindi"><label for="s6">📝 Hindi</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="s7" value="Computer Science"><label for="s7">💻 CS</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="s8" value="Economics"><label for="s8">📊 Economics</label></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4"><label class="block text-sm font-semibold text-gray-700 mb-2">Classes *</label>
+                                    <div class="checkbox-group" id="classesGroup">
+                                        <div class="checkbox-item"><input type="checkbox" id="c1" value="1-5"><label for="c1">1-5</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="c2" value="6-8"><label for="c2">6-8</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="c3" value="9-10"><label for="c3">9-10</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="c4" value="11-12"><label for="c4">11-12</label></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4"><label class="block text-sm font-semibold text-gray-700 mb-2">Boards *</label>
+                                    <div class="checkbox-group" id="coursesGroup">
+                                        <div class="checkbox-item"><input type="checkbox" id="b1" value="CBSE"><label for="b1">CBSE</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="b2" value="ICSE"><label for="b2">ICSE</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="b3" value="UP Board"><label for="b3">UP Board</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="b4" value="JEE"><label for="b4">JEE</label></div>
+                                        <div class="checkbox-item"><input type="checkbox" id="b5" value="NEET"><label for="b5">NEET</label></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="input-group"><input type="number" id="expectedFees" required placeholder=" " min="100"><label>Expected Fees (₹/hour) *</label></div>
+                                
+                                <div class="flex justify-between mt-6">
+                                    <button class="btn-outline" onclick="nextStep(1)"><i class="fas fa-arrow-left"></i> Previous</button>
+                                    <button class="premium-btn" onclick="nextStep(3)">Continue <i class="fas fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- STEP 3: Payment -->
+                            <div id="formStep3" class="hidden-step">
+                                <h3 class="text-xl font-bold mb-5 text-purple-600"><i class="fas fa-credit-card mr-2"></i>Registration Payment</h3>
+                                
+                                <div class="payment-card">
+                                    <h4 class="font-bold mb-3">💰 Payment Summary</h4>
+                                    <div class="payment-row"><span>Registration Fee</span><span>₹200.00</span></div>
+                                    <div class="payment-row"><span>Platform Fee</span><span style="color:green;">FREE</span></div>
+                                    <div class="payment-divider"></div>
+                                    <div class="payment-row" style="font-size:1.1rem;font-weight:700;"><span>Total</span><span style="color:#6C5CE7;">₹200.00</span></div>
+                                </div>
+                                
+                                <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px;margin-bottom:16px;">
+                                    <p style="font-size:0.85rem;color:#92400e;"><i class="fas fa-info-circle"></i> Click below to pay ₹200. After payment, check the box and submit your profile for approval.</p>
+                                </div>
+                                
+                                <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin-bottom:12px;">
+                                    <input type="checkbox" id="termsAgree" style="width:18px;height:18px;margin-top:2px;">
+                                    <span style="font-size:0.85rem;color:#666;">I agree to Terms & Conditions. ₹200 is non-refundable.</span>
+                                </label>
+                                
+                                <!-- PAYMENT LINK -->
+                                <a href="https://razorpay.me/@mohitgupta959" target="_blank" class="premium-btn w-full justify-center" style="background:#f59e0b;margin-bottom:12px;text-decoration:none;" onclick="document.getElementById('confirmSection').style.display='block'">
+                                    <i class="fas fa-external-link-alt"></i> Pay ₹200 on Razorpay
+                                </a>
+                                
+                                <!-- CONFIRM -->
+                                <div id="confirmSection" style="display:none;background:#f0fdf4;border:2px solid #bbf7d0;border-radius:14px;padding:18px;margin-top:12px;">
+                                    <p style="font-weight:700;color:#166534;margin-bottom:8px;">✅ Payment Done?</p>
+                                    <p style="font-size:0.85rem;color:#166534;margin-bottom:12px;">After paying, come back and submit your profile. It will be live within 30 minutes after admin approval.</p>
+                                    <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin-bottom:12px;">
+                                        <input type="checkbox" id="paymentConfirm" style="width:18px;height:18px;margin-top:2px;" onchange="document.getElementById('registerBtn').disabled=!this.checked">
+                                        <span style="font-size:0.85rem;color:#166534;font-weight:600;">✅ Yes, I have paid ₹200. Submit my profile!</span>
+                                    </label>
+                                    <button class="premium-btn w-full justify-center" id="registerBtn" onclick="registerTeacher()" disabled>
+                                        <i class="fas fa-paper-plane"></i> Submit Profile for Approval
+                                    </button>
+                                </div>
+                                
+                                <div class="flex justify-between mt-4">
+                                    <button class="btn-outline" onclick="nextStep(2)"><i class="fas fa-arrow-left"></i> Previous</button>
+                                </div>
+                            </div>
+                            
+                            <!-- STEP 4: Success -->
+                            <div id="formStep4" class="hidden-step text-center py-8">
+                                <div style="font-size:4rem;">⏳</div>
+                                <h3 class="text-2xl font-black mb-3">Profile Submitted!</h3>
+                                <p class="text-gray-600 mb-3">Your profile has been sent for approval.</p>
+                                <div style="background:#fffbeb;border:2px solid #fde68a;border-radius:14px;padding:16px;margin:16px 0;">
+                                    <p style="font-weight:700;color:#92400e;">📋 What happens next?</p>
+                                    <p style="font-size:0.9rem;color:#92400e;">Your profile will be reviewed and activated within <strong>30 minutes</strong> after payment verification.</p>
+                                </div>
+                                <div style="background:#f0edff;border-radius:14px;padding:16px;display:inline-block;margin-bottom:20px;">
+                                    <p style="font-size:0.8rem;color:#666;">Your Reference ID</p>
+                                    <p style="font-size:1.3rem;font-weight:900;color:#6C5CE7;" id="teacherIdDisplay">---</p>
+                                </div>
+                                <br>
+                                <a href="index.html" class="premium-btn" style="display:inline-flex;width:auto;text-decoration:none;">Back to Home <i class="fas fa-home"></i></a>
+                            </div>
+                            
+                        </form>
+                    </div>
                 </div>
                 
-                <form id="regForm" onsubmit="return false;">
-                    
-                    <!-- STEP 1 -->
-                    <div id="step1Content">
-                        <h3 class="text-xl font-bold mb-5 text-purple-600"><i class="fas fa-user-circle mr-2"></i>Personal Info</h3>
-                        
-                        <div class="form-row">
-                            <div class="input-group">
-                                <input type="text" id="fullName" required placeholder=" ">
-                                <label>Full Name *</label>
+                <!-- Preview Card -->
+                <div class="hidden lg:block">
+                    <div class="preview-card" data-aos="fade-left">
+                        <div class="teacher-preview">
+                            <h3 class="text-lg font-bold mb-4">Live Profile Preview</h3>
+                            <img id="previewAvatar" src="https://via.placeholder.com/120" alt="Preview" class="preview-avatar">
+                            <h4 class="text-xl font-bold" id="previewName">Your Name</h4>
+                            <p class="text-purple-600 font-semibold" id="previewQualification">Qualification</p>
+                            <div class="flex justify-center space-x-1 my-3">
+                                <i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i><i class="fas fa-star text-yellow-400"></i>
                             </div>
-                            <div class="input-group">
-                                <input type="email" id="email" required placeholder=" ">
-                                <label>Email *</label>
+                            <div class="space-y-2 text-left text-sm mt-4">
+                                <p><i class="fas fa-map-marker-alt text-purple-500 mr-2"></i><span id="previewArea">Area, City</span></p>
+                                <p><i class="fas fa-book text-purple-500 mr-2"></i><span id="previewSubjects">Subjects</span></p>
+                                <p><i class="fas fa-graduation-cap text-purple-500 mr-2"></i><span id="previewClasses">Classes</span></p>
+                                <p><i class="fas fa-rupee-sign text-purple-500 mr-2"></i><span id="previewFees">Fees/hour</span></p>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="input-group">
-                                <input type="tel" id="phone" required placeholder=" " maxlength="10">
-                                <label>Phone *</label>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" id="password" required placeholder=" " minlength="6">
-                                <label>Password *</label>
-                            </div>
-                        </div>
-                        
-                        <!-- CITY: PRAYAGRAJ -->
-                        <div class="input-group">
-                            <input type="text" value="Prayagraj" readonly style="background:#f0edff;border-color:#6C5CE7;font-weight:600;color:#6C5CE7;cursor:default;">
-                            <label>City *</label>
-                        </div>
-                        
-                        <!-- AREA -->
-                        <div class="input-group">
-                            <select id="area" required>
-                                <option value="">-- Select Area --</option>
-                                <option>Civil Lines</option><option>Katra</option><option>Chowk</option>
-                                <option>Allahpur</option><option>Teliyarganj</option><option>Mumfordganj</option>
-                                <option>Naini</option><option>Kareli</option><option>Dhoomanganj</option>
-                                <option>Jhunsi</option><option>Tagore Town</option><option>Ashok Nagar</option>
-                                <option>Preetam Nagar</option><option>George Town</option>
-                                <option>Near Allahabad University</option><option>Near MNNIT</option>
-                            </select>
-                            <label>Area in Prayagraj *</label>
-                        </div>
-                        
-                        <!-- Photo -->
-                        <div class="mb-4">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Profile Photo *</label>
-                            <div class="upload-zone" onclick="document.getElementById('profilePhoto').click()">
-                                <input type="file" id="profilePhoto" accept="image/*" hidden>
-                                <div id="uploadPlaceholder">
-                                    <i class="fas fa-cloud-upload-alt text-4xl text-purple-400 mb-2"></i>
-                                    <p class="font-semibold">Click to Upload</p>
-                                </div>
-                                <div id="uploadPreview" style="display:none;">
-                                    <img id="previewImg" src="" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #6C5CE7;margin:0 auto;">
-                                    <p style="color:green;font-size:0.8rem;margin-top:5px;" id="fileNameDisplay"></p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn-primary" onclick="goToStep(2)">Next <i class="fas fa-arrow-right"></i></button>
-                    </div>
-                    
-                    <!-- STEP 2 -->
-                    <div id="step2Content" class="hidden-step">
-                        <h3 class="text-xl font-bold mb-5 text-purple-600"><i class="fas fa-briefcase mr-2"></i>Professional Details</h3>
-                        
-                        <div class="input-group">
-                            <select id="qualification" required>
-                                <option value="">-- Select --</option>
-                                <option>B.Ed</option><option>M.Ed</option><option>PhD</option>
-                                <option>M.Sc</option><option>B.Tech</option><option>M.Tech</option>
-                                <option>M.A</option><option>B.A</option><option>B.Sc</option>
-                                <option>MBA</option><option>Other</option>
-                            </select>
-                            <label>Qualification *</label>
-                        </div>
-                        
-                        <div class="input-group">
-                            <textarea id="experience" rows="2" required placeholder=" "></textarea>
-                            <label>Teaching Experience *</label>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Subjects *</label>
-                            <div class="checkbox-pills" id="subjectsGroup">
-                                <div><input type="checkbox" id="s1" value="Mathematics"><label for="s1">📐 Math</label></div>
-                                <div><input type="checkbox" id="s2" value="Physics"><label for="s2">⚡ Physics</label></div>
-                                <div><input type="checkbox" id="s3" value="Chemistry"><label for="s3">🧪 Chemistry</label></div>
-                                <div><input type="checkbox" id="s4" value="Biology"><label for="s4">🧬 Biology</label></div>
-                                <div><input type="checkbox" id="s5" value="English"><label for="s5">📖 English</label></div>
-                                <div><input type="checkbox" id="s6" value="Hindi"><label for="s6">📝 Hindi</label></div>
-                                <div><input type="checkbox" id="s7" value="Computer Science"><label for="s7">💻 CS</label></div>
-                                <div><input type="checkbox" id="s8" value="Economics"><label for="s8">📊 Economics</label></div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Classes *</label>
-                            <div class="checkbox-pills" id="classesGroup">
-                                <div><input type="checkbox" id="c1" value="1-5"><label for="c1">1-5</label></div>
-                                <div><input type="checkbox" id="c2" value="6-8"><label for="c2">6-8</label></div>
-                                <div><input type="checkbox" id="c3" value="9-10"><label for="c3">9-10</label></div>
-                                <div><input type="checkbox" id="c4" value="11-12"><label for="c4">11-12</label></div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Boards *</label>
-                            <div class="checkbox-pills" id="coursesGroup">
-                                <div><input type="checkbox" id="b1" value="CBSE"><label for="b1">CBSE</label></div>
-                                <div><input type="checkbox" id="b2" value="ICSE"><label for="b2">ICSE</label></div>
-                                <div><input type="checkbox" id="b3" value="UP Board"><label for="b3">UP Board</label></div>
-                                <div><input type="checkbox" id="b4" value="JEE"><label for="b4">JEE</label></div>
-                                <div><input type="checkbox" id="b5" value="NEET"><label for="b5">NEET</label></div>
-                            </div>
-                        </div>
-                        
-                        <div class="input-group">
-                            <input type="number" id="expectedFees" required placeholder=" " min="100">
-                            <label>Expected Fees (₹/hour) *</label>
-                        </div>
-                        
-                        <div class="btn-group">
-                            <button class="btn btn-outline" onclick="goToStep(1)" style="flex:1;"><i class="fas fa-arrow-left"></i> Back</button>
-                            <button class="btn btn-primary" onclick="goToStep(3)" style="flex:2;">Continue <i class="fas fa-arrow-right"></i></button>
                         </div>
                     </div>
-                    
-                    <!-- STEP 3: PAYMENT -->
-                    <div id="step3Content" class="hidden-step">
-                        <h3 class="text-xl font-bold mb-5 text-purple-600"><i class="fas fa-credit-card mr-2"></i>Payment</h3>
-                        
-                        <div class="payment-card">
-                            <h4 class="font-bold mb-3">💰 Summary</h4>
-                            <div class="payment-row"><span>Registration Fee</span><span>₹200.00</span></div>
-                            <div class="payment-row"><span>Platform Fee</span><span style="color:green;">FREE</span></div>
-                            <div class="payment-divider"></div>
-                            <div class="payment-row" style="font-size:1.1rem;font-weight:700;"><span>Total</span><span style="color:#6C5CE7;">₹200.00</span></div>
-                        </div>
-                        
-                        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px;margin-bottom:16px;">
-                            <p style="font-size:0.85rem;color:#92400e;"><i class="fas fa-info-circle"></i> One-time payment. After success, profile auto-registers!</p>
-                        </div>
-                        
-                        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin-bottom:16px;">
-                            <input type="checkbox" id="termsAgree" style="width:18px;height:18px;margin-top:2px;">
-                            <span style="font-size:0.85rem;color:#666;">I agree to Terms. ₹200 is non-refundable.</span>
-                        </label>
-                        
-                        <div class="btn-group">
-                            <button class="btn btn-outline" onclick="goToStep(2)" style="flex:1;"><i class="fas fa-arrow-left"></i> Back</button>
-                            <button class="btn btn-primary" id="payButton" onclick="payAndRegister()" style="flex:2;">
-                                <i class="fas fa-lock"></i> Pay ₹200 & Register
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- STEP 4: SUCCESS -->
-                    <div id="step4Content" class="hidden-step text-center py-8">
-                        <div style="width:80px;height:80px;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-                            <i class="fas fa-check-circle" style="font-size:3rem;color:#10b981;"></i>
-                        </div>
-                        <h3 class="text-2xl font-black mb-2">Registered! 🎉</h3>
-                        <p class="text-gray-600 mb-4">Your profile is LIVE in Prayagraj!</p>
-                        <div style="background:#f0edff;border-radius:14px;padding:16px;display:inline-block;margin-bottom:20px;">
-                            <p style="font-size:0.8rem;color:#666;">Teacher ID</p>
-                            <p style="font-size:1.3rem;font-weight:900;color:#6C5CE7;" id="teacherIdDisplay">---</p>
-                        </div>
-                        <br>
-                        <a href="dashboard.html" class="btn btn-primary" style="display:inline-flex;width:auto;text-decoration:none;">Dashboard <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    
-                </form>
+                </div>
             </div>
         </div>
     </section>
@@ -430,44 +448,41 @@
         });
         const db = firebase.firestore();
         const auth = firebase.auth();
-        
-        // ============ CONFIG ============
         const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
-        const BACKEND_URL = window.location.origin;
-        const RAZORPAY_KEY = "rzp_test_SurD5cvO25Zbxy";
         
         let currentStep = 1;
         let uploadedImageFile = null;
         let uploadedImageUrl = '';
         let regData = {};
         
-        // ============ AOS ============
         AOS.init({ duration: 800, once: true });
         
         // ============ STEPS ============
-        function goToStep(s) {
-            if (s > currentStep) {
+        function nextStep(step) {
+            if (step > currentStep) {
                 if (currentStep === 1 && !val1()) return;
                 if (currentStep === 2 && !val2()) return;
                 if (currentStep === 3 && !document.getElementById('termsAgree').checked) {
-                    toast('Agree to terms', 'error'); return;
+                    toast('Please agree to Terms','error'); return;
                 }
             }
-            ['step1Content','step2Content','step3Content','step4Content'].forEach(id => {
-                document.getElementById(id).classList.add('hidden-step');
-            });
-            document.getElementById('step'+s+'Content').classList.remove('hidden-step');
-            currentStep = s;
+            document.querySelectorAll('[id^="formStep"]').forEach(el => el.classList.add('hidden-step'));
+            document.getElementById('formStep'+step).classList.remove('hidden-step');
+            currentStep = step;
+            updateSteps();
+        }
+        
+        function updateSteps() {
             for (let i=1;i<=4;i++) {
-                const d = document.getElementById('stepDot'+i);
-                d.classList.remove('active','done');
-                if (i < currentStep) d.classList.add('done');
-                if (i === currentStep) d.classList.add('active');
+                const s = document.getElementById('step'+i);
+                s.classList.remove('active','completed');
+                if (i < currentStep) s.classList.add('completed');
+                if (i === currentStep) s.classList.add('active');
             }
         }
         
         function val1() {
-            if (!document.getElementById('fullName').value.trim()) { toast('Enter name','error'); return false; }
+            if (!document.getElementById('fullName').value.trim()) { toast('Enter full name','error'); return false; }
             if (!document.getElementById('email').value.includes('@')) { toast('Valid email','error'); return false; }
             if (document.getElementById('phone').value.length !== 10) { toast('Valid 10-digit phone','error'); return false; }
             if (document.getElementById('password').value.length < 6) { toast('Password min 6 chars','error'); return false; }
@@ -479,68 +494,54 @@
         function val2() {
             if (!document.getElementById('qualification').value) { toast('Select qualification','error'); return false; }
             if (!document.getElementById('experience').value.trim()) { toast('Enter experience','error'); return false; }
-            if (getChecked('subjectsGroup').length === 0) { toast('Select subjects','error'); return false; }
-            if (getChecked('classesGroup').length === 0) { toast('Select classes','error'); return false; }
-            if (getChecked('coursesGroup').length === 0) { toast('Select boards','error'); return false; }
+            if (getChecked('subjectsGroup').length===0) { toast('Select subjects','error'); return false; }
+            if (getChecked('classesGroup').length===0) { toast('Select classes','error'); return false; }
+            if (getChecked('coursesGroup').length===0) { toast('Select boards','error'); return false; }
             const f = parseInt(document.getElementById('expectedFees').value);
-            if (!f || f < 100) { toast('Valid fees (min ₹100)','error'); return false; }
+            if (!f || f<100) { toast('Valid fees (min ₹100)','error'); return false; }
             return true;
         }
         
-        function getChecked(id) {
-            return Array.from(document.querySelectorAll('#'+id+' input:checked')).map(cb => cb.value);
-        }
+        function getChecked(id) { return Array.from(document.querySelectorAll('#'+id+' input:checked')).map(cb=>cb.value); }
         
         // ============ IMAGE ============
-        document.getElementById('profilePhoto').addEventListener('change', e => {
-            if (e.target.files[0]) handleFile(e.target.files[0]);
-        });
+        document.getElementById('profilePhoto').addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
         
         function handleFile(file) {
             if (!file.type.startsWith('image/')) { toast('Image only','error'); return; }
-            if (file.size > 5*1024*1024) { toast('Max 5MB','error'); return; }
+            if (file.size>5*1024*1024) { toast('Max 5MB','error'); return; }
             uploadedImageFile = file;
             const r = new FileReader();
             r.onload = e => {
-                document.getElementById('previewImg').src = e.target.result;
-                document.getElementById('uploadPlaceholder').style.display = 'none';
-                document.getElementById('uploadPreview').style.display = 'block';
-                document.getElementById('fileNameDisplay').textContent = file.name;
+                document.getElementById('previewImage').src=e.target.result;
+                document.getElementById('previewAvatar').src=e.target.result;
+                document.getElementById('uploadContent').style.display='none';
+                document.getElementById('uploadPreview').style.display='block';
+                document.getElementById('uploadFileName').textContent=file.name;
             };
             r.readAsDataURL(file);
         }
         
         async function uploadToImgBB(file) {
-            const fd = new FormData();
-            fd.append('image', file);
-            const res = await fetch('https://api.imgbb.com/1/upload?key='+IMGBB_API_KEY, {
-                method: 'POST', body: fd
-            });
+            const fd = new FormData(); fd.append('image',file);
+            const res = await fetch('https://api.imgbb.com/1/upload?key='+IMGBB_API_KEY, {method:'POST',body:fd});
             const data = await res.json();
             if (data.success) return data.data.url;
             throw new Error('Upload failed');
         }
         
-        // ============ LOADING ============
-        function showLoading(msg) {
-            document.getElementById('loadingText').textContent = msg;
-            document.getElementById('loadingOverlay').style.display = 'flex';
-        }
-        function hideLoading() {
-            document.getElementById('loadingOverlay').style.display = 'none';
-        }
+        // ============ REGISTER ============
+        function showLoading(msg) { document.getElementById('loadingText').textContent=msg; document.getElementById('loadingOverlay').style.display='flex'; }
+        function hideLoading() { document.getElementById('loadingOverlay').style.display='none'; }
         
-        // ============ PAY & REGISTER ============
-        async function payAndRegister() {
-            if (!document.getElementById('termsAgree').checked) {
-                toast('Agree to terms', 'error'); return;
-            }
+        async function registerTeacher() {
+            if (!document.getElementById('paymentConfirm').checked) { toast('Confirm payment','error'); return; }
             
-            const btn = document.getElementById('payButton');
+            const btn = document.getElementById('registerBtn');
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Creating order...';
+            btn.innerHTML = '<span class="spinner"></span> Submitting...';
+            showLoading('Creating your profile...');
             
-            // Collect data
             regData = {
                 fullName: document.getElementById('fullName').value.trim(),
                 email: document.getElementById('email').value.trim(),
@@ -557,88 +558,8 @@
             };
             
             try {
-                // STEP 1: Create order via backend
-                const orderRes = await fetch(BACKEND_URL + '/api/create-order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: 20000, currency: 'INR', receipt: 'reg_'+Date.now() })
-                });
-                
-                if (!orderRes.ok) throw new Error('Server error');
-                
-                const orderData = await orderRes.json();
-                
-                if (!orderData.success) throw new Error(orderData.error || 'Order failed');
-                
-                console.log('✅ Order:', orderData.order_id);
-                
-                // STEP 2: Open Razorpay
-                const options = {
-                    key: RAZORPAY_KEY,
-                    amount: 20000,
-                    currency: 'INR',
-                    name: 'THP Home Tutor',
-                    description: 'Teacher Registration',
-                    order_id: orderData.order_id,
-                    handler: async function(response) {
-                        console.log('💳 Payment:', response);
-                        btn.innerHTML = '<span class="spinner"></span> Verifying...';
-                        showLoading('Verifying payment...');
-                        
-                        // STEP 3: Verify
-                        const verifyRes = await fetch(BACKEND_URL + '/api/verify-payment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_signature: response.razorpay_signature
-                            })
-                        });
-                        
-                        const verifyData = await verifyRes.json();
-                        
-                        if (verifyData.success) {
-                            console.log('✅ Verified!');
-                            await completeRegistration(response);
-                        } else {
-                            throw new Error('Verification failed');
-                        }
-                    },
-                    prefill: { name: regData.fullName, email: regData.email, contact: regData.phone },
-                    theme: { color: '#6C5CE7' },
-                    modal: {
-                        ondismiss: function() {
-                            btn.disabled = false;
-                            btn.innerHTML = '<i class="fas fa-lock"></i> Pay ₹200 & Register';
-                            toast('Payment cancelled','error');
-                        }
-                    }
-                };
-                
-                const rzp = new Razorpay(options);
-                
-                rzp.on('payment.failed', function(res) {
-                    toast('Failed: ' + res.error.description, 'error');
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-lock"></i> Pay ₹200 & Register';
-                });
-                
-                rzp.open();
-                
-            } catch (error) {
-                console.error('❌ Error:', error);
-                toast('Error: ' + error.message, 'error');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-lock"></i> Pay ₹200 & Register';
-            }
-        }
-        
-        // ============ COMPLETE REGISTRATION ============
-        async function completeRegistration(paymentRes) {
-            try {
-                showLoading('Uploading photo...');
                 if (!uploadedImageUrl && uploadedImageFile) {
+                    showLoading('Uploading photo...');
                     uploadedImageUrl = await uploadToImgBB(uploadedImageFile);
                 }
                 
@@ -648,87 +569,80 @@
                 
                 showLoading('Saving profile...');
                 
+                // Save with PENDING status
                 await db.collection('teachers').doc(uid).set({
-                    fullName: regData.fullName,
-                    email: regData.email,
-                    phone: regData.phone,
+                    ...regData,
                     profilePhoto: uploadedImageUrl || '',
-                    city: 'Prayagraj',
-                    area: regData.area,
-                    qualification: regData.qualification,
-                    experience: regData.experience,
-                    subjects: regData.subjects,
-                    classes: regData.classes,
-                    courses: regData.courses,
-                    expectedFees: regData.expectedFees,
-                    paymentStatus: 'completed',
-                    paymentAmount: 200,
-                    razorpayPaymentId: paymentRes.razorpay_payment_id,
-                    razorpayOrderId: paymentRes.razorpay_order_id,
-                    paymentDate: firebase.firestore.FieldValue.serverTimestamp(),
-                    isActive: true,
+                    paymentStatus: 'pending',
+                    isActive: false,
+                    adminApproved: false,
                     isVerified: false,
-                    rating: 0,
-                    totalReviews: 0,
-                    totalStudents: 0,
-                    profileViews: 0,
-                    contactRequests: 0,
+                    paymentAmount: 200,
+                    paymentMethod: 'Razorpay Payment Link',
+                    rating: 0, totalReviews: 0, totalStudents: 0,
+                    profileViews: 0, contactRequests: 0,
+                    submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
-                await db.collection('payments').add({
-                    teacherId: uid,
-                    teacherName: regData.fullName,
-                    amount: 200,
-                    razorpayPaymentId: paymentRes.razorpay_payment_id,
-                    status: 'completed',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                await db.collection('paymentRequests').add({
+                    teacherId: uid, teacherName: regData.fullName,
+                    teacherEmail: regData.email, amount: 200, status: 'pending',
+                    submittedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
                 hideLoading();
-                document.getElementById('teacherIdDisplay').textContent = uid.substring(0, 10);
-                goToStep(4);
-                toast('🎉 Registration Successful!', 'success');
-                
-                // Auto redirect
-                setTimeout(() => { window.location.href = 'dashboard.html'; }, 3000);
+                document.getElementById('teacherIdDisplay').textContent = uid.substring(0,10);
+                nextStep(4);
+                toast('✅ Profile submitted for approval!','success');
                 
             } catch (error) {
                 hideLoading();
-                console.error('❌ Reg error:', error);
-                if (error.code === 'auth/email-already-in-use') {
-                    toast('Email already registered. Please login.', 'error');
-                } else {
-                    toast('Error: ' + error.message, 'error');
-                }
-                document.getElementById('payButton').disabled = false;
-                document.getElementById('payButton').innerHTML = '<i class="fas fa-lock"></i> Pay ₹200 & Register';
+                console.error('Error:', error);
+                if (error.code === 'auth/email-already-in-use') toast('Email already registered!','error');
+                else toast('Error: '+error.message,'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Profile for Approval';
             }
         }
         
-        // ============ TOAST ============
+        // ============ PREVIEW UPDATES ============
+        document.getElementById('fullName').addEventListener('input', function() { document.getElementById('previewName').textContent=this.value||'Your Name'; });
+        document.getElementById('qualification').addEventListener('change', function() { document.getElementById('previewQualification').textContent=this.value||'Qualification'; });
+        document.getElementById('area').addEventListener('input', updatePreview);
+        function updatePreview() {
+            document.getElementById('previewArea').textContent = [document.getElementById('area').value, 'Prayagraj'].filter(Boolean).join(', ');
+        }
+        document.querySelectorAll('#subjectsGroup input').forEach(cb => cb.addEventListener('change', () => {
+            const s = getChecked('subjectsGroup');
+            document.getElementById('previewSubjects').textContent = s.length>0 ? s.slice(0,3).join(', ') : 'Subjects';
+        }));
+        document.querySelectorAll('#classesGroup input').forEach(cb => cb.addEventListener('change', () => {
+            document.getElementById('previewClasses').textContent = 'Class '+getChecked('classesGroup').join(', ')||'Classes';
+        }));
+        document.getElementById('expectedFees').addEventListener('input', function() {
+            document.getElementById('previewFees').textContent = this.value ? '₹'+this.value+'/hour' : 'Fees/hour';
+        });
+        
         function toast(msg, type) {
             const existing = document.querySelector('.toast');
             if (existing) existing.remove();
             const t = document.createElement('div');
-            t.className = 'toast ' + type;
-            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
-            t.innerHTML = '<i class="fas '+icons[type]+'"></i> ' + msg;
+            t.className = 'toast '+type;
+            const icons = {success:'fa-check-circle',error:'fa-exclamation-circle',info:'fa-info-circle'};
+            t.innerHTML = '<i class="fas '+icons[type]+'"></i> '+msg;
             document.body.appendChild(t);
-            setTimeout(() => { t.style.animation = 'slideIn 0.4s ease reverse'; setTimeout(() => t.remove(), 400); }, 4000);
+            setTimeout(() => { t.style.animation='slideIn 0.4s ease reverse'; setTimeout(()=>t.remove(),400); }, 4000);
         }
         
-        // ============ CHECK LOGIN ============
-        auth.onAuthStateChanged(user => {
-            if (user && currentStep < 4) {
-                window.location.href = 'dashboard.html';
-            }
-        });
+        updateSteps();
+        
+        auth.onAuthStateChanged(user => { if (user && currentStep<4) window.location.href='dashboard.html'; });
         
         console.log('🔥 THP Teacher Registration Ready');
-        console.log('💳 Razorpay:', RAZORPAY_KEY);
-        console.log('🌐 Backend:', BACKEND_URL);
+        console.log('💳 Payment: razorpay.me/@mohitgupta959');
+        console.log('📋 Admin Approval System Active');
     </script>
 </body>
 </html>
