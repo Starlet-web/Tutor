@@ -15,14 +15,20 @@
     <style>
         :root {
             --primary: #6C5CE7;
+            --primary-light: #8B7CF6;
             --secondary: #00C9A7;
-            --bg: #f8f9fc;
+            --accent: #FF6B6B;
+            --gold: #FFD93D;
+            --bg: #f1f5f9;
             --surface: #ffffff;
             --text: #1a1a2e;
             --text-secondary: #64748b;
-            --border: #e8ecf1;
-            --shadow: 0 2px 10px rgba(0,0,0,0.04);
-            --radius: 16px;
+            --border: #e2e8f0;
+            --shadow: 0 2px 12px rgba(0,0,0,0.04);
+            --shadow-lg: 0 20px 50px rgba(0,0,0,0.1);
+            --radius: 18px;
+            --radius-sm: 12px;
+            --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -32,11 +38,11 @@
             min-height: 100vh;
         }
         
-        /* Header */
-        .top-bar {
-            background: var(--surface);
-            padding: 14px 20px;
-            border-bottom: 1px solid var(--border);
+        /* Top Bar */
+        .topbar {
+            background: #1a1a2e;
+            color: white;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -44,66 +50,76 @@
             gap: 10px;
             position: sticky;
             top: 0;
-            z-index: 50;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
-        .top-bar h1 {
-            font-size: 1.2rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .top-bar .badge {
+        .topbar h1 { font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .topbar .live-badge {
             background: #10b981;
             color: white;
             padding: 3px 10px;
             border-radius: 12px;
             font-size: 0.65rem;
             font-weight: 700;
+            animation: pulse-badge 2s infinite;
+        }
+        @keyframes pulse-badge {
+            0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(16,185,129,0); }
         }
         .btn-logout {
-            padding: 8px 14px;
+            padding: 7px 14px;
             border-radius: 8px;
-            border: 1px solid #fee2e2;
-            background: #fef2f2;
-            color: #dc2626;
-            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: white;
             cursor: pointer;
             font-size: 0.8rem;
             font-family: inherit;
+            transition: all 0.3s;
         }
+        .btn-logout:hover { background: rgba(255,255,255,0.1); }
         
-        /* Main Layout */
-        .main-container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 0 16px;
-        }
+        /* Main Container */
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
         
         /* Stats */
-        .stats-row {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 12px;
             margin-bottom: 20px;
         }
         .stat-card {
             background: var(--surface);
             border-radius: var(--radius);
-            padding: 16px;
+            padding: 18px;
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
             text-align: center;
+            transition: all 0.3s;
         }
-        .stat-card .stat-num {
+        .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
+        .stat-num {
             font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
+            font-weight: 900;
+            letter-spacing: -1px;
         }
-        .stat-card .stat-label {
-            font-size: 0.75rem;
+        .stat-label {
+            font-size: 0.7rem;
             color: var(--text-secondary);
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-change {
+            font-size: 0.65rem;
+            color: #10b981;
+            font-weight: 700;
         }
         
         /* Tabs */
@@ -119,39 +135,42 @@
         }
         .tab-btn {
             flex: 1;
-            padding: 10px;
-            border-radius: 12px;
+            padding: 10px 12px;
+            border-radius: 14px;
             border: none;
             background: transparent;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-secondary);
             transition: all 0.3s;
             font-family: inherit;
             position: relative;
+            white-space: nowrap;
         }
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-        }
+        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(108,92,231,0.3); }
         .tab-badge {
             position: absolute;
-            top: -4px;
-            right: 8px;
+            top: -5px;
+            right: 4px;
             background: #ef4444;
             color: white;
             padding: 1px 6px;
             border-radius: 8px;
             font-size: 0.6rem;
             font-weight: 700;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
         
-        /* Panel */
+        /* Panels */
         .panel {
             background: var(--surface);
             border-radius: var(--radius);
-            padding: 18px;
+            padding: 20px;
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
             margin-bottom: 16px;
@@ -159,10 +178,89 @@
         .panel h3 {
             font-weight: 700;
             font-size: 1rem;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .section-hide { display: none; }
+        
+        /* Edit Form */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        .form-group { margin-bottom: 10px; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108,92,231,0.08);
+            background: white;
+        }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #5A4BD1; transform: translateY(-2px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-outline { background: white; color: var(--text-secondary); border: 2px solid var(--border); }
+        .btn-save { background: #10b981; color: white; }
+        .btn-save:hover { background: #059669; }
+        
+        /* Photo Upload */
+        .photo-upload {
+            text-align: center;
+            cursor: pointer;
+        }
+        .photo-circle {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            margin: 0 auto 8px;
+        }
+        .photo-circle:hover { transform: scale(1.05); border-color: var(--primary); }
+        .photo-placeholder {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; font-weight: 800; color: var(--primary);
+            margin: 0 auto 8px; border: 4px solid white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
         
         /* Chat List */
@@ -171,149 +269,94 @@
             align-items: center;
             gap: 10px;
             padding: 12px;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.3s;
             border: 1px solid transparent;
             margin-bottom: 4px;
+            background: #fafbfc;
         }
-        .chat-item:hover {
-            background: #f8f9fc;
-            border-color: var(--border);
-        }
+        .chat-item:hover { background: white; border-color: var(--primary); box-shadow: var(--shadow); }
+        .chat-item.unread { background: #fef3c7; border-color: #fde68a; }
         .chat-avatar-sm {
-            width: 42px;
-            height: 42px;
+            width: 46px; height: 46px;
             border-radius: 50%;
             background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 0.9rem;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; color: var(--primary); font-size: 1rem;
             flex-shrink: 0;
         }
-        .chat-info {
-            flex: 1;
-            min-width: 0;
+        .chat-avatar-sm img {
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            object-fit: cover;
         }
-        .chat-info h4 {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        .chat-info p {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .chat-time {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            white-space: nowrap;
-        }
+        .chat-info { flex: 1; min-width: 0; }
+        .chat-info h4 { font-weight: 600; font-size: 0.88rem; display: flex; align-items: center; gap: 6px; }
+        .chat-info .parent-phone { font-size: 0.7rem; color: var(--text-secondary); }
+        .chat-info p { color: var(--text-secondary); font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-meta { text-align: right; flex-shrink: 0; }
+        .chat-time { font-size: 0.68rem; color: var(--text-secondary); }
+        .unread-dot { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; display: inline-block; margin-top: 4px; }
         
         /* Chat Window */
         .chat-window {
-            display: flex;
-            flex-direction: column;
-            height: 350px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+            display: flex; flex-direction: column; height: 380px;
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
             overflow: hidden;
         }
         .chat-msgs {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-            background: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            flex: 1; overflow-y: auto; padding: 14px;
+            background: #f8fafc; display: flex; flex-direction: column; gap: 8px;
         }
         .msg-bubble {
-            padding: 8px 14px;
-            border-radius: 16px;
-            font-size: 0.85rem;
-            max-width: 75%;
-            word-wrap: break-word;
+            padding: 10px 16px; border-radius: 18px;
+            font-size: 0.85rem; max-width: 72%; word-wrap: break-word;
+            line-height: 1.4;
         }
         .msg-sent {
             align-self: flex-end;
-            background: var(--primary);
-            color: white;
+            background: var(--primary); color: white;
             border-bottom-right-radius: 4px;
         }
         .msg-received {
             align-self: flex-start;
-            background: white;
-            border-bottom-left-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background: white; border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .msg-sender {
+            font-size: 0.65rem; font-weight: 700; margin-bottom: 2px;
+            color: var(--primary);
         }
         .msg-time {
-            font-size: 0.6rem;
-            opacity: 0.7;
-            margin-top: 2px;
+            font-size: 0.6rem; opacity: 0.7; margin-top: 3px; text-align: right;
         }
         .chat-input-row {
-            display: flex;
-            gap: 8px;
-            padding: 10px;
-            background: white;
-            border-top: 1px solid var(--border);
+            display: flex; gap: 8px; padding: 10px 14px;
+            background: white; border-top: 1px solid var(--border);
         }
         .chat-input-row input {
-            flex: 1;
-            padding: 10px 14px;
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            font-family: inherit;
-            outline: none;
-            font-size: 0.85rem;
+            flex: 1; padding: 10px 14px; border: 2px solid var(--border);
+            border-radius: 20px; font-family: inherit; outline: none; font-size: 0.85rem;
         }
-        .chat-input-row input:focus {
-            border-color: var(--primary);
-        }
+        .chat-input-row input:focus { border-color: var(--primary); }
         .chat-input-row button {
-            padding: 10px 16px;
-            border-radius: 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-family: inherit;
-            font-size: 0.85rem;
+            padding: 10px 16px; border-radius: 20px;
+            background: var(--primary); color: white;
+            border: none; cursor: pointer; font-weight: 600; font-family: inherit;
         }
         
-        .section-hide {
-            display: none;
-        }
         .empty-state {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-secondary);
+            text-align: center; padding: 30px; color: var(--text-secondary);
         }
-        .empty-state i {
-            font-size: 3rem;
-            display: block;
-            margin-bottom: 10px;
-            color: #d0d5dd;
-        }
+        .empty-state i { font-size: 3rem; display: block; margin-bottom: 10px; color: #d0d5dd; }
         
         .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 18px;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            z-index: 9999;
-            font-size: 0.85rem;
-            animation: slideIn 0.3s ease;
+            position: fixed; top: 20px; right: 20px;
+            padding: 12px 18px; border-radius: 12px;
+            color: white; font-weight: 600; z-index: 9999;
+            font-size: 0.85rem; animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .toast.success { background: #10b981; }
         .toast.error { background: #ef4444; }
@@ -322,23 +365,32 @@
             to { transform: translateX(0); opacity: 1; }
         }
         
-        @media (max-width: 600px) {
-            .tabs { flex-wrap: wrap; }
-            .tab-btn { font-size: 0.75rem; padding: 8px; }
+        .spinner {
+            width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white; border-radius: 50%;
+            animation: spin 0.8s linear infinite; display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Rating Stars Animation */
+        .rating-stars {
+            font-size: 1.2rem;
+            color: #f59e0b;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
     <!-- ============ TOP BAR ============ -->
-    <div class="top-bar">
+    <div class="topbar">
         <h1>
-            <i class="fas fa-graduation-cap" style="color:var(--primary);"></i>
+            <i class="fas fa-graduation-cap"></i>
             THP Teacher Panel
-            <span class="badge" id="verifyBadge">Pending</span>
+            <span class="live-badge" id="verifyBadge">⏳ Pending</span>
         </h1>
-        <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-size:0.85rem;color:var(--text-secondary);" id="teacherName"></span>
+        <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:0.85rem;opacity:0.8;" id="teacherNameTop">Teacher</span>
             <button class="btn-logout" onclick="auth.signOut().then(()=>location.href='index.html')">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </button>
@@ -346,47 +398,101 @@
     </div>
 
     <!-- ============ MAIN ============ -->
-    <div class="main-container">
+    <div class="container">
         
         <!-- Stats -->
-        <div class="stats-row">
+        <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-num" id="statViews">0</div>
-                <div class="stat-label">👁️ Profile Views</div>
+                <div class="stat-icon">👁️</div>
+                <div class="stat-num" id="statViews" style="color:#6C5CE7;">0</div>
+                <div class="stat-label">Profile Views</div>
+                <div class="stat-change" id="viewChange">↑ Today</div>
             </div>
             <div class="stat-card">
+                <div class="stat-icon">💬</div>
                 <div class="stat-num" id="statChats" style="color:#f59e0b;">0</div>
-                <div class="stat-label">💬 Messages</div>
+                <div class="stat-label">Total Messages</div>
             </div>
             <div class="stat-card">
-                <div class="stat-num" id="statRating">0.0</div>
-                <div class="stat-label">⭐ Rating</div>
+                <div class="stat-icon">⭐</div>
+                <div class="stat-num" id="statRating" style="color:#f59e0b;">0.0</div>
+                <div class="stat-label">Your Rating</div>
+                <div class="rating-stars" id="ratingStars">☆☆☆☆☆</div>
             </div>
             <div class="stat-card">
+                <div class="stat-icon">👨‍🎓</div>
+                <div class="stat-num" id="statStudents" style="color:#10b981;">0</div>
+                <div class="stat-label">Unique Parents</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
                 <div class="stat-num" style="color:#10b981;">₹200</div>
-                <div class="stat-label">💰 Registered</div>
+                <div class="stat-label">Registration</div>
             </div>
         </div>
         
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('profile')">
-                👤 My Profile
-            </button>
+            <button class="tab-btn active" onclick="switchTab('profile')">👤 Profile</button>
+            <button class="tab-btn" onclick="switchTab('edit')">✏️ Edit Profile</button>
             <button class="tab-btn" onclick="switchTab('chats')">
                 💬 Messages
                 <span class="tab-badge" id="chatBadge" style="display:none;">0</span>
-            </button>
-            <button class="tab-btn" onclick="switchTab('requests')">
-                📩 Requests
             </button>
         </div>
 
         <!-- ============ PROFILE TAB ============ -->
         <div id="profileTab">
             <div class="panel">
-                <h3>📋 My Details</h3>
+                <h3>📋 My Profile Details</h3>
                 <div id="profileContent"><p style="color:var(--text-secondary);">Loading...</p></div>
+            </div>
+        </div>
+
+        <!-- ============ EDIT PROFILE TAB ============ -->
+        <div id="editTab" class="section-hide">
+            <div class="panel">
+                <h3>✏️ Edit Your Profile</h3>
+                
+                <!-- Photo Upload -->
+                <div class="photo-upload" style="margin-bottom:16px;" onclick="document.getElementById('editPhoto').click()">
+                    <input type="file" id="editPhoto" accept="image/*" hidden onchange="previewNewPhoto(event)">
+                    <div id="editPhotoPreview">
+                        <div class="photo-placeholder" id="photoPlaceholder">T</div>
+                    </div>
+                    <p style="font-size:0.75rem;color:var(--primary);font-weight:600;">📸 Click to change photo</p>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group"><label>Full Name</label><input type="text" id="editName"></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="editEmail" readonly style="background:#f0f0f0;"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Phone</label><input type="tel" id="editPhone" maxlength="10"></div>
+                    <div class="form-group"><label>Area</label>
+                        <select id="editArea">
+                            <option>Civil Lines</option><option>Allahpur</option><option>Naini</option>
+                            <option>Jhunsi</option><option>Kareli</option><option>Tagore Town</option>
+                            <option>Near Allahabad University</option><option>Near MNNIT</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Qualification</label>
+                        <select id="editQualification">
+                            <option>B.Ed</option><option>M.Ed</option><option>PhD</option>
+                            <option>M.Sc</option><option>B.Tech</option><option>M.Tech</option>
+                            <option>M.A</option><option>B.A</option><option>B.Sc</option><option>MBA</option><option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Expected Fees (₹/hr)</label><input type="number" id="editFees" min="100"></div>
+                </div>
+                <div class="form-group"><label>Experience</label><textarea id="editExperience" rows="2"></textarea></div>
+                
+                <button class="btn btn-save" id="saveBtn" onclick="saveProfile()">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <span style="font-size:0.75rem;color:#10b981;margin-left:10px;display:none;" id="saveSuccess">✅ Saved!</span>
             </div>
         </div>
 
@@ -394,42 +500,30 @@
         <div id="chatsTab" class="section-hide">
             <!-- Chat List -->
             <div class="panel" id="chatListPanel">
-                <h3>💬 Conversations with Parents/Students</h3>
+                <h3>💬 Parent Conversations</h3>
                 <div id="chatList">
                     <div class="empty-state">
                         <i class="fas fa-inbox"></i>
                         <p>No messages yet</p>
-                        <p style="font-size:0.8rem;">When a parent messages you, it will appear here</p>
+                        <p style="font-size:0.8rem;">When parents message you, they'll appear here with their details</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Chat Window (hidden by default) -->
+            <!-- Chat Window -->
             <div class="panel section-hide" id="chatWindowPanel">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                    <button onclick="closeChat()" style="background:#f1f5f9;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:0.85rem;">
-                        ← Back
-                    </button>
-                    <h3 id="chatWindowTitle">💬 Chat</h3>
+                    <button onclick="closeChat()" class="btn btn-outline" style="padding:6px 14px;font-size:0.8rem;">← Back</button>
+                    <div>
+                        <h3 id="chatWindowTitle" style="margin:0;padding:0;border:none;">💬 Chat</h3>
+                        <p style="font-size:0.7rem;color:var(--text-secondary);" id="chatParentDetails"></p>
+                    </div>
                 </div>
                 <div class="chat-window">
                     <div class="chat-msgs" id="chatMsgs"></div>
                     <div class="chat-input-row">
                         <input type="text" id="chatInput" placeholder="Type reply..." onkeydown="if(event.key==='Enter')sendReply()">
                         <button onclick="sendReply()"><i class="fas fa-paper-plane"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============ REQUESTS TAB ============ -->
-        <div id="requestsTab" class="section-hide">
-            <div class="panel">
-                <h3>📩 Contact Requests</h3>
-                <div id="requestsList">
-                    <div class="empty-state">
-                        <i class="fas fa-envelope"></i>
-                        <p>No contact requests yet</p>
                     </div>
                 </div>
             </div>
@@ -449,76 +543,152 @@
         });
         const db = firebase.firestore();
         const auth = firebase.auth();
+        const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
         
         let teacherData = null;
         let teacherId = null;
+        let allChats = [];
         let activeChatId = null;
         let activePartnerId = null;
+        let activePartnerData = null;
         let unsubscribeChat = null;
-        let allChats = [];
+        let newPhotoFile = null;
+        let uniqueParents = new Set();
 
         // ============ AUTH ============
         auth.onAuthStateChanged(async (user) => {
-            if (!user) {
-                location.href = 'teacher.html';
-                return;
-            }
+            if (!user) { location.href = 'teacher.html'; return; }
             teacherId = user.uid;
             
             const doc = await db.collection('teachers').doc(teacherId).get();
             if (doc.exists) {
                 teacherData = { id: doc.id, ...doc.data() };
-                loadAll();
+                initDashboard();
             } else {
                 location.href = 'teacher.html';
             }
         });
 
-        function loadAll() {
+        function initDashboard() {
             if (!teacherData) return;
             
-            // Name
-            document.getElementById('teacherName').textContent = teacherData.fullName || 'Teacher';
-            
-            // Verified badge
+            // Top bar
+            document.getElementById('teacherNameTop').textContent = teacherData.fullName || 'Teacher';
             const badge = document.getElementById('verifyBadge');
             if (teacherData.isVerified) {
                 badge.textContent = '✅ Verified';
                 badge.style.background = '#10b981';
-            } else {
-                badge.textContent = '⏳ Pending';
-                badge.style.background = '#f59e0b';
             }
             
-            // Stats
+            // Auto increment profile views (2-3 daily)
+            autoIncrementViews();
+            
+            // Update stats
+            updateStats();
+            
+            // Load profile
+            updateProfileView();
+            populateEditForm();
+            
+            // Load chats
+            loadChats();
+            
+            // Update rating based on unique parents
+            updateRating();
+        }
+
+        // ============ AUTO VIEWS ============
+        function autoIncrementViews() {
+            if (!teacherData) return;
+            
+            const today = new Date().toDateString();
+            const lastViewDate = teacherData.lastViewDate || '';
+            
+            if (lastViewDate !== today) {
+                // Add 2-3 random views
+                const newViews = Math.floor(Math.random() * 2) + 2; // 2 or 3
+                const totalViews = (teacherData.profileViews || 0) + newViews;
+                
+                db.collection('teachers').doc(teacherId).update({
+                    profileViews: totalViews,
+                    lastViewDate: today,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    teacherData.profileViews = totalViews;
+                    teacherData.lastViewDate = today;
+                    document.getElementById('statViews').textContent = totalViews;
+                    document.getElementById('viewChange').textContent = `↑ +${newViews} today`;
+                });
+            } else {
+                document.getElementById('statViews').textContent = teacherData.profileViews || 0;
+                document.getElementById('viewChange').textContent = '↑ Today done';
+            }
+        }
+
+        // ============ UPDATE STATS ============
+        function updateStats() {
             document.getElementById('statViews').textContent = teacherData.profileViews || 0;
             document.getElementById('statRating').textContent = (teacherData.rating || 0).toFixed(1);
             
-            // Profile
-            updateProfile();
-            
-            // Load chats
-            loadIncomingChats();
-            
-            // Load requests
-            loadRequests();
+            // Rating stars
+            const rating = teacherData.rating || 0;
+            const stars = ['☆','☆','☆','☆','☆'];
+            const fullStars = Math.floor(rating);
+            for (let i = 0; i < fullStars; i++) stars[i] = '★';
+            if (rating % 1 >= 0.5) stars[fullStars] = '★';
+            document.getElementById('ratingStars').textContent = stars.join('');
         }
 
-        // ============ PROFILE ============
-        function updateProfile() {
+        // ============ RATING SYSTEM ============
+        function updateRating() {
+            if (!teacherId) return;
+            
+            db.collection('chats')
+                .where('participants', 'array-contains', teacherId)
+                .onSnapshot(snapshot => {
+                    uniqueParents.clear();
+                    
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const partnerId = data.participants.find(p => p !== teacherId);
+                        if (partnerId) uniqueParents.add(partnerId);
+                    });
+                    
+                    const parentCount = uniqueParents.size;
+                    document.getElementById('statStudents').textContent = parentCount;
+                    
+                    // Rating = 1 star per 3 parents, max 5
+                    const newRating = Math.min(5, Math.floor(parentCount / 3));
+                    
+                    if ((teacherData.rating || 0) !== newRating) {
+                        db.collection('teachers').doc(teacherId).update({
+                            rating: newRating,
+                            totalReviews: parentCount,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        }).then(() => {
+                            teacherData.rating = newRating;
+                            updateStats();
+                        });
+                    }
+                });
+        }
+
+        // ============ PROFILE VIEW ============
+        function updateProfileView() {
             const pc = document.getElementById('profileContent');
             pc.innerHTML = `
-                <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:start;">
+                <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:start;">
                     ${teacherData.profilePhoto ? 
-                        `<img src="${teacherData.profilePhoto}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid white;box-shadow:0 4px 12px rgba(0,0,0,0.1);">` :
-                        `<div style="width:90px;height:90px;border-radius:50%;background:#e0e7ff;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;color:var(--primary);">${(teacherData.fullName||'T')[0]}</div>`
+                        `<img src="${teacherData.profilePhoto}" style="width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid white;box-shadow:0 8px 25px rgba(0,0,0,0.15);">` :
+                        `<div class="photo-placeholder" style="width:110px;height:110px;font-size:2.5rem;">${(teacherData.fullName||'T')[0]}</div>`
                     }
-                    <div style="flex:1;min-width:200px;font-size:0.9rem;">
+                    <div style="flex:1;min-width:220px;font-size:0.9rem;line-height:1.8;">
                         <p><strong>📛 Name:</strong> ${teacherData.fullName}</p>
                         <p><strong>📧 Email:</strong> ${teacherData.email}</p>
                         <p><strong>📞 Phone:</strong> ${teacherData.phone}</p>
                         <p><strong>📍 Area:</strong> ${teacherData.area}, ${teacherData.city || 'Prayagraj'}</p>
                         <p><strong>🎓 Qualification:</strong> ${teacherData.qualification}</p>
+                        <p><strong>💼 Experience:</strong> ${teacherData.experience}</p>
                         <p><strong>💰 Fees:</strong> ₹${teacherData.expectedFees}/hr</p>
                         <p><strong>📚 Subjects:</strong> ${(teacherData.subjects||[]).join(', ')}</p>
                         <p><strong>🏫 Classes:</strong> ${(teacherData.classes||[]).join(', ')}</p>
@@ -527,34 +697,137 @@
                 </div>`;
         }
 
-        // ============ LOAD INCOMING CHATS ============
-        function loadIncomingChats() {
+        // ============ EDIT FORM ============
+        function populateEditForm() {
+            document.getElementById('editName').value = teacherData.fullName || '';
+            document.getElementById('editEmail').value = teacherData.email || '';
+            document.getElementById('editPhone').value = teacherData.phone || '';
+            document.getElementById('editArea').value = teacherData.area || '';
+            document.getElementById('editQualification').value = teacherData.qualification || '';
+            document.getElementById('editFees').value = teacherData.expectedFees || '';
+            document.getElementById('editExperience').value = teacherData.experience || '';
+            
+            // Photo
+            if (teacherData.profilePhoto) {
+                document.getElementById('editPhotoPreview').innerHTML = `
+                    <img src="${teacherData.profilePhoto}" class="photo-circle">`;
+            } else {
+                document.getElementById('editPhotoPreview').innerHTML = `
+                    <div class="photo-placeholder">${(teacherData.fullName||'T')[0]}</div>`;
+            }
+        }
+
+        function previewNewPhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) { toast('Image only', 'error'); return; }
+            if (file.size > 5*1024*1024) { toast('Max 5MB', 'error'); return; }
+            
+            newPhotoFile = file;
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('editPhotoPreview').innerHTML = `
+                    <img src="${e.target.result}" class="photo-circle">`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ============ SAVE PROFILE ============
+        async function saveProfile() {
+            const btn = document.getElementById('saveBtn');
+            const success = document.getElementById('saveSuccess');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Saving...';
+            success.style.display = 'none';
+            
+            const updates = {
+                fullName: document.getElementById('editName').value.trim(),
+                phone: document.getElementById('editPhone').value.trim(),
+                area: document.getElementById('editArea').value,
+                qualification: document.getElementById('editQualification').value,
+                expectedFees: parseInt(document.getElementById('editFees').value) || 500,
+                experience: document.getElementById('editExperience').value.trim(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            try {
+                // Upload new photo if changed
+                if (newPhotoFile) {
+                    toast('Uploading photo...', 'success');
+                    const fd = new FormData();
+                    fd.append('image', newPhotoFile);
+                    const res = await fetch('https://api.imgbb.com/1/upload?key='+IMGBB_API_KEY, {
+                        method: 'POST', body: fd
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        updates.profilePhoto = data.data.url;
+                    }
+                }
+                
+                await db.collection('teachers').doc(teacherId).update(updates);
+                
+                // Update local data
+                Object.assign(teacherData, updates);
+                updateProfileView();
+                initDashboard();
+                
+                success.style.display = 'inline';
+                toast('✅ Profile updated!', 'success');
+            } catch (e) {
+                toast('Error: ' + e.message, 'error');
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+            setTimeout(() => success.style.display = 'none', 3000);
+        }
+
+        // ============ LOAD CHATS ============
+        function loadChats() {
             if (!teacherId) return;
             
             db.collection('chats')
                 .where('participants', 'array-contains', teacherId)
                 .orderBy('lastMessageTime', 'desc')
-                .onSnapshot(snapshot => {
+                .onSnapshot(async snapshot => {
                     allChats = [];
-                    snapshot.forEach(doc => {
+                    
+                    for (const doc of snapshot.docs) {
                         const data = doc.data();
                         const partnerId = data.participants.find(p => p !== teacherId);
                         if (partnerId) {
+                            // Try to get partner details
+                            let partnerInfo = { name: 'Parent', phone: '', email: '' };
+                            try {
+                                const partnerDoc = await db.collection('teachers').doc(partnerId).get();
+                                if (partnerDoc.exists) {
+                                    const pdata = partnerDoc.data();
+                                    partnerInfo = {
+                                        name: pdata.fullName || 'Parent',
+                                        phone: pdata.phone || '',
+                                        email: pdata.email || ''
+                                    };
+                                }
+                            } catch (e) {}
+                            
                             allChats.push({
                                 chatId: doc.id,
                                 partnerId: partnerId,
+                                partnerName: partnerInfo.name,
+                                partnerPhone: partnerInfo.phone,
+                                partnerEmail: partnerInfo.email,
                                 lastMessage: data.lastMessage || 'No messages',
                                 lastMessageTime: data.lastMessageTime,
                             });
                         }
-                    });
+                    }
                     
-                    updateChatUI();
+                    renderChatList();
                 });
         }
 
-        function updateChatUI() {
-            // Badge
+        function renderChatList() {
             const badge = document.getElementById('chatBadge');
             if (allChats.length > 0) {
                 badge.style.display = 'inline';
@@ -565,38 +838,43 @@
             
             document.getElementById('statChats').textContent = allChats.length;
             
-            // Chat list
             const listDiv = document.getElementById('chatList');
             if (allChats.length === 0) {
                 listDiv.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-inbox"></i>
                         <p>No messages yet</p>
-                        <p style="font-size:0.8rem;">When a parent messages you, it will appear here</p>
+                        <p style="font-size:0.8rem;">Parents will appear here when they message you</p>
                     </div>`;
-            } else {
-                listDiv.innerHTML = allChats.map(c => `
-                    <div class="chat-item" onclick="openChat('${c.chatId}','${c.partnerId}')">
-                        <div class="chat-avatar-sm">👤</div>
-                        <div class="chat-info">
-                            <h4>Parent/Student</h4>
-                            <p>${c.lastMessage}</p>
-                        </div>
-                        <span class="chat-time">${c.lastMessageTime ? new Date(c.lastMessageTime.toDate()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : ''}</span>
-                    </div>`).join('');
+                return;
             }
+            
+            listDiv.innerHTML = allChats.map(c => `
+                <div class="chat-item" onclick="openChat('${c.chatId}','${c.partnerId}','${c.partnerName}','${c.partnerPhone}','${c.partnerEmail}')">
+                    <div class="chat-avatar-sm">${(c.partnerName||'P')[0].toUpperCase()}</div>
+                    <div class="chat-info">
+                        <h4>${c.partnerName} ${c.partnerPhone ? '<span class="parent-phone">📞 '+c.partnerPhone+'</span>' : ''}</h4>
+                        <p>${c.lastMessage}</p>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">${c.lastMessageTime ? new Date(c.lastMessageTime.toDate()).toLocaleDateString() : ''}</div>
+                    </div>
+                </div>`).join('');
         }
 
         // ============ OPEN CHAT ============
-        function openChat(chatId, partnerId) {
+        function openChat(chatId, partnerId, partnerName, partnerPhone, partnerEmail) {
             activeChatId = chatId;
             activePartnerId = partnerId;
+            activePartnerData = { name: partnerName, phone: partnerPhone, email: partnerEmail };
             
-            document.getElementById('chatWindowTitle').textContent = '💬 Chat with Parent/Student';
+            document.getElementById('chatWindowTitle').textContent = `💬 ${partnerName}`;
+            document.getElementById('chatParentDetails').textContent = 
+                `📞 ${partnerPhone} | ✉️ ${partnerEmail}`;
+            
             document.getElementById('chatListPanel').classList.add('section-hide');
             document.getElementById('chatWindowPanel').classList.remove('section-hide');
             
-            // Load messages
             if (unsubscribeChat) unsubscribeChat();
             
             unsubscribeChat = db.collection('chats').doc(activeChatId)
@@ -608,14 +886,17 @@
                     snapshot.forEach(doc => {
                         const msg = doc.data();
                         const isSent = msg.senderId === teacherId;
-                        const time = msg.timestamp ? new Date(msg.timestamp.toDate()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : '';
+                        const time = msg.timestamp ? 
+                            new Date(msg.timestamp.toDate()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : '';
+                        
                         html += `
                             <div class="msg-bubble ${isSent ? 'msg-sent' : 'msg-received'}">
+                                ${!isSent ? `<div class="msg-sender">${partnerName}</div>` : ''}
                                 ${msg.message}
                                 <div class="msg-time">${time}</div>
                             </div>`;
                     });
-                    msgDiv.innerHTML = html || '<p style="text-align:center;color:#999;">Say hello! 👋</p>';
+                    msgDiv.innerHTML = html || '<p style="text-align:center;color:#999;padding:20px;">Start conversation 👋</p>';
                     msgDiv.scrollTop = msgDiv.scrollHeight;
                 });
         }
@@ -625,6 +906,7 @@
             document.getElementById('chatListPanel').classList.remove('section-hide');
             activeChatId = null;
             activePartnerId = null;
+            activePartnerData = null;
             if (unsubscribeChat) { unsubscribeChat(); unsubscribeChat = null; }
         }
 
@@ -653,19 +935,9 @@
             }
         }
 
-        // ============ REQUESTS ============
-        function loadRequests() {
-            // Placeholder for future contact requests
-            document.getElementById('requestsList').innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-envelope"></i>
-                    <p>No contact requests yet</p>
-                </div>`;
-        }
-
         // ============ TABS ============
         function switchTab(tab) {
-            ['profile','chats','requests'].forEach(t => {
+            ['profile','edit','chats'].forEach(t => {
                 document.getElementById(t+'Tab').classList.add('section-hide');
             });
             document.getElementById(tab+'Tab').classList.remove('section-hide');
@@ -685,8 +957,8 @@
             setTimeout(() => t.remove(), 3000);
         }
 
-        console.log('📊 Teacher Dashboard Ready!');
-        console.log('💬 Chat integrated - parents messages will appear here');
+        console.log('👑 Ultimate Teacher Dashboard Ready!');
+        console.log('✨ Features: Edit Profile, Auto Views, Auto Rating, Parent Details');
     </script>
 </body>
 </html>
