@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login | THP Home Tutor</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .login-card {
+            background: rgba(255,255,255,0.97);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+        .login-card .logo {
+            width: 60px; height: 60px;
+            background: var(--primary);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 28px;
+            margin: 0 auto 16px;
+            box-shadow: 0 10px 30px rgba(108,92,231,0.3);
+        }
+        .login-card h2 {
+            font-size: 1.5rem; font-weight: 800; margin-bottom: 6px;
+        }
+        .login-card p {
+            color: #64748b; font-size: 0.9rem; margin-bottom: 24px;
+        }
+        .input-group {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #444;
+            margin-bottom: 4px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        .input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108,92,231,0.1);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            margin-top: 8px;
+        }
+        .btn-login:hover {
+            background: #5A4BD1;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(108,92,231,0.3);
+        }
+        .btn-login:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 8px;
+            display: none;
+        }
+        .links {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .links a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .links a:hover { text-decoration: underline; }
+        .spinner {
+            width: 20px; height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 12px 20px; border-radius: 12px;
+            color: white; font-weight: 600; z-index: 9999;
+            font-size: 0.85rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <!-- Logo -->
+        <div class="logo"><i class="fas fa-graduation-cap"></i></div>
+        <h2>THP Home Tutor</h2>
+        <p>Teacher Login</p>
+        
+        <!-- Login Form -->
+        <div class="input-group">
+            <label>📧 Email</label>
+            <input type="email" id="loginEmail" placeholder="your@email.com" value="">
+        </div>
+        
+        <div class="input-group">
+            <label>🔒 Password</label>
+            <input type="password" id="loginPassword" placeholder="Enter password" onkeydown="if(event.key==='Enter')teacherLogin()">
+        </div>
+        
+        <p class="error-msg" id="errorMsg">Invalid email or password</p>
+        
+        <button class="btn-login" id="loginBtn" onclick="teacherLogin()">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+        
+        <div class="links">
+            <p>New teacher? <a href="teacher.html">Register here • ₹200</a></p>
+            <p style="margin-top:4px;"><a href="index.html">← Back to Home</a></p>
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        // ============ FIREBASE ============
+        firebase.initializeApp({
+            apiKey: "AIzaSyABaZZOMR1-oudAzjGnsN6LvClW5VrkIQY",
+            authDomain: "hometutor-a5c4d.firebaseapp.com",
+            projectId: "hometutor-a5c4d",
+            storageBucket: "hometutor-a5c4d.firebasestorage.app",
+            messagingSenderId: "367381523059",
+            appId: "1:367381523059:web:f4732dcbf1cf6f7993d806"
+        });
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // ============ CHECK IF ALREADY LOGGED IN ============
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                // Check if teacher data exists
+                const doc = await db.collection('teachers').doc(user.uid).get();
+                if (doc.exists && doc.data().paymentStatus === 'paid') {
+                    // Approved teacher → Dashboard
+                    window.location.href = 'dashboard.html';
+                } else if (doc.exists && doc.data().paymentStatus === 'pending') {
+                    // Pending approval
+                    alert('⏳ Your profile is pending approval. Please wait for admin verification.');
+                    auth.signOut();
+                } else {
+                    // Not a teacher
+                    auth.signOut();
+                }
+            }
+        });
+        
+        // ============ LOGIN ============
+        async function teacherLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const errorEl = document.getElementById('errorMsg');
+            const btn = document.getElementById('loginBtn');
+            
+            if (!email || !password) {
+                errorEl.textContent = 'Please enter email and password';
+                errorEl.style.display = 'block';
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Logging in...';
+            errorEl.style.display = 'none';
+            
+            try {
+                // Sign in
+                const userCred = await auth.signInWithEmailAndPassword(email, password);
+                const uid = userCred.user.uid;
+                
+                // Check teacher status
+                const doc = await db.collection('teachers').doc(uid).get();
+                
+                if (doc.exists) {
+                    const data = doc.data();
+                    
+                    if (data.paymentStatus === 'paid' || data.isActive === true) {
+                        // Approved → Go to dashboard
+                        window.location.href = 'dashboard.html';
+                    } else if (data.paymentStatus === 'pending') {
+                        // Pending approval
+                        errorEl.textContent = '⏳ Your profile is pending admin approval. Please wait.';
+                        errorEl.style.display = 'block';
+                        await auth.signOut();
+                    } else if (data.paymentStatus === 'rejected') {
+                        errorEl.textContent = '❌ Your registration was rejected. Contact admin.';
+                        errorEl.style.display = 'block';
+                        await auth.signOut();
+                    } else {
+                        errorEl.textContent = '⚠️ Unknown status. Contact support.';
+                        errorEl.style.display = 'block';
+                        await auth.signOut();
+                    }
+                } else {
+                    errorEl.textContent = 'No teacher profile found. Please register first.';
+                    errorEl.style.display = 'block';
+                    await auth.signOut();
+                }
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    errorEl.textContent = '❌ Invalid email or password. Please try again.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorEl.textContent = '❌ Invalid email format.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorEl.textContent = '⚠️ Too many attempts. Please wait and try again.';
+                } else {
+                    errorEl.textContent = '❌ Login failed: ' + error.message;
+                }
+                
+                errorEl.style.display = 'block';
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        }
+        
+        console.log('🔑 Teacher Login Page Ready');
+    </script>
+</body>
+</html>
