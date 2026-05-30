@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | THP Home Tutor</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #f1f5f9;
+            --surface: #ffffff;
+            --text: #1a1a2e;
+            --border: #e2e8f0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        
+        .admin-header {
+            background: #1a1a2e;
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .admin-header h1 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .admin-header .badge {
+            background: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .btn-logout {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .btn-logout:hover { background: rgba(255,255,255,0.1); }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            padding: 20px 24px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+        }
+        .stat-card .stat-num {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        .stat-card .stat-label {
+            color: #64748b;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 0 24px;
+            border-bottom: 2px solid var(--border);
+            background: white;
+            overflow-x: auto;
+        }
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #64748b;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .tab-btn:hover { color: var(--text); }
+        
+        .table-container {
+            padding: 20px 24px;
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+        .data-table th {
+            background: #f8fafc;
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            border-bottom: 2px solid var(--border);
+        }
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.85rem;
+        }
+        .data-table tr:hover { background: #fafbff; }
+        
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-paid { background: #d1fae5; color: #065f46; }
+        .status-rejected { background: #fee2e2; color: #991b1b; }
+        .status-active { background: #dbeafe; color: #1e40af; }
+        .status-inactive { background: #f1f5f9; color: #64748b; }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .btn-approve { background: #10b981; color: white; }
+        .btn-approve:hover { background: #059669; }
+        .btn-reject { background: #ef4444; color: white; }
+        .btn-reject:hover { background: #dc2626; }
+        .btn-view { background: #6C5CE7; color: white; }
+        .btn-view:hover { background: #5A4BD1; }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+        .modal-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: popIn 0.3s;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            font-size: 0.85rem;
+        }
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .search-box {
+            padding: 10px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            width: 250px;
+            outline: none;
+            font-family: inherit;
+        }
+        .search-box:focus { border-color: var(--primary); }
+        
+        .login-box {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            margin-bottom: 12px;
+            font-family: inherit;
+        }
+        .login-box input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108,92,231,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .data-table { font-size: 0.7rem; }
+            .data-table th, .data-table td { padding: 8px 6px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f1f5f9;">
+        <div class="login-box">
+            <div style="font-size:3rem;margin-bottom:10px;">👑</div>
+            <h2 style="font-weight:800;margin-bottom:6px;">THP Admin Panel</h2>
+            <p style="color:#64748b;margin-bottom:20px;font-size:0.9rem;">Login to manage teachers</p>
+            <input type="email" id="loginEmail" placeholder="Admin Email" value="mgbhaukali@gmail.com">
+            <input type="password" id="loginPassword" placeholder="Password" value="admin123456">
+            <button onclick="adminLogin()" style="width:100%;padding:14px;border-radius:12px;background:#6C5CE7;color:white;font-weight:700;font-size:16px;border:none;cursor:pointer;font-family:inherit;">
+                <i class="fas fa-lock"></i> Login
+            </button>
+            <p id="loginError" style="color:#ef4444;font-size:0.85rem;margin-top:10px;display:none;"></p>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD (hidden until login) -->
+    <div id="adminDashboard" style="display:none;">
+
+        <!-- Header -->
+        <div class="admin-header">
+            <h1>
+                <i class="fas fa-shield-alt"></i> THP Admin Panel
+                <span class="badge">Admin</span>
+            </h1>
+            <div style="display:flex;align-items:center;gap:16px;">
+                <span style="font-size:0.85rem;opacity:0.8;" id="adminEmail">mgbhaukali@gmail.com</span>
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-num" id="statTotal" style="color:#6C5CE7;">0</div>
+                <div class="stat-label">Total Teachers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" id="statPending" style="color:#f59e0b;">0</div>
+                <div class="stat-label">Pending Approval</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" id="statActive" style="color:#10b981;">0</div>
+                <div class="stat-label">Active / Live</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" id="statPaid" style="color:#3b82f6;">0</div>
+                <div class="stat-label">Paid Teachers</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('pending')">⏳ Pending (<span id="countPending">0</span>)</button>
+            <button class="tab-btn" onclick="switchTab('all')">📋 All Teachers</button>
+            <button class="tab-btn" onclick="switchTab('paid')">✅ Paid</button>
+            <button class="tab-btn" onclick="switchTab('active')">🟢 Live</button>
+        </div>
+
+        <!-- Search -->
+        <div style="padding:16px 24px;background:white;">
+            <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search by name, email, area..." oninput="renderTable()">
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Area</th>
+                        <th>Qualification</th>
+                        <th>Fees</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr><td colspan="10" style="text-align:center;padding:30px;">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="detailModal" style="display:none;" onclick="closeModal(event)">
+        <div class="modal-box" id="modalContent"></div>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        // ============ FIREBASE ============
+        firebase.initializeApp({
+            apiKey: "AIzaSyABaZZOMR1-oudAzjGnsN6LvClW5VrkIQY",
+            authDomain: "hometutor-a5c4d.firebaseapp.com",
+            projectId: "hometutor-a5c4d",
+            storageBucket: "hometutor-a5c4d.firebasestorage.app",
+            messagingSenderId: "367381523059",
+            appId: "1:367381523059:web:f4732dcbf1cf6f7993d806"
+        });
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============ ADMIN CREDENTIALS ============
+        const ADMIN_EMAIL = "mgbhaukali@gmail.com";
+        const ADMIN_PASSWORD = "admin123456";
+
+        let allTeachers = [];
+        let currentTab = 'pending';
+
+        // ============ LOGIN ============
+        async function adminLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorEl = document.getElementById('loginError');
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                document.getElementById('adminEmail').textContent = email;
+                loadTeachers();
+            } catch (error) {
+                errorEl.textContent = '❌ ' + error.message;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        function logout() {
+            auth.signOut().then(() => {
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('adminDashboard').style.display = 'none';
+            });
+        }
+
+        // ============ AUTH CHECK ============
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                document.getElementById('adminEmail').textContent = user.email;
+                loadTeachers();
+            }
+        });
+
+        // ============ LOAD ============
+        async function loadTeachers() {
+            const snapshot = await db.collection('teachers').orderBy('submittedAt', 'desc').get();
+            allTeachers = [];
+            snapshot.forEach(doc => {
+                allTeachers.push({ id: doc.id, ...doc.data() });
+            });
+            updateStats();
+            renderTable();
+        }
+
+        function updateStats() {
+            document.getElementById('statTotal').textContent = allTeachers.length;
+            document.getElementById('statPending').textContent = allTeachers.filter(t => t.paymentStatus === 'pending').length;
+            document.getElementById('statActive').textContent = allTeachers.filter(t => t.isActive === true).length;
+            document.getElementById('statPaid').textContent = allTeachers.filter(t => t.paymentStatus === 'paid').length;
+            document.getElementById('countPending').textContent = allTeachers.filter(t => t.paymentStatus === 'pending').length;
+        }
+
+        function getFilteredTeachers() {
+            let filtered = [...allTeachers];
+            if (currentTab === 'pending') filtered = filtered.filter(t => t.paymentStatus === 'pending');
+            if (currentTab === 'paid') filtered = filtered.filter(t => t.paymentStatus === 'paid');
+            if (currentTab === 'active') filtered = filtered.filter(t => t.isActive === true);
+            
+            const search = document.getElementById('searchInput')?.value?.toLowerCase() || '';
+            if (search) {
+                filtered = filtered.filter(t => 
+                    (t.fullName || '').toLowerCase().includes(search) ||
+                    (t.email || '').toLowerCase().includes(search) ||
+                    (t.area || '').toLowerCase().includes(search) ||
+                    (t.phone || '').includes(search)
+                );
+            }
+            return filtered;
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderTable();
+        }
+
+        function renderTable() {
+            const teachers = getFilteredTeachers();
+            const tbody = document.getElementById('tableBody');
+            
+            if (teachers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:40px;color:#999;">
+                    <i class="fas fa-inbox" style="font-size:3rem;display:block;margin-bottom:10px;"></i>
+                    No teachers found
+                </td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = teachers.map(t => `
+                <tr>
+                    <td>
+                        ${t.profilePhoto ? 
+                            `<img src="${t.profilePhoto}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">` :
+                            `<div style="width:36px;height:36px;border-radius:50%;background:#e0e7ff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.7rem;color:#6C5CE7;">${(t.fullName||'T')[0].toUpperCase()}</div>`
+                        }
+                    </td>
+                    <td><strong>${t.fullName || 'N/A'}</strong></td>
+                    <td>${t.email || 'N/A'}</td>
+                    <td>${t.phone || 'N/A'}</td>
+                    <td>${t.area || 'N/A'}</td>
+                    <td>${t.qualification || 'N/A'}</td>
+                    <td>₹${t.expectedFees || 'N/A'}</td>
+                    <td><span class="status-badge status-${t.paymentStatus || 'pending'}">${t.paymentStatus || 'pending'}</span></td>
+                    <td><span class="status-badge ${t.isActive ? 'status-active' : 'status-inactive'}">${t.isActive ? 'LIVE' : 'OFF'}</span></td>
+                    <td style="display:flex;gap:4px;flex-wrap:wrap;">
+                        ${t.paymentStatus === 'pending' ? `
+                            <button class="btn-sm btn-approve" onclick="approveTeacher('${t.id}')">✅</button>
+                            <button class="btn-sm btn-reject" onclick="rejectTeacher('${t.id}')">❌</button>
+                        ` : ''}
+                        ${t.paymentStatus === 'paid' && !t.isActive ? `
+                            <button class="btn-sm btn-approve" onclick="makeLive('${t.id}')">🟢</button>
+                        ` : ''}
+                        ${t.isActive ? `
+                            <button class="btn-sm btn-reject" onclick="deactivateTeacher('${t.id}')">⏸️</button>
+                        ` : ''}
+                        <button class="btn-sm btn-view" onclick="viewDetails('${t.id}')">👁️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ============ ACTIONS ============
+        async function approveTeacher(id) {
+            if (!confirm('✅ Approve & Make LIVE?')) return;
+            await db.collection('teachers').doc(id).update({
+                paymentStatus: 'paid',
+                isActive: true,
+                adminApproved: true,
+                isVerified: true,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            toast('✅ Approved & LIVE!', 'success');
+            loadTeachers();
+        }
+
+        async function makeLive(id) {
+            if (!confirm('🟢 Make LIVE?')) return;
+            await db.collection('teachers').doc(id).update({
+                isActive: true,
+                adminApproved: true,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            toast('🟢 LIVE!', 'success');
+            loadTeachers();
+        }
+
+        async function deactivateTeacher(id) {
+            if (!confirm('⏸️ Deactivate?')) return;
+            await db.collection('teachers').doc(id).update({
+                isActive: false,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            toast('⏸️ Deactivated', 'success');
+            loadTeachers();
+        }
+
+        async function rejectTeacher(id) {
+            if (!confirm('❌ Reject permanently?')) return;
+            await db.collection('teachers').doc(id).update({
+                paymentStatus: 'rejected',
+                isActive: false,
+                adminApproved: false,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            toast('❌ Rejected', 'success');
+            loadTeachers();
+        }
+
+        function viewDetails(id) {
+            const t = allTeachers.find(x => x.id === id);
+            if (!t) return;
+            document.getElementById('modalContent').innerHTML = `
+                <h3 style="margin-bottom:16px;font-weight:800;">👤 ${t.fullName || 'N/A'}</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.85rem;">
+                    <p><strong>Email:</strong> ${t.email}</p>
+                    <p><strong>Phone:</strong> ${t.phone}</p>
+                    <p><strong>City:</strong> Prayagraj</p>
+                    <p><strong>Area:</strong> ${t.area}</p>
+                    <p><strong>Qualification:</strong> ${t.qualification}</p>
+                    <p><strong>Subjects:</strong> ${(t.subjects||[]).join(', ')}</p>
+                    <p><strong>Classes:</strong> ${(t.classes||[]).join(', ')}</p>
+                    <p><strong>Boards:</strong> ${(t.courses||[]).join(', ')}</p>
+                    <p><strong>Fees:</strong> ₹${t.expectedFees}/hr</p>
+                    <p><strong>Payment:</strong> <span class="status-badge status-${t.paymentStatus}">${t.paymentStatus}</span></p>
+                    <p><strong>Status:</strong> <span class="status-badge ${t.isActive?'status-active':'status-inactive'}">${t.isActive?'LIVE':'OFF'}</span></p>
+                </div>
+                ${t.profilePhoto ? `<img src="${t.profilePhoto}" style="width:120px;border-radius:12px;margin-top:12px;">` : ''}
+                <button class="btn-sm btn-reject" style="margin-top:16px;width:100%;padding:10px;" onclick="document.getElementById('detailModal').style.display='none'">Close</button>
+            `;
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        function closeModal(e) {
+            if (e.target === document.getElementById('detailModal')) {
+                document.getElementById('detailModal').style.display = 'none';
+            }
+        }
+
+        function toast(msg, type) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            const t = document.createElement('div');
+            t.className = 'toast ' + type;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') document.getElementById('detailModal').style.display = 'none';
+            if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') adminLogin();
+        });
+
+        console.log('👑 Admin Panel Ready!');
+        console.log('📧 Admin:', ADMIN_EMAIL);
+    </script>
+</body>
+</html>
