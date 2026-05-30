@@ -1,5 +1,5 @@
-// .env file load karo
-require('dotenv').config();
+// dotenv - optional, error ignore
+try { require('dotenv').config(); } catch(e) {}
 
 const express = require('express');
 const cors = require('cors');
@@ -14,7 +14,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-// Razorpay - .env se values lo
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_SurD5cvO25Zbxy',
     key_secret: process.env.RAZORPAY_KEY_SECRET || 'OFTaQp3NmRJ46AvVP5CGxuUE'
@@ -22,11 +21,7 @@ const razorpay = new Razorpay({
 
 // ============ HEALTH CHECK ============
 app.get('/health', (req, res) => {
-    res.json({ 
-        status: 'OK', 
-        time: new Date().toISOString(),
-        env: process.env.NODE_ENV || 'production'
-    });
+    res.json({ status: 'OK', time: new Date().toISOString() });
 });
 
 // ============ CREATE ORDER ============
@@ -39,12 +34,7 @@ app.post('/api/create-order', async (req, res) => {
         };
         const order = await razorpay.orders.create(options);
         console.log('✅ Order:', order.id);
-        res.json({
-            success: true,
-            order_id: order.id,
-            amount: order.amount,
-            currency: order.currency
-        });
+        res.json({ success: true, order_id: order.id, amount: order.amount, currency: order.currency });
     } catch (error) {
         console.error('❌ Order Error:', error);
         res.status(500).json({ success: false, error: error.message });
