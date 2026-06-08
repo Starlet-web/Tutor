@@ -9,21 +9,13 @@
     <link rel="icon" href="https://i.ibb.co/20DRzH4h/IMG-20260530-162843.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com">
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js">
-    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
     <style>
         :root {
             --primary: #6C5CE7;
@@ -70,13 +62,8 @@
         }
         
         @keyframes float-circle {
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-            50% {
-                transform: translate(60px, -80px) scale(1.1);
-            }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(60px, -80px) scale(1.1); }
         }
         
         .glass-card {
@@ -135,9 +122,7 @@
         }
         
         @media(max-width:600px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+            .form-row { grid-template-columns: 1fr; }
         }
         
         .checkbox-pills {
@@ -204,7 +189,7 @@
             color: #fff;
         }
         
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-3px);
             box-shadow: 0 20px 40px rgba(108, 92, 231, 0.4);
         }
@@ -373,27 +358,13 @@
             max-width: 350px;
         }
         
-        .toast.success {
-            background: #10b981;
-        }
-        
-        .toast.error {
-            background: #ef4444;
-        }
-        
-        .toast.info {
-            background: #6C5CE7;
-        }
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
+        .toast.info { background: #6C5CE7; }
         
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         
         .spinner {
@@ -406,11 +377,7 @@
             display: inline-block;
         }
         
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
         .preview-card {
             position: sticky;
@@ -468,20 +435,6 @@
             font-size: 0.75rem;
             font-weight: 600;
             color: #166534;
-        }
-        
-        .animate-pulse-slow {
-            animation: pulse 3s infinite;
-        }
-        
-        @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.7;
-            }
         }
     </style>
 </head>
@@ -570,7 +523,7 @@
                                     </div>
                                     <div class="input-group">
                                         <input type="password" id="password" required placeholder=" " minlength="6" autocomplete="new-password">
-                                        <label>Create Password *</label>
+                                        <label>Create Password * (min 6 characters)</label>
                                     </div>
                                 </div>
 
@@ -579,102 +532,62 @@
                                     <label>City *</label>
                                 </div>
 
-                                <!-- ALL PRAYAGRAJ AREAS -->
                                 <div class="input-group">
                                     <select id="area" required>
                                         <option value="">-- Select Your Area in Prayagraj --</option>
                                         <optgroup label="🏛️ Central Prayagraj">
-                                            <option>Civil Lines</option>
-                                            <option>Katra</option>
-                                            <option>Chowk</option>
-                                            <option>Johnstonganj</option>
-                                            <option>Kydganj</option>
-                                            <option>Muthiganj</option>
-                                            <option>Colonelganj</option>
-                                            <option>Khuldabad</option>
-                                            <option>Zero Road</option>
+                                            <option>Civil Lines</option><option>Katra</option><option>Chowk</option>
+                                            <option>Johnstonganj</option><option>Kydganj</option><option>Muthiganj</option>
+                                            <option>Colonelganj</option><option>Khuldabad</option><option>Zero Road</option>
                                             <option>Leader Road</option>
                                         </optgroup>
                                         <optgroup label="🌆 North Prayagraj">
-                                            <option>Allahpur</option>
-                                            <option>Teliyarganj</option>
-                                            <option>Shivkuti</option>
-                                            <option>Mumfordganj</option>
-                                            <option>Govindpur</option>
-                                            <option>Shankargarh</option>
+                                            <option>Allahpur</option><option>Teliyarganj</option><option>Shivkuti</option>
+                                            <option>Mumfordganj</option><option>Govindpur</option><option>Shankargarh</option>
                                             <option>Manda</option>
                                         </optgroup>
                                         <optgroup label="🌊 South Prayagraj">
-                                            <option>Naini</option>
-                                            <option>Arail</option>
-                                            <option>Dhoomanganj</option>
-                                            <option>Kareli</option>
-                                            <option>Meja Road</option>
-                                            <option>Mirzapur Road</option>
+                                            <option>Naini</option><option>Arail</option><option>Dhoomanganj</option>
+                                            <option>Kareli</option><option>Meja Road</option><option>Mirzapur Road</option>
                                             <option>Bairhana</option>
                                         </optgroup>
                                         <optgroup label="🏘️ West Prayagraj">
-                                            <option>Bamrauli</option>
-                                            <option>Phaphamau</option>
-                                            <option>Rajapur</option>
-                                            <option>Mauaima</option>
-                                            <option>Holagarh</option>
+                                            <option>Bamrauli</option><option>Phaphamau</option><option>Rajapur</option>
+                                            <option>Mauaima</option><option>Holagarh</option>
                                         </optgroup>
                                         <optgroup label="🌄 East Prayagraj">
-                                            <option>Jhunsi</option>
-                                            <option>Soraon</option>
-                                            <option>Handia</option>
-                                            <option>Phulpur</option>
-                                            <option>Sahson</option>
+                                            <option>Jhunsi</option><option>Soraon</option><option>Handia</option>
+                                            <option>Phulpur</option><option>Sahson</option>
                                         </optgroup>
                                         <optgroup label="🏡 Colonies & Townships">
-                                            <option>Trivenipuram</option>
-                                            <option>Karelabagh</option>
-                                            <option>Preetam Nagar</option>
-                                            <option>Tagore Town</option>
-                                            <option>George Town</option>
-                                            <option>Stanley Road</option>
-                                            <option>Lukerganj</option>
-                                            <option>Ashok Nagar</option>
-                                            <option>Rajrooppur</option>
-                                            <option>Darbhanga Colony</option>
-                                            <option>Sulem Sarai</option>
-                                            <option>Shivaji Nagar</option>
+                                            <option>Trivenipuram</option><option>Karelabagh</option><option>Preetam Nagar</option>
+                                            <option>Tagore Town</option><option>George Town</option><option>Stanley Road</option>
+                                            <option>Lukerganj</option><option>Ashok Nagar</option><option>Rajrooppur</option>
+                                            <option>Darbhanga Colony</option><option>Sulem Sarai</option><option>Shivaji Nagar</option>
                                         </optgroup>
                                         <optgroup label="🎓 Near Educational Hubs">
-                                            <option>Near Allahabad University</option>
-                                            <option>Near MNNIT</option>
-                                            <option>Near IIIT Allahabad</option>
-                                            <option>Near SHUATS (AAIDU)</option>
-                                            <option>Near ECC</option>
-                                            <option>Near BBS College</option>
+                                            <option>Near Allahabad University</option><option>Near MNNIT</option>
+                                            <option>Near IIIT Allahabad</option><option>Near SHUATS (AAIDU)</option>
+                                            <option>Near ECC</option><option>Near BBS College</option>
                                         </optgroup>
                                         <optgroup label="🏥 Near Hospitals">
-                                            <option>Near Beli Hospital</option>
-                                            <option>Near SRN Hospital</option>
+                                            <option>Near Beli Hospital</option><option>Near SRN Hospital</option>
                                             <option>Near Kamla Nehru Hospital</option>
                                         </optgroup>
                                         <optgroup label="🛍️ Famous Places">
-                                            <option>Near Sangam (Triveni)</option>
-                                            <option>Near Anand Bhawan</option>
-                                            <option>Near Khusro Bagh</option>
-                                            <option>Near Allahabad Fort</option>
-                                            <option>Near Azad Park</option>
-                                            <option>Near Company Garden</option>
-                                            <option>Near Hanuman Mandir</option>
-                                            <option>Near Alopi Devi Mandir</option>
+                                            <option>Near Sangam (Triveni)</option><option>Near Anand Bhawan</option>
+                                            <option>Near Khusro Bagh</option><option>Near Allahabad Fort</option>
+                                            <option>Near Azad Park</option><option>Near Company Garden</option>
+                                            <option>Near Hanuman Mandir</option><option>Near Alopi Devi Mandir</option>
                                         </optgroup>
                                         <optgroup label="🚉 Near Stations">
-                                            <option>Near Prayagraj Junction</option>
-                                            <option>Near Prayagraj Airport</option>
-                                            <option>Near Civil Lines Bus Stand</option>
-                                            <option>Near Leader Road Bus Stand</option>
+                                            <option>Near Prayagraj Junction</option><option>Near Prayagraj Airport</option>
+                                            <option>Near Civil Lines Bus Stand</option><option>Near Leader Road Bus Stand</option>
                                         </optgroup>
                                     </select>
                                     <label>Area in Prayagraj *</label>
                                 </div>
 
-                                <!-- Profile Photo -->
                                 <div class="mb-3">
                                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                                         Profile Photo * <span style="font-weight:400;color:#999;">(Max 2MB, JPG/PNG)</span>
@@ -689,7 +602,6 @@
                                         <div id="uploadPreview" style="display:none;">
                                             <img id="previewImg" src="" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #6C5CE7;margin:0 auto;">
                                             <p style="color:green;font-size:0.8rem;margin-top:5px;" id="fileNameDisplay"></p>
-                                            <p style="color:#6C5CE7;font-size:0.7rem;cursor:pointer;margin-top:3px;" onclick="event.stopPropagation();document.getElementById('profilePhoto').click();">Change Photo</p>
                                         </div>
                                     </div>
                                 </div>
@@ -705,124 +617,85 @@
                                     <i class="fas fa-briefcase mr-2"></i>Professional Details
                                 </h3>
 
-                                <!-- QUALIFICATION - ADVANCED -->
                                 <div class="input-group">
                                     <select id="qualification" required>
                                         <option value="">-- Select Highest Qualification --</option>
                                         <optgroup label="🎓 Teaching Degrees">
-                                            <option>B.Ed (Bachelor of Education)</option>
-                                            <option>M.Ed (Master of Education)</option>
-                                            <option>D.Ed (Diploma in Education)</option>
-                                            <option>D.El.Ed</option>
+                                            <option>B.Ed (Bachelor of Education)</option><option>M.Ed (Master of Education)</option>
+                                            <option>D.Ed (Diploma in Education)</option><option>D.El.Ed</option>
                                             <option>BTC (Basic Training Certificate)</option>
                                         </optgroup>
                                         <optgroup label="🔬 Science & Technology">
-                                            <option>PhD (Doctor of Philosophy)</option>
-                                            <option>M.Sc (Master of Science)</option>
-                                            <option>B.Sc (Bachelor of Science)</option>
-                                            <option>M.Tech (Master of Technology)</option>
-                                            <option>B.Tech (Bachelor of Technology)</option>
-                                            <option>B.E. (Bachelor of Engineering)</option>
+                                            <option>PhD (Doctor of Philosophy)</option><option>M.Sc (Master of Science)</option>
+                                            <option>B.Sc (Bachelor of Science)</option><option>M.Tech (Master of Technology)</option>
+                                            <option>B.Tech (Bachelor of Technology)</option><option>B.E. (Bachelor of Engineering)</option>
                                             <option>Diploma in Engineering</option>
                                         </optgroup>
                                         <optgroup label="📚 Arts & Humanities">
-                                            <option>M.A. (Master of Arts)</option>
-                                            <option>B.A. (Bachelor of Arts)</option>
+                                            <option>M.A. (Master of Arts)</option><option>B.A. (Bachelor of Arts)</option>
                                         </optgroup>
                                         <optgroup label="💼 Commerce & Management">
-                                            <option>MBA (Master of Business Administration)</option>
-                                            <option>M.Com (Master of Commerce)</option>
-                                            <option>B.Com (Bachelor of Commerce)</option>
-                                            <option>CA (Chartered Accountant)</option>
+                                            <option>MBA (Master of Business Administration)</option><option>M.Com (Master of Commerce)</option>
+                                            <option>B.Com (Bachelor of Commerce)</option><option>CA (Chartered Accountant)</option>
                                             <option>CS (Company Secretary)</option>
                                         </optgroup>
                                         <optgroup label="🏥 Medical">
-                                            <option>MBBS</option>
-                                            <option>BDS</option>
-                                            <option>B.Pharma</option>
-                                            <option>M.Pharma</option>
-                                            <option>B.Sc Nursing</option>
+                                            <option>MBBS</option><option>BDS</option><option>B.Pharma</option>
+                                            <option>M.Pharma</option><option>B.Sc Nursing</option>
                                         </optgroup>
                                         <optgroup label="📖 Currently Pursuing">
-                                            <option>Pursuing PhD</option>
-                                            <option>Pursuing M.Sc</option>
-                                            <option>Pursuing M.A.</option>
-                                            <option>Pursuing B.Ed</option>
-                                            <option>Pursuing B.Tech</option>
-                                            <option>Pursuing B.Sc</option>
-                                            <option>Pursuing B.A.</option>
-                                            <option>Pursuing MBA</option>
+                                            <option>Pursuing PhD</option><option>Pursuing M.Sc</option><option>Pursuing M.A.</option>
+                                            <option>Pursuing B.Ed</option><option>Pursuing B.Tech</option><option>Pursuing B.Sc</option>
+                                            <option>Pursuing B.A.</option><option>Pursuing MBA</option>
                                         </optgroup>
                                         <optgroup label="🎯 Competitive Exams">
-                                            <option>NET Qualified</option>
-                                            <option>JRF Qualified</option>
-                                            <option>CTET Qualified</option>
-                                            <option>UPTET Qualified</option>
-                                            <option>GATE Qualified</option>
+                                            <option>NET Qualified</option><option>JRF Qualified</option><option>CTET Qualified</option>
+                                            <option>UPTET Qualified</option><option>GATE Qualified</option>
                                         </optgroup>
                                         <optgroup label="📜 Other">
-                                            <option>12th Pass (Pursuing Graduation)</option>
-                                            <option>11th Pass (Pursuing 12th)</option>
-                                            <option>Other Professional Degree</option>
-                                            <option>No Formal Degree (Expert by Experience)</option>
+                                            <option>12th Pass (Pursuing Graduation)</option><option>11th Pass (Pursuing 12th)</option>
+                                            <option>Other Professional Degree</option><option>No Formal Degree (Expert by Experience)</option>
                                         </optgroup>
                                     </select>
                                     <label>Highest Qualification *</label>
                                 </div>
 
-                                <!-- EXPERIENCE -->
                                 <div class="input-group">
                                     <textarea id="experience" rows="2" required placeholder=" "></textarea>
                                     <label>Teaching Experience (Years & Details) *</label>
                                 </div>
 
-                                <!-- SUBJECTS - ULTRA ADVANCED -->
                                 <div class="mb-3">
                                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                        Subjects You Teach * <span style="font-weight:400;color:#999;">(Select all that apply)</span>
+                                        Subjects You Teach *
                                     </label>
                                     <div class="checkbox-pills" id="subjectsGroup">
                                         <div><input type="checkbox" id="s1" value="Mathematics"><label for="s1">Mathematics</label></div>
                                         <div><input type="checkbox" id="s2" value="Vedic Maths"><label for="s2">Vedic Maths</label></div>
-                                        <div><input type="checkbox" id="s3" value="Statistics"><label for="s3">Statistics</label></div>
-                                        <div><input type="checkbox" id="s4" value="Physics"><label for="s4">⚡ Physics</label></div>
-                                        <div><input type="checkbox" id="s5" value="Chemistry"><label for="s5">🧪 Chemistry</label></div>
-                                        <div><input type="checkbox" id="s6" value="Biology"><label for="s6">🧬 Biology</label></div>
-                                        <div><input type="checkbox" id="s7" value="English"><label for="s7">📖 English</label></div>
-                                        <div><input type="checkbox" id="s8" value="Hindi"><label for="s8">📝 Hindi</label></div>
-                                        <div><input type="checkbox" id="s9" value="Sanskrit"><label for="s9">🕉️ Sanskrit</label></div>
-                                        <div><input type="checkbox" id="s10" value="History"><label for="s10">📜 History</label></div>
-                                        <div><input type="checkbox" id="s11" value="Geography"><label for="s11">🌍 Geography</label></div>
-                                        <div><input type="checkbox" id="s12" value="Civics"><label for="s12">🏛️ Civics</label></div>
-                                        <div><input type="checkbox" id="s13" value="Political Science"><label for="s13">📋 Pol. Science</label></div>
-                                        <div><input type="checkbox" id="s14" value="Economics"><label for="s14">📊 Economics</label></div>
-                                        <div><input type="checkbox" id="s15" value="Accounts"><label for="s15">🧮 Accounts</label></div>
-                                        <div><input type="checkbox" id="s16" value="Business Studies"><label for="s16">💼 Business Studies</label></div>
-                                        <div><input type="checkbox" id="s17" value="Computer Science"><label for="s17">💻 Computer Science</label></div>
-                                        <div><input type="checkbox" id="s18" value="Information Technology"><label for="s18">🖥️ IT</label></div>
-                                        <div><input type="checkbox" id="s19" value="Programming"><label for="s19">👨‍💻 Programming</label></div>
-                                        <div><input type="checkbox" id="s20" value="Web Development"><label for="s20">🌐 Web Dev</label></div>
-                                        <div><input type="checkbox" id="s21" value="Python"><label for="s21">🐍 Python</label></div>
-                                        <div><input type="checkbox" id="s22" value="Java"><label for="s22">☕ Java</label></div>
-                                        <div><input type="checkbox" id="s23" value="C/C++"><label for="s23">⚙️ C/C++</label></div>
-                                        <div><input type="checkbox" id="s24" value="Data Science"><label for="s24">📈 Data Science</label></div>
-                                        <div><input type="checkbox" id="s25" value="AI/ML"><label for="s25">🤖 AI/ML</label></div>
-                                        <div><input type="checkbox" id="s26" value="Digital Marketing"><label for="s26">📱 Digital Marketing</label></div>
-                                        <div><input type="checkbox" id="s27" value="Graphic Design"><label for="s27">🎨 Graphic Design</label></div>
-                                        <div><input type="checkbox" id="s28" value="Video Editing"><label for="s28">🎬 Video Editing</label></div>
-                                        <div><input type="checkbox" id="s29" value="Music"><label for="s29">🎵 Music</label></div>
-                                        <div><input type="checkbox" id="s30" value="Dance"><label for="s30">💃 Dance</label></div>
-                                        <div><input type="checkbox" id="s31" value="Yoga"><label for="s31">🧘 Yoga</label></div>
-                                        <div><input type="checkbox" id="s32" value="Art & Craft"><label for="s32">🎭 Art & Craft</label></div>
-                                        <div><input type="checkbox" id="s33" value="Abacus"><label for="s33">🧮 Abacus</label></div>
-                                        <div><input type="checkbox" id="s34" value="Spoken English"><label for="s34">🗣️ Spoken English</label></div>
-                                        <div><input type="checkbox" id="s35" value="French"><label for="s35">🇫🇷 French</label></div>
-                                        <div><input type="checkbox" id="s36" value="Urdu"><label for="s36">📝 Urdu</label></div>
-                                        <div><input type="checkbox" id="s37" value="Arabic"><label for="s37">🕌 Arabic</label></div>
+                                        <div><input type="checkbox" id="s3" value="Physics"><label for="s3">⚡ Physics</label></div>
+                                        <div><input type="checkbox" id="s4" value="Chemistry"><label for="s4">🧪 Chemistry</label></div>
+                                        <div><input type="checkbox" id="s5" value="Biology"><label for="s5">🧬 Biology</label></div>
+                                        <div><input type="checkbox" id="s6" value="English"><label for="s6">📖 English</label></div>
+                                        <div><input type="checkbox" id="s7" value="Hindi"><label for="s7">📝 Hindi</label></div>
+                                        <div><input type="checkbox" id="s8" value="Sanskrit"><label for="s8">🕉️ Sanskrit</label></div>
+                                        <div><input type="checkbox" id="s9" value="History"><label for="s9">📜 History</label></div>
+                                        <div><input type="checkbox" id="s10" value="Geography"><label for="s10">🌍 Geography</label></div>
+                                        <div><input type="checkbox" id="s11" value="Economics"><label for="s11">📊 Economics</label></div>
+                                        <div><input type="checkbox" id="s12" value="Accounts"><label for="s12">🧮 Accounts</label></div>
+                                        <div><input type="checkbox" id="s13" value="Computer Science"><label for="s13">💻 Computer Science</label></div>
+                                        <div><input type="checkbox" id="s14" value="Programming"><label for="s14">👨‍💻 Programming</label></div>
+                                        <div><input type="checkbox" id="s15" value="Python"><label for="s15">🐍 Python</label></div>
+                                        <div><input type="checkbox" id="s16" value="Java"><label for="s16">☕ Java</label></div>
+                                        <div><input type="checkbox" id="s17" value="Data Science"><label for="s17">📈 Data Science</label></div>
+                                        <div><input type="checkbox" id="s18" value="Digital Marketing"><label for="s18">📱 Digital Marketing</label></div>
+                                        <div><input type="checkbox" id="s19" value="Graphic Design"><label for="s19">🎨 Graphic Design</label></div>
+                                        <div><input type="checkbox" id="s20" value="Music"><label for="s20">🎵 Music</label></div>
+                                        <div><input type="checkbox" id="s21" value="Dance"><label for="s21">💃 Dance</label></div>
+                                        <div><input type="checkbox" id="s22" value="Yoga"><label for="s22">🧘 Yoga</label></div>
+                                        <div><input type="checkbox" id="s23" value="Spoken English"><label for="s23">🗣️ Spoken English</label></div>
                                     </div>
                                 </div>
 
-                                <!-- CLASSES -->
                                 <div class="mb-3">
                                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                                         Classes You Teach *
@@ -838,11 +711,9 @@
                                         <div><input type="checkbox" id="c8" value="12"><label for="c8">Class 12</label></div>
                                         <div><input type="checkbox" id="c9" value="College"><label for="c9">College/Graduation</label></div>
                                         <div><input type="checkbox" id="c10" value="Competitive"><label for="c10">Competitive Exams</label></div>
-                                        <div><input type="checkbox" id="c11" value="All Ages"><label for="c11">All Ages</label></div>
                                     </div>
                                 </div>
 
-                                <!-- BOARDS -->
                                 <div class="mb-3">
                                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                                         Boards/Courses *
@@ -851,18 +722,14 @@
                                         <div><input type="checkbox" id="b1" value="CBSE"><label for="b1">CBSE</label></div>
                                         <div><input type="checkbox" id="b2" value="ICSE"><label for="b2">ICSE</label></div>
                                         <div><input type="checkbox" id="b3" value="UP Board"><label for="b3">UP Board</label></div>
-                                        <div><input type="checkbox" id="b4" value="Bihar Board"><label for="b4">Bihar Board</label></div>
-                                        <div><input type="checkbox" id="b5" value="JEE Main"><label for="b5">JEE Main</label></div>
-                                        <div><input type="checkbox" id="b6" value="JEE Advanced"><label for="b6">JEE Advanced</label></div>
-                                        <div><input type="checkbox" id="b7" value="NEET"><label for="b7">NEET</label></div>
-                                        <div><input type="checkbox" id="b8" value="CUET"><label for="b8">CUET</label></div>
-                                        <div><input type="checkbox" id="b9" value="NDA"><label for="b9">NDA</label></div>
-                                        <div><input type="checkbox" id="b10" value="SSC"><label for="b10">SSC</label></div>
-                                        <div><input type="checkbox" id="b11" value="Banking"><label for="b11">Banking Exams</label></div>
-                                        <div><input type="checkbox" id="b12" value="Railway"><label for="b12">Railway Exams</label></div>
-                                        <div><input type="checkbox" id="b13" value="UPSC"><label for="b13">UPSC</label></div>
-                                        <div><input type="checkbox" id="b14" value="Olympiad"><label for="b14">Olympiad</label></div>
-                                        <div><input type="checkbox" id="b15" value="NTSE"><label for="b15">NTSE</label></div>
+                                        <div><input type="checkbox" id="b4" value="JEE"><label for="b4">JEE</label></div>
+                                        <div><input type="checkbox" id="b5" value="NEET"><label for="b5">NEET</label></div>
+                                        <div><input type="checkbox" id="b6" value="CUET"><label for="b6">CUET</label></div>
+                                        <div><input type="checkbox" id="b7" value="NDA"><label for="b7">NDA</label></div>
+                                        <div><input type="checkbox" id="b8" value="SSC"><label for="b8">SSC</label></div>
+                                        <div><input type="checkbox" id="b9" value="Banking"><label for="b9">Banking</label></div>
+                                        <div><input type="checkbox" id="b10" value="UPSC"><label for="b10">UPSC</label></div>
+                                        <div><input type="checkbox" id="b11" value="Olympiad"><label for="b11">Olympiad</label></div>
                                     </div>
                                 </div>
 
@@ -902,10 +769,9 @@
                                     <p style="font-weight:700;color:#166534;">
                                         <i class="fas fa-shield-alt"></i> 100% Secure Payment
                                     </p>
-                                    <p style="font-size:0.8rem;color:#166534;">Pay via any UPI app. Your payment is protected. If not approved, refund will be initiated.</p>
+                                    <p style="font-size:0.8rem;color:#166534;">Pay via any UPI app. If not approved, refund will be initiated.</p>
                                 </div>
 
-                                <!-- QR Code -->
                                 <div class="qr-box">
                                     <p style="font-weight:700;margin-bottom:8px;">📱 Scan QR Code to Pay ₹200</p>
                                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=mgbhaukali@oksbi&pn=THPHomeTutor&am=200.00&cu=INR&mode=02"
@@ -914,7 +780,6 @@
                                     <p style="font-size:0.7rem;color:#64748b;margin-top:6px;">Works with Google Pay, PhonePe, Paytm, BHIM</p>
                                 </div>
 
-                                <!-- UPI Copy -->
                                 <div class="upi-copy" onclick="copyUPI()">
                                     <div>
                                         <p style="font-weight:700;color:#166534;">📋 UPI ID</p>
@@ -925,7 +790,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Trust Badges -->
                                 <div class="trust-badges">
                                     <span class="trust-badge"><i class="fas fa-shield-alt"></i> Secure</span>
                                     <span class="trust-badge"><i class="fas fa-check-circle"></i> Verified</span>
@@ -933,14 +797,13 @@
                                     <span class="trust-badge"><i class="fas fa-history"></i> 30min Approval</span>
                                 </div>
 
-                                <!-- Payer Name -->
                                 <div class="input-group" style="margin-top:8px;">
                                     <input type="text" id="payerName" required placeholder=" " style="background:#fffbeb;border-color:#fde68a;">
                                     <label>Your Name (as on UPI/GPay) *</label>
                                 </div>
 
                                 <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px;margin:10px 0;font-size:0.8rem;color:#92400e;">
-                                    <i class="fas fa-info-circle"></i> After payment, check the box below and submit. Profile live within <strong>30 minutes</strong> after verification.
+                                    <i class="fas fa-info-circle"></i> After payment, submit your profile. We'll verify and activate within <strong>30 minutes</strong>.
                                 </div>
 
                                 <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin-bottom:8px;">
@@ -966,21 +829,23 @@
 
                             <!-- ============ STEP 4: SUCCESS ============ -->
                             <div id="step4Content" class="hidden-step text-center py-8">
-                                <div style="font-size:4rem;">⏳</div>
-                                <h3 class="text-2xl font-black mb-2">Profile Submitted Successfully!</h3>
-                                <p class="text-gray-600 mb-3">Your profile is under review - Live within 30 minutes</p>
+                                <div style="font-size:4rem;">✅</div>
+                                <h3 class="text-2xl font-black mb-2">Registration Successful!</h3>
+                                <p class="text-gray-600 mb-3">Your profile has been submitted for review</p>
                                 <div style="background:#fffbeb;border:2px solid #fde68a;border-radius:14px;padding:14px;margin:14px 0;display:inline-block;">
                                     <p style="font-weight:700;color:#92400e;">📋 What's Next?</p>
-                                    <p style="font-size:0.85rem;color:#92400e;">Admin verifies payment → Profile goes <strong>LIVE</strong> → Start receiving student requests</p>
+                                    <p style="font-size:0.85rem;color:#92400e;">1. Admin verifies your payment</p>
+                                    <p style="font-size:0.85rem;color:#92400e;">2. Profile goes <strong>LIVE</strong> within 30 minutes</p>
+                                    <p style="font-size:0.85rem;color:#92400e;">3. Start receiving student requests</p>
                                 </div>
                                 <div style="background:#f0edff;border-radius:14px;padding:14px;display:inline-block;margin-bottom:18px;">
                                     <p style="font-size:0.8rem;color:#666;">Your Reference ID</p>
                                     <p style="font-size:1.3rem;font-weight:900;color:#6C5CE7;" id="teacherIdDisplay">---</p>
                                 </div>
                                 <br>
-                                <a href="dashboard.html" class="btn btn-primary" style="display:inline-flex;width:auto;text-decoration:none;">
-                                    Go to Dashboard <i class="fas fa-arrow-right"></i>
-                                </a>
+                                <button onclick="window.location.href='index.html'" class="btn btn-primary" style="display:inline-flex;width:auto;">
+                                    <i class="fas fa-home"></i> Back to Home
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -1010,7 +875,6 @@
 
     <script>
         // ============ FIREBASE CONFIGURATION ============
-        // IMPORTANT: Replace with your actual Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyABaZZOMR1-oudAzjGnsN6LvClW5VrkIQY",
             authDomain: "hometutor-a5c4d.firebaseapp.com",
@@ -1021,15 +885,28 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-        const storage = firebase.storage();
+        try {
+            firebase.initializeApp(firebaseConfig);
+            console.log('✅ Firebase initialized successfully');
+        } catch (error) {
+            console.error('❌ Firebase initialization error:', error);
+            showToast('System initialization error. Please refresh the page.', 'error');
+        }
 
+        const db = firebase.firestore();
+        
         // Enable offline persistence
-        db.enablePersistence()
-            .then(() => console.log('Offline persistence enabled'))
-            .catch((err) => console.warn('Offline persistence failed:', err));
+        db.enablePersistence({ synchronizeTabs: true })
+            .then(() => console.log('✅ Offline persistence enabled'))
+            .catch((err) => {
+                if (err.code === 'failed-precondition') {
+                    console.warn('⚠️ Multiple tabs open, persistence can only be enabled in one tab at a time.');
+                } else if (err.code === 'unimplemented') {
+                    console.warn('⚠️ Browser does not support offline persistence');
+                } else {
+                    console.warn('⚠️ Offline persistence error:', err);
+                }
+            });
 
         // IMGBB API Key for image upload
         const IMGBB_KEY = "53fb01955a45c5462724b8f7d238500a";
@@ -1038,32 +915,24 @@
         let step = 1;
         let imgFile = null;
         let imgUrl = '';
-        let regData = {};
 
         // Initialize AOS
-        AOS.init({
-            duration: 800,
-            once: true
-        });
+        AOS.init({ duration: 800, once: true });
 
         // ============ STEP NAVIGATION ============
         function goToStep(s) {
-            // Validate previous steps
             if (s > step) {
                 if (step === 1 && !validateStep1()) return;
                 if (step === 2 && !validateStep2()) return;
             }
 
-            // Hide all steps
             ['step1Content', 'step2Content', 'step3Content', 'step4Content'].forEach(id => {
                 document.getElementById(id).classList.add('hidden-step');
             });
 
-            // Show current step
             document.getElementById('step' + s + 'Content').classList.remove('hidden-step');
             step = s;
 
-            // Update step indicators
             for (let i = 1; i <= 4; i++) {
                 const dot = document.getElementById('stepDot' + i);
                 dot.classList.remove('active', 'done');
@@ -1143,8 +1012,7 @@
         }
 
         function isValidEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
         function getCheckedValues(groupId) {
@@ -1160,13 +1028,11 @@
         });
 
         function handleFileUpload(file) {
-            // Validate file type
             if (!file.type.match(/image\/(jpeg|png|jpg)/)) {
                 showToast('Please upload a JPG or PNG image only', 'error');
                 return;
             }
 
-            // Validate file size (2MB)
             if (file.size > 2 * 1024 * 1024) {
                 showToast('File size must be less than 2MB', 'error');
                 return;
@@ -1197,7 +1063,7 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Upload failed with status: ' + response.status);
                 }
 
                 const data = await response.json();
@@ -1208,7 +1074,7 @@
                 }
             } catch (error) {
                 console.error('Image upload error:', error);
-                // Fallback: Convert to base64 if upload fails
+                // Fallback to base64
                 return await convertToBase64(file);
             }
         }
@@ -1226,20 +1092,19 @@
         function copyUPI() {
             const upiId = 'mgbhaukali@oksbi';
             navigator.clipboard.writeText(upiId).then(() => {
-                showToast('UPI ID Copied! Open any UPI app to pay ₹200', 'success');
+                showToast('✅ UPI ID Copied! Open any UPI app to pay ₹200', 'success');
             }).catch(() => {
-                // Fallback for older browsers
                 const tempInput = document.createElement('input');
                 tempInput.value = upiId;
                 document.body.appendChild(tempInput);
                 tempInput.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempInput);
-                showToast('UPI ID Copied! Open any UPI app to pay ₹200', 'success');
+                showToast('✅ UPI ID Copied! Open any UPI app to pay ₹200', 'success');
             });
         }
 
-        // ============ REGISTRATION ============
+        // ============ MAIN REGISTRATION FUNCTION ============
         async function registerTeacher() {
             // Final validation
             if (!document.getElementById('paymentConfirm').checked) {
@@ -1254,15 +1119,15 @@
             const btn = document.getElementById('registerBtn');
             const originalText = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Processing...';
+            btn.innerHTML = '<span class="spinner"></span> Submitting...';
 
             try {
                 // Collect all data
-                regData = {
+                const teacherData = {
                     fullName: document.getElementById('fullName').value.trim(),
                     email: document.getElementById('email').value.trim(),
                     phone: document.getElementById('phone').value.trim(),
-                    password: document.getElementById('password').value.trim(),
+                    password: document.getElementById('password').value.trim(), // For admin reference only
                     city: 'Prayagraj',
                     area: document.getElementById('area').value,
                     qualification: document.getElementById('qualification').value,
@@ -1271,28 +1136,7 @@
                     classes: getCheckedValues('classesGroup'),
                     courses: getCheckedValues('coursesGroup'),
                     expectedFees: parseInt(document.getElementById('expectedFees').value),
-                    payerName: document.getElementById('payerName').value.trim() || 'Not provided'
-                };
-
-                // Show loading overlay
-                showLoadingOverlay('Creating your account...');
-
-                // Upload image first if not already uploaded
-                if (!imgUrl && imgFile) {
-                    updateLoadingText('Uploading profile photo...');
-                    imgUrl = await uploadImageToImgBB(imgFile);
-                }
-
-                // Create authentication account
-                updateLoadingText('Creating your account...');
-                const userCredential = await auth.createUserWithEmailAndPassword(regData.email, regData.password);
-                const uid = userCredential.user.uid;
-
-                // Save teacher data to Firestore
-                updateLoadingText('Saving your profile...');
-                const teacherData = {
-                    ...regData,
-                    profilePhoto: imgUrl || '',
+                    payerName: document.getElementById('payerName').value.trim() || 'Not provided',
                     paymentStatus: 'pending',
                     paymentMethod: 'UPI (mgbhaukali@oksbi)',
                     paymentAmount: 200,
@@ -1309,36 +1153,52 @@
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
 
-                // Remove password from Firestore (security best practice)
-                delete teacherData.password;
+                // Upload image if not already done
+                showLoadingOverlay('Uploading profile photo...');
+                if (!imgUrl && imgFile) {
+                    imgUrl = await uploadImageToImgBB(imgFile);
+                }
+                teacherData.profilePhoto = imgUrl || '';
 
-                await db.collection('teachers').doc(uid).set(teacherData);
+                // Generate unique ID
+                const teacherId = 'THP' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 8).toUpperCase();
 
-                // Create payment request record
-                updateLoadingText('Recording payment...');
+                // Save to Firestore using email as document ID (simpler approach)
+                updateLoadingText('Saving your profile...');
+                
+                // Check if email already exists
+                const emailDoc = await db.collection('teachers').where('email', '==', teacherData.email).get();
+                
+                if (!emailDoc.empty) {
+                    throw new Error('This email is already registered. Please use a different email.');
+                }
+
+                // Save teacher data
+                await db.collection('teachers').doc(teacherId).set({
+                    ...teacherData,
+                    teacherId: teacherId
+                });
+
+                // Create payment record
+                updateLoadingText('Recording payment information...');
                 await db.collection('paymentRequests').add({
-                    teacherId: uid,
-                    teacherName: regData.fullName,
-                    teacherEmail: regData.email,
-                    teacherPhone: regData.phone,
+                    teacherId: teacherId,
+                    teacherName: teacherData.fullName,
+                    teacherEmail: teacherData.email,
+                    teacherPhone: teacherData.phone,
                     amount: 200,
-                    payerName: regData.payerName,
+                    payerName: teacherData.payerName,
                     status: 'pending',
                     paymentMethod: 'UPI',
                     upiId: 'mgbhaukali@oksbi',
-                    submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    verifiedAt: null,
-                    verifiedBy: null
+                    submittedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                // Success
+                // Success!
                 hideLoadingOverlay();
-                document.getElementById('teacherIdDisplay').textContent = uid.substring(0, 10);
+                document.getElementById('teacherIdDisplay').textContent = teacherId;
                 goToStep(4);
-                showToast('✅ Profile submitted successfully! You will be notified once approved.', 'success');
-
-                // Optional: Send email notification (if you have a backend)
-                // sendNotificationEmail(regData.email, uid);
+                showToast('✅ Registration successful! Your profile will be reviewed shortly.', 'success');
 
             } catch (error) {
                 console.error('Registration error:', error);
@@ -1346,28 +1206,22 @@
                 btn.disabled = false;
                 btn.innerHTML = originalText;
 
-                // Handle specific Firebase errors
-                switch (error.code) {
-                    case 'auth/email-already-in-use':
-                        showToast('This email is already registered. Please use a different email.', 'error');
-                        break;
-                    case 'auth/invalid-email':
-                        showToast('Invalid email address. Please check and try again.', 'error');
-                        break;
-                    case 'auth/weak-password':
-                        showToast('Password is too weak. Please use at least 6 characters.', 'error');
-                        break;
-                    case 'auth/network-request-failed':
-                        showToast('Network error. Please check your internet connection and try again.', 'error');
-                        break;
-                    default:
-                        showToast('Registration failed: ' + (error.message || 'Unknown error'), 'error');
+                let errorMessage = 'Registration failed. Please try again.';
+                
+                if (error.message.includes('email is already registered')) {
+                    errorMessage = 'This email is already registered. Please use a different email.';
+                } else if (error.message.includes('permission-denied')) {
+                    errorMessage = 'Database permission error. Please contact support.';
+                } else if (error.message.includes('unavailable') || error.message.includes('network')) {
+                    errorMessage = 'Network error. Please check your connection and try again.';
                 }
+                
+                showToast('❌ ' + errorMessage, 'error');
             }
         }
 
         // ============ UI HELPERS ============
-        function showLoadingOverlay(message = 'Loading...') {
+        function showLoadingOverlay(message = 'Processing...') {
             const overlay = document.createElement('div');
             overlay.className = 'loading-overlay';
             overlay.id = 'loadingOverlay';
@@ -1390,17 +1244,12 @@
 
         function hideLoadingOverlay() {
             const overlay = document.getElementById('loadingOverlay');
-            if (overlay) {
-                overlay.remove();
-            }
+            if (overlay) overlay.remove();
         }
 
         function showToast(message, type = 'info') {
-            // Remove existing toast
             const existingToast = document.querySelector('.toast');
-            if (existingToast) {
-                existingToast.remove();
-            }
+            if (existingToast) existingToast.remove();
 
             const toast = document.createElement('div');
             toast.className = 'toast ' + type;
@@ -1412,11 +1261,10 @@
             toast.innerHTML = '<i class="fas ' + icons[type] + '"></i> ' + message;
             document.body.appendChild(toast);
 
-            // Auto remove after 4 seconds
             setTimeout(() => {
                 toast.style.animation = 'slideIn .4s ease reverse';
                 setTimeout(() => toast.remove(), 400);
-            }, 4000);
+            }, 5000);
         }
 
         // ============ LIVE PREVIEW UPDATES ============
@@ -1450,19 +1298,12 @@
             document.getElementById('previewFees').textContent = this.value ? '₹' + this.value + '/hour' : 'Fees/hour';
         });
 
-        // ============ AUTH STATE LISTENER ============
-        auth.onAuthStateChanged(function(user) {
-            if (user && step < 4) {
-                // User is already logged in, redirect to dashboard
-                window.location.href = 'dashboard.html';
-            }
-        });
-
         // ============ INITIALIZATION ============
-        console.log('🔥 THP Advanced Teacher Registration System Ready');
-        console.log('📋 Features: Firebase Auth, Firestore, Image Upload, Offline Support, Validation');
-        console.log('🔒 Security: HTTPS, Data Encryption, Input Validation');
-        console.log('💳 Payment: UPI Integration with Verification');
+        console.log('🔥 THP Teacher Registration System Ready');
+        console.log('✅ Using Firestore for data storage');
+        console.log('✅ Offline support enabled');
+        console.log('✅ Image upload via IMGBB');
+        console.log('✅ UPI Payment: mgbhaukali@oksbi');
     </script>
 </body>
 </html>
