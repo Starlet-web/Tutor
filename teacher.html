@@ -23,6 +23,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <style>
         :root {
             --bg: #0A0A14;
@@ -261,18 +262,26 @@
                                 <div class="btn-group"><button class="btn btn-ghost" type="button" onclick="window.goToStep(1)" style="flex:1"><i class="fas fa-arrow-left"></i> Back</button><button class="btn btn-primary" type="button" onclick="window.goToStep(3)" style="flex:2">Continue to Payment <i class="fas fa-arrow-right"></i></button></div>
                             </div>
 
-                            <!-- STEP 3 -->
+                            <!-- STEP 3 (RAZORPAY PAYMENT) -->
                             <div id="step3Content" class="hidden-step">
-                                <div class="flex items-center gap-3 mb-6"><div class="s-icon g"><i class="fas fa-credit-card"></i></div><div><h3 class="text-xl font-bold text-white">Secure Payment</h3><p class="text-xs text-gray-500 mt-0.5">One-time registration fee</p></div></div>
+                                <div class="flex items-center gap-3 mb-6"><div class="s-icon g"><i class="fas fa-credit-card"></i></div><div><h3 class="text-xl font-bold text-white">Secure Payment</h3><p class="text-xs text-gray-500 mt-0.5">One-time registration fee via Razorpay</p></div></div>
                                 <div class="receipt"><h4 class="font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-receipt text-purple-400"></i> Payment Summary</h4><div class="receipt-row"><span class="text-gray-400">Registration Fee</span><span class="font-semibold text-white">₹200.00</span></div><div class="receipt-row"><span class="text-gray-400">Platform Fee</span><span class="text-green-400 font-bold">FREE</span></div><div class="receipt-row"><span class="text-gray-400">Profile Verification</span><span class="text-green-400 font-bold">FREE</span></div><div class="receipt-div"></div><div class="receipt-row text-lg"><span class="font-black text-white">Total Amount</span><span class="font-black text-purple-400">₹200.00</span></div></div>
-                                <div class="bg-green-400/5 border border-green-400/20 rounded-xl p-3 mb-4"><p class="font-bold text-green-400 flex items-center gap-2"><i class="fas fa-shield-halved"></i> 100% Secure & Protected</p><p class="text-sm text-green-400/70 mt-1">Pay using any UPI app. Full refund if profile is not approved.</p></div>
-                                <div class="qr-wrap"><p class="font-bold text-white mb-3 text-lg">📱 Scan QR Code to Pay ₹200</p><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=mgbhaukali@oksbi&pn=THPHomeTutor&am=200.00&cu=INR&mode=02" alt="QR Code" loading="lazy" width="200" height="200" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%230D0D1F%22 rx=%2210%22/%3E%3Ctext x=%2250%25%22 y=%2245%25%22 text-anchor=%22middle%22 fill=%22%237C5CFC%22 font-size=%2220%22 font-weight=%22bold%22%3E₹200%3C/text%3E%3Ctext x=%2250%25%22 y=%2260%25%22 text-anchor=%22middle%22 fill=%22%236B6780%22 font-size=%2212%22%3Emgbhaukali@oksbi%3C/text%3E%3C/svg%3E';"><p class="text-xs text-gray-500 mt-3 font-medium">Google Pay • PhonePe • Paytm • BHIM • All UPI Apps</p></div>
-                                <div class="upi-copy" onclick="window.copyUPI()" role="button" tabindex="0"><div><p class="font-bold text-green-400 text-sm">📋 UPI ID</p><p class="text-purple-400 font-bold text-lg">mgbhaukali@oksbi</p></div><div class="copy-btn"><i class="fas fa-copy"></i> Copy</div></div>
-                                <div class="chips"><span class="chip"><i class="fas fa-shield-halved"></i> 256-bit SSL</span><span class="chip"><i class="fas fa-circle-check"></i> Verified Merchant</span><span class="chip"><i class="fas fa-lock"></i> Encrypted</span><span class="chip"><i class="fas fa-clock"></i> 30min Approval</span></div>
-                                <div class="input-box mt-2"><input type="text" id="payerName" required placeholder="Name as on UPI app" style="background:rgba(255,184,0,0.05);border-color:rgba(255,184,0,0.3);"><label>Your Name (as on UPI) *</label><span class="err">Required</span></div>
-                                <div class="bg-yellow-400/5 border border-yellow-400/20 rounded-xl p-3 my-3 text-sm text-yellow-400/80 flex items-start gap-2"><i class="fas fa-circle-info text-yellow-400 mt-0.5"></i><span>After payment, submit your profile. We'll verify and activate within <strong class="text-yellow-400">30 minutes</strong>.</span></div>
+                                
+                                <div class="bg-green-400/5 border border-green-400/20 rounded-xl p-3 mb-4"><p class="font-bold text-green-400 flex items-center gap-2"><i class="fas fa-shield-halved"></i> 100% Secure & Protected</p><p class="text-sm text-green-400/70 mt-1">Pay securely using Razorpay. UPI, Cards, Netbanking accepted. Full refund if profile is not approved.</p></div>
+                                
+                                <!-- Razorpay payment button replaces UPI QR -->
+                                <button class="btn btn-primary mb-2" type="button" id="razorpayBtn" onclick="window.initiateRazorpay()">
+                                    <i class="fas fa-lock"></i> Pay ₹200 Securely with Razorpay
+                                </button>
+                                
+                                <div class="chips"><span class="chip"><i class="fas fa-shield-halved"></i> 256-bit SSL</span><span class="chip"><i class="fas fa-circle-check"></i> Razorpay Trusted</span><span class="chip"><i class="fas fa-credit-card"></i> UPI/Cards/Netbanking</span><span class="chip"><i class="fas fa-clock"></i> Instant Activation</span></div>
+                                
+                                <div class="input-box mt-2"><input type="text" id="payerName" required placeholder="Name as on payment method" style="background:rgba(255,184,0,0.05);border-color:rgba(255,184,0,0.3);"><label>Your Name (for payment record) *</label><span class="err">Required</span></div>
+                                <div class="bg-yellow-400/5 border border-yellow-400/20 rounded-xl p-3 my-3 text-sm text-yellow-400/80 flex items-start gap-2"><i class="fas fa-circle-info text-yellow-400 mt-0.5"></i><span>Click the button above to pay ₹200 via Razorpay. After successful payment, your profile will be submitted for review.</span></div>
+                                
                                 <label class="flex items-start gap-2 cursor-pointer mb-2 p-2 rounded-xl hover:bg-white/3 transition-all"><input type="checkbox" id="termsAgree" class="mt-0.5 w-4 h-4 accent-purple-500 rounded"><span class="text-sm text-gray-400">I agree to the <a href="#" class="text-purple-400 font-semibold hover:underline">Terms of Service</a> and <a href="#" class="text-purple-400 font-semibold hover:underline">Privacy Policy</a>. ₹200 fee is non-refundable after profile activation.</span></label>
-                                <label class="flex items-start gap-2 cursor-pointer mb-4 p-3 rounded-xl bg-green-400/5 border border-green-400/20 transition-all hover:bg-green-400/10"><input type="checkbox" id="paymentConfirm" class="mt-0.5 w-4 h-4 accent-green-400 rounded" onchange="document.getElementById('registerBtn').disabled=!this.checked"><span class="text-sm text-green-400 font-bold">✅ I have paid ₹200 to mgbhaukali@oksbi. Submit my profile for approval.</span></label>
+                                <label class="flex items-start gap-2 cursor-pointer mb-4 p-3 rounded-xl bg-green-400/5 border border-green-400/20 transition-all hover:bg-green-400/10"><input type="checkbox" id="paymentConfirm" class="mt-0.5 w-4 h-4 accent-green-400 rounded" onchange="document.getElementById('registerBtn').disabled=!this.checked"><span class="text-sm text-green-400 font-bold">✅ I understand that I must pay ₹200 via Razorpay to complete registration. Submit my profile for approval.</span></label>
+                                
                                 <button class="btn btn-primary" id="registerBtn" type="button" onclick="window.registerTeacher()" disabled><i class="fas fa-paper-plane"></i> Submit Profile for Approval</button>
                                 <div class="btn-group"><button class="btn btn-ghost" type="button" onclick="window.goToStep(2)" style="flex:1"><i class="fas fa-arrow-left"></i> Back</button></div>
                             </div>
@@ -320,7 +329,10 @@
             return false;
         };
 
-        // Main Application
+        // ============ CONSTANTS ============
+        const RAZORPAY_KEY_ID = 'rzp_live_T7tknhaLrGXKDS'; // RAZORPAY KEY
+        const REG_FEE = 200;
+        
         (function(){
             'use strict';
             console.log('🚀 THP Registration System Starting...');
@@ -338,344 +350,130 @@
             let db = null;
             let firebaseReady = false;
             
-            // Initialize Firebase
             try {
                 if (typeof firebase !== 'undefined') {
-                    firebase.initializeApp(firebaseConfig);
+                    if (!firebase.apps.length) {
+                        firebase.initializeApp(firebaseConfig);
+                    }
                     db = firebase.firestore();
                     firebaseReady = true;
-                    console.log('✅ Firebase Connected Successfully');
+                    console.log('✅ Firebase Connected');
                     
-                    // Enable offline persistence
-                    db.enablePersistence({synchronizeTabs: true})
-                        .then(() => console.log('✅ Offline Mode Ready'))
-                        .catch((err) => {
-                            if (err.code === 'failed-precondition') {
-                                console.warn('⚠️ Multiple tabs open - using single tab mode');
-                            } else if (err.code === 'unimplemented') {
-                                console.warn('⚠️ Browser doesn\'t support offline mode');
-                            }
-                        });
-                } else {
-                    console.error('❌ Firebase SDK Not Loaded');
-                    toast('System initializing... Please refresh if issues persist', 'info');
+                    db.enablePersistence({synchronizeTabs: true}).catch((err) => {
+                        if (err.code === 'failed-precondition') console.warn('Multi-tab persistence unavailable');
+                    });
                 }
             } catch(e) {
-                console.error('❌ Firebase Error:', e.message);
+                console.error('Firebase init error:', e);
                 firebaseReady = false;
-                toast('Running in offline mode - data will sync later', 'info');
             }
 
-            // ============ CONSTANTS ============
-            const IMGBB_KEY = '53fb01955a45c5462724b8f7d238500a';
-            const UPI_ID = 'mgbhaukali@oksbi';
-            const REG_FEE = 200;
-            
-            // ============ STATE MANAGEMENT ============
+            // ============ STATE ============
             let step = 1;
             let imgFile = null;
             let imgUrl = '';
+            let razorpayPaymentId = null;
+            let razorpayOrderId = null;
+            let razorpaySignature = null;
 
             // ============ INITIALIZE ANIMATIONS ============
             try {
-                if (typeof AOS !== 'undefined') {
-                    AOS.init({
-                        duration: 800,
-                        once: true,
-                        offset: 60
-                    });
-                    console.log('✅ AOS Animations Ready');
-                }
-                
-                if (typeof gsap !== 'undefined') {
-                    gsap.registerPlugin(ScrollTrigger);
-                    console.log('✅ GSAP Animations Ready');
-                }
-            } catch(e) {
-                console.warn('Animation libraries loading...');
-            }
+                if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 60 });
+                if (typeof gsap !== 'undefined') gsap.registerPlugin(ScrollTrigger);
+            } catch(e) { console.warn('Animation libs loading...'); }
 
             // ============ UTILITY FUNCTIONS ============
-            
-            // Get selected checkbox values
             function gv(id) {
                 const checkboxes = document.querySelectorAll('#' + id + ' input[type="checkbox"]:checked');
                 return Array.from(checkboxes).map(function(c) { return c.value; });
             }
+            function cl() { document.querySelectorAll('.input-box.error').forEach(e => e.classList.remove('error')); }
+            function fe(id) { const el = document.getElementById(id); if (el) { const box = el.closest('.input-box'); if (box) box.classList.add('error'); } }
             
-            // Clear all errors
-            function cl() {
-                document.querySelectorAll('.input-box.error').forEach(function(e) {
-                    e.classList.remove('error');
-                });
-            }
-            
-            // Field error
-            function fe(id) {
-                const el = document.getElementById(id);
-                if (el) {
-                    const box = el.closest('.input-box');
-                    if (box) box.classList.add('error');
-                }
-            }
-            
-            // Toast notification system
             function toast(msg, type) {
-                console.log('📢 Toast:', type, '-', msg);
                 const c = document.getElementById('toastContainer');
-                if (!c) {
-                    console.error('Toast container not found!');
-                    return;
-                }
-                
-                const existingToasts = c.querySelectorAll('.toast');
-                if (existingToasts.length >= 3) {
-                    existingToasts[0].remove();
-                }
-                
+                if (!c) return;
+                const existing = c.querySelectorAll('.toast');
+                if (existing.length >= 3) existing[0].remove();
                 const t = document.createElement('div');
                 t.className = 'toast ' + (type === 'success' ? 'ok' : type === 'error' ? 'err' : 'inf');
-                const icons = {
-                    success: 'fa-circle-check',
-                    error: 'fa-circle-xmark', 
-                    info: 'fa-circle-info'
-                };
+                const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
                 t.innerHTML = '<i class="fas ' + icons[type] + '"></i> ' + msg;
                 c.appendChild(t);
-                
-                const tid = setTimeout(function() {
-                    t.style.animation = 'slideOut 0.35s ease forwards';
-                    setTimeout(function() {
-                        if (t.parentElement) t.remove();
-                    }, 350);
-                }, 4500);
-                
-                t.addEventListener('click', function() {
-                    clearTimeout(tid);
-                    t.style.animation = 'slideOut 0.3s ease forwards';
-                    setTimeout(function() {
-                        if (t.parentElement) t.remove();
-                    }, 300);
-                });
+                const tid = setTimeout(() => { t.style.animation = 'slideOut 0.35s ease forwards'; setTimeout(() => t.remove(), 350); }, 4000);
+                t.addEventListener('click', () => { clearTimeout(tid); t.remove(); });
             }
 
-            // Loading overlay
             function overlay(msg) {
                 const o = document.createElement('div');
-                o.className = 'overlay';
-                o.id = 'overlay';
+                o.className = 'overlay'; o.id = 'overlay';
                 o.innerHTML = '<div class="overlay-card"><div class="overlay-ring"></div><p class="font-bold text-white text-lg" id="overlayText">'+msg+'</p><p class="text-sm text-gray-500 mt-2">Please wait...</p></div>';
-                document.body.appendChild(o);
-                document.body.style.overflow = 'hidden';
+                document.body.appendChild(o); document.body.style.overflow = 'hidden';
             }
-            
-            function overlayText(msg) {
-                const el = document.getElementById('overlayText');
-                if (el) el.textContent = msg;
-            }
-            
-            function hideOverlay() {
-                const o = document.getElementById('overlay');
-                if (o) {
-                    o.style.opacity = '0';
-                    o.style.transition = 'opacity 0.3s';
-                    setTimeout(function() {
-                        o.remove();
-                        document.body.style.overflow = '';
-                    }, 300);
-                }
-            }
+            function overlayText(msg) { const el = document.getElementById('overlayText'); if (el) el.textContent = msg; }
+            function hideOverlay() { const o = document.getElementById('overlay'); if (o) { o.style.opacity = '0'; o.style.transition = 'opacity 0.3s'; setTimeout(() => { o.remove(); document.body.style.overflow = ''; }, 300); } }
 
             // ============ STEP NAVIGATION ============
             window.goToStep = function(s) {
-                console.log('📍 Moving to step:', s);
-                
-                // Validate current step before moving forward
                 if (s > step) {
                     if (step === 1 && !validateStep1()) return;
                     if (step === 2 && !validateStep2()) return;
                 }
-                
-                // Hide all steps
-                document.querySelectorAll('[id$="Content"]').forEach(function(e) {
-                    e.classList.add('hidden-step');
-                });
-                
-                // Show target step
+                document.querySelectorAll('[id$="Content"]').forEach(e => e.classList.add('hidden-step'));
                 const targetStep = document.getElementById('step' + s + 'Content');
-                if (!targetStep) {
-                    console.error('Step ' + s + ' not found!');
-                    return;
-                }
+                if (!targetStep) return;
                 targetStep.classList.remove('hidden-step');
-                
                 step = s;
-                
-                // Update progress bar
                 const progressBar = document.getElementById('progressBar');
-                if (progressBar) {
-                    progressBar.style.width = {1:'0%', 2:'33%', 3:'66%', 4:'100%'}[s];
-                }
-                
-                // Update step indicators
+                if (progressBar) progressBar.style.width = {1:'0%', 2:'33%', 3:'66%', 4:'100%'}[s];
                 for (let i = 1; i <= 4; i++) {
                     const dot = document.getElementById('stepDot' + i);
-                    if (dot) {
-                        dot.classList.remove('active', 'done');
-                        if (i < s) dot.classList.add('done');
-                        if (i === s) dot.classList.add('active');
-                    }
+                    if (dot) { dot.classList.remove('active', 'done'); if (i < s) dot.classList.add('done'); if (i === s) dot.classList.add('active'); }
                 }
-                
-                // Animate step transition
-                try {
-                    gsap.from('#step' + s + 'Content', {
-                        opacity: 0,
-                        y: 20,
-                        duration: 0.4,
-                        ease: 'power2.out'
-                    });
-                } catch(e) {
-                    // GSAP not available, no animation
-                }
-                
-                // Scroll to form on mobile
-                if (window.innerWidth < 1024) {
-                    document.querySelector('.card').scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-                
-                console.log('✅ Step navigation complete');
+                try { gsap.from('#step' + s + 'Content', {opacity:0, y:20, duration:0.4, ease:'power2.out'}); } catch(e) {}
+                if (window.innerWidth < 1024) document.querySelector('.card').scrollIntoView({behavior:'smooth', block:'start'});
             };
 
-            // ============ VALIDATION FUNCTIONS ============
+            // ============ VALIDATION ============
             function validateStep1() {
-                console.log('🔍 Validating Step 1...');
-                cl();
-                let ok = true;
-                
+                cl(); let ok = true;
                 const fullName = document.getElementById('fullName').value.trim();
                 const email = document.getElementById('email').value.trim();
                 const phone = document.getElementById('phone').value.trim();
                 const password = document.getElementById('password').value.trim();
                 const area = document.getElementById('area').value;
-                
-                if (!fullName || fullName.length < 3) {
-                    fe('fullName');
-                    toast('Please enter your full name', 'error');
-                    ok = false;
-                }
-                
-                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                    fe('email');
-                    if (ok) toast('Please enter a valid email address', 'error');
-                    ok = false;
-                }
-                
-                if (!phone || !/^\d{10}$/.test(phone)) {
-                    fe('phone');
-                    if (ok) toast('Please enter a 10-digit phone number', 'error');
-                    ok = false;
-                }
-                
-                if (!password || password.length < 6) {
-                    fe('password');
-                    if (ok) toast('Password must be at least 6 characters', 'error');
-                    ok = false;
-                }
-                
-                if (!area) {
-                    fe('area');
-                    if (ok) toast('Please select your area', 'error');
-                    ok = false;
-                }
-                
-                if (!imgFile) {
-                    toast('Please upload a profile photo', 'error');
-                    ok = false;
-                }
-                
-                console.log('Step 1 validation:', ok ? '✅ Passed' : '❌ Failed');
+                if (!fullName || fullName.length < 3) { fe('fullName'); toast('Please enter full name', 'error'); ok = false; }
+                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fe('email'); if(ok) toast('Valid email required', 'error'); ok = false; }
+                if (!phone || !/^\d{10}$/.test(phone)) { fe('phone'); if(ok) toast('10-digit phone required', 'error'); ok = false; }
+                if (!password || password.length < 6) { fe('password'); if(ok) toast('Password min 6 characters', 'error'); ok = false; }
+                if (!area) { fe('area'); if(ok) toast('Select area', 'error'); ok = false; }
+                if (!imgFile) { toast('Upload profile photo', 'error'); ok = false; }
                 return ok;
             }
-            
             function validateStep2() {
-                console.log('🔍 Validating Step 2...');
-                cl();
-                let ok = true;
-                
+                cl(); let ok = true;
                 const qualification = document.getElementById('qualification').value;
                 const experience = document.getElementById('experience').value.trim();
-                const subjects = gv('subjectsGroup');
-                const classes = gv('classesGroup');
-                const courses = gv('coursesGroup');
+                const subjects = gv('subjectsGroup'); const classes = gv('classesGroup'); const courses = gv('coursesGroup');
                 const fees = parseInt(document.getElementById('expectedFees').value);
-                
-                if (!qualification) {
-                    fe('qualification');
-                    toast('Please select your qualification', 'error');
-                    ok = false;
-                }
-                
-                if (!experience) {
-                    fe('experience');
-                    if (ok) toast('Please enter your teaching experience', 'error');
-                    ok = false;
-                }
-                
-                if (subjects.length === 0) {
-                    toast('Please select at least one subject', 'error');
-                    ok = false;
-                }
-                
-                if (classes.length === 0) {
-                    toast('Please select at least one class level', 'error');
-                    ok = false;
-                }
-                
-                if (courses.length === 0) {
-                    toast('Please select at least one board/course', 'error');
-                    ok = false;
-                }
-                
-                if (!fees || fees < 100 || fees > 10000) {
-                    fe('expectedFees');
-                    if (ok) toast('Please enter valid fees (₹100 - ₹10,000)', 'error');
-                    ok = false;
-                }
-                
-                console.log('Step 2 validation:', ok ? '✅ Passed' : '❌ Failed');
+                if (!qualification) { fe('qualification'); toast('Select qualification', 'error'); ok = false; }
+                if (!experience) { fe('experience'); if(ok) toast('Enter experience', 'error'); ok = false; }
+                if (subjects.length === 0) { toast('Select at least one subject', 'error'); ok = false; }
+                if (classes.length === 0) { toast('Select class level', 'error'); ok = false; }
+                if (courses.length === 0) { toast('Select board/course', 'error'); ok = false; }
+                if (!fees || fees < 100 || fees > 10000) { fe('expectedFees'); if(ok) toast('Fees ₹100-₹10,000', 'error'); ok = false; }
                 return ok;
             }
 
             // ============ FILE HANDLING ============
             document.getElementById('profilePhoto').addEventListener('change', function(e) {
-                console.log('📸 File selected');
-                if (e.target.files && e.target.files[0]) {
-                    handleFile(e.target.files[0]);
-                }
+                if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
             });
-            
             function handleFile(file) {
-                console.log('📁 Processing file:', file.name, 'Size:', (file.size / 1024).toFixed(2) + 'KB');
-                
-                // Validate file type
-                if (!file.type.match(/^image\/(jpeg|png|jpg)$/)) {
-                    toast('Please upload a JPG or PNG image', 'error');
-                    return;
-                }
-                
-                // Validate file size (2MB)
-                if (file.size > 2 * 1024 * 1024) {
-                    toast('Image must be less than 2MB', 'error');
-                    return;
-                }
-                
+                if (!file.type.match(/^image\/(jpeg|png|jpg)$/)) { toast('JPG or PNG only', 'error'); return; }
+                if (file.size > 2 * 1024 * 1024) { toast('Max 2MB', 'error'); return; }
                 imgFile = file;
                 const reader = new FileReader();
-                
                 reader.onload = function(ev) {
                     document.getElementById('previewImg').src = ev.target.result;
                     document.getElementById('previewAvatar').src = ev.target.result;
@@ -683,120 +481,103 @@
                     document.getElementById('uploadPreview').style.display = 'block';
                     document.getElementById('fileNameDisplay').textContent = file.name;
                     document.getElementById('uploadZone').classList.add('has-file');
-                    console.log('✅ File preview ready');
                 };
-                
-                reader.onerror = function() {
-                    toast('Error reading file', 'error');
-                };
-                
                 reader.readAsDataURL(file);
             }
-            
-            // Image upload functions
             async function uploadImg(file) {
-                console.log('☁️ Uploading image to IMGBB...');
                 try {
-                    const fd = new FormData();
-                    fd.append('image', file);
-                    
-                    const controller = new AbortController();
-                    const timeout = setTimeout(() => controller.abort(), 30000);
-                    
-                    const res = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_KEY, {
-                        method: 'POST',
-                        body: fd,
-                        signal: controller.signal
-                    });
-                    
-                    clearTimeout(timeout);
-                    
+                    const fd = new FormData(); fd.append('image', file);
+                    const res = await fetch('https://api.imgbb.com/1/upload?key=53fb01955a45c5462724b8f7d238500a', {method:'POST', body:fd});
                     if (!res.ok) throw new Error('Upload failed');
-                    
                     const data = await res.json();
-                    
-                    if (data.success && data.data && data.data.url) {
-                        console.log('✅ Image uploaded successfully');
-                        return data.data.url;
-                    }
-                    throw new Error('No URL received');
-                    
+                    if (data.success && data.data && data.data.url) return data.data.url;
+                    throw new Error('No URL');
                 } catch(e) {
-                    console.warn('⚠️ IMGBB upload failed, using base64:', e.message);
                     return await toBase64(file);
                 }
             }
-            
             function toBase64(file) {
-                return new Promise(function(resolve, reject) {
+                return new Promise((resolve, reject) => {
                     const reader = new FileReader();
-                    reader.onload = function() {
-                        resolve(reader.result);
-                    };
-                    reader.onerror = function() {
-                        reject(new Error('Base64 conversion failed'));
-                    };
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
                     reader.readAsDataURL(file);
                 });
             }
 
-            // ============ UPI FUNCTIONS ============
-            window.copyUPI = function() {
-                console.log('📋 Copying UPI ID...');
-                
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(UPI_ID)
-                        .then(function() {
-                            toast('UPI ID Copied! Pay ₹200 to complete registration', 'success');
-                        })
-                        .catch(function() {
-                            fallbackCopy(UPI_ID);
-                        });
-                } else {
-                    fallbackCopy(UPI_ID);
+            // ============ RAZORPAY INTEGRATION ============
+            window.initiateRazorpay = function() {
+                // Check terms agreed first
+                if (!document.getElementById('termsAgree').checked) {
+                    toast('Please agree to Terms of Service', 'error');
+                    return;
                 }
-            };
-            
-            function fallbackCopy(text) {
-                const input = document.createElement('input');
-                input.value = text;
-                input.style.cssText = 'position:fixed;opacity:0;';
-                document.body.appendChild(input);
-                input.select();
+                const payerName = document.getElementById('payerName').value.trim();
+                if (!payerName) { fe('payerName'); toast('Enter your name for payment', 'error'); return; }
                 
-                try {
-                    document.execCommand('copy');
-                    toast('UPI ID Copied! Pay ₹200 to complete registration', 'success');
-                } catch(e) {
-                    toast('Please note UPI ID: ' + UPI_ID, 'info');
-                }
-                
-                document.body.removeChild(input);
-            }
-
-            // ============ REGISTRATION FUNCTION ============
-            window.registerTeacher = async function() {
-                console.log('📝 Starting registration process...');
-                
-                // Check payment confirmation
-                if (!document.getElementById('paymentConfirm').checked) {
-                    toast('Please confirm that you have made the payment', 'error');
+                if (typeof Razorpay === 'undefined') {
+                    toast('Razorpay SDK not loaded. Please refresh.', 'error');
                     return;
                 }
                 
-                // Check terms agreement
+                const options = {
+                    key: RAZORPAY_KEY_ID,
+                    amount: REG_FEE * 100, // in paise
+                    currency: 'INR',
+                    name: 'THP Home Tutor',
+                    description: 'Teacher Registration Fee',
+                    image: 'https://i.ibb.co/20DRzH4h/IMG-20260530-162843.jpg',
+                    handler: function(response) {
+                        console.log('✅ Razorpay success:', response);
+                        razorpayPaymentId = response.razorpay_payment_id;
+                        razorpayOrderId = response.razorpay_order_id;
+                        razorpaySignature = response.razorpay_signature;
+                        toast('Payment successful! Payment ID: ' + razorpayPaymentId, 'success');
+                        // Automatically enable submit button
+                        document.getElementById('paymentConfirm').checked = true;
+                        document.getElementById('registerBtn').disabled = false;
+                    },
+                    prefill: {
+                        name: payerName,
+                        email: document.getElementById('email').value.trim(),
+                        contact: document.getElementById('phone').value.trim()
+                    },
+                    theme: { color: '#7C5CFC' },
+                    modal: {
+                        ondismiss: function() {
+                            toast('Payment cancelled. Please try again.', 'info');
+                        }
+                    }
+                };
+                try {
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                } catch(e) {
+                    console.error('Razorpay open error:', e);
+                    toast('Could not open payment. Check console.', 'error');
+                }
+            };
+
+            // ============ REGISTRATION FUNCTION ============
+            window.registerTeacher = async function() {
+                if (!document.getElementById('paymentConfirm').checked) {
+                    toast('Please confirm payment completed', 'error');
+                    return;
+                }
                 if (!document.getElementById('termsAgree').checked) {
-                    toast('Please agree to the Terms of Service', 'error');
+                    toast('Please agree to Terms', 'error');
+                    return;
+                }
+                if (!razorpayPaymentId) {
+                    toast('Payment not verified. Please pay ₹200 first.', 'error');
                     return;
                 }
                 
                 const btn = document.getElementById('registerBtn');
                 const origText = btn.innerHTML;
-                btn.disabled = true;
-                btn.innerHTML = '<span class="spinner"></span> Processing...';
+                btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Processing...';
                 
                 try {
-                    // Collect all form data
                     const teacherData = {
                         fullName: document.getElementById('fullName').value.trim(),
                         email: document.getElementById('email').value.trim().toLowerCase(),
@@ -811,9 +592,11 @@
                         courses: gv('coursesGroup'),
                         expectedFees: parseInt(document.getElementById('expectedFees').value),
                         payerName: document.getElementById('payerName').value.trim() || 'Not provided',
-                        paymentStatus: 'pending',
-                        paymentMethod: 'UPI',
-                        paymentUpiId: UPI_ID,
+                        paymentStatus: 'paid',
+                        paymentMethod: 'Razorpay',
+                        paymentUpiId: razorpayPaymentId,
+                        paymentOrderId: razorpayOrderId || '',
+                        paymentSignature: razorpaySignature || '',
                         paymentAmount: REG_FEE,
                         isActive: false,
                         isVerified: false,
@@ -825,177 +608,70 @@
                         contactRequests: 0
                     };
                     
-                    console.log('📦 Teacher data prepared:', teacherData);
-                    
-                    // Upload photo if needed
                     overlay('Uploading photo...');
-                    if (!imgUrl && imgFile) {
-                        imgUrl = await uploadImg(imgFile);
-                    }
+                    if (!imgUrl && imgFile) imgUrl = await uploadImg(imgFile);
                     teacherData.profilePhoto = imgUrl || '';
                     
-                    // Generate teacher ID
-                    const teacherId = 'THP' + Date.now().toString(36).toUpperCase().slice(-6) + 
-                                     Math.random().toString(36).substring(2, 5).toUpperCase();
+                    const teacherId = 'THP' + Date.now().toString(36).toUpperCase().slice(-6) + Math.random().toString(36).substring(2,5).toUpperCase();
+                    console.log('🆔 Teacher ID:', teacherId);
                     
-                    console.log('🆔 Generated Teacher ID:', teacherId);
-                    
-                    // Check for duplicate email
                     if (firebaseReady && db) {
-                        overlayText('Checking existing records...');
-                        const emailCheck = await db.collection('teachers')
-                            .where('email', '==', teacherData.email)
-                            .limit(1)
-                            .get();
+                        overlayText('Checking records...');
+                        const emailCheck = await db.collection('teachers').where('email','==',teacherData.email).limit(1).get();
+                        if (!emailCheck.empty) throw new Error('DUPLICATE_EMAIL');
                         
-                        if (!emailCheck.empty) {
-                            throw new Error('DUPLICATE_EMAIL');
-                        }
-                        
-                        // Save to Firebase
-                        overlayText('Saving your profile...');
+                        overlayText('Saving profile...');
                         await db.collection('teachers').doc(teacherId).set({
-                            ...teacherData,
-                            teacherId: teacherId,
-                            submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            ...teacherData, teacherId, submittedAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
-                        
-                        console.log('✅ Profile saved to Firebase');
-                        
-                        // Record payment request
-                        overlayText('Recording payment...');
                         await db.collection('paymentRequests').add({
-                            teacherId: teacherId,
-                            teacherName: teacherData.fullName,
-                            teacherEmail: teacherData.email,
-                            teacherPhone: teacherData.phone,
-                            amount: REG_FEE,
-                            payerName: teacherData.payerName,
-                            status: 'pending',
-                            paymentMethod: 'UPI',
-                            upiId: UPI_ID,
+                            teacherId, teacherName: teacherData.fullName, teacherEmail: teacherData.email, teacherPhone: teacherData.phone,
+                            amount: REG_FEE, payerName: teacherData.payerName, status: 'paid', paymentMethod: 'Razorpay',
+                            razorpayPaymentId, razorpayOrderId: razorpayOrderId || '', razorpaySignature: razorpaySignature || '',
                             submittedAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
-                        
-                        console.log('✅ Payment request recorded');
-                        
                     } else {
-                        // Fallback to localStorage
-                        console.log('💾 Using localStorage fallback');
                         const localTeachers = JSON.parse(localStorage.getItem('thp_teachers') || '[]');
-                        localTeachers.push({
-                            ...teacherData,
-                            teacherId: teacherId,
-                            submittedAt: new Date().toISOString()
-                        });
+                        localTeachers.push({...teacherData, teacherId, submittedAt: new Date().toISOString()});
                         localStorage.setItem('thp_teachers', JSON.stringify(localTeachers));
                     }
                     
-                    // Success!
                     hideOverlay();
                     document.getElementById('teacherIdDisplay').textContent = teacherId;
                     goToStep(4);
-                    
-                    toast('Registration successful! Your profile is under review', 'success');
-                    
-                    // Celebration effects
+                    toast('Registration successful! Profile under review', 'success');
                     createCelebrationEffects();
                     
-                    console.log('✅ Registration complete! Teacher ID:', teacherId);
-                    
                 } catch(e) {
-                    console.error('❌ Registration error:', e);
-                    hideOverlay();
-                    btn.disabled = false;
-                    btn.innerHTML = origText;
-                    
+                    console.error('Registration error:', e);
+                    hideOverlay(); btn.disabled = false; btn.innerHTML = origText;
                     let errorMsg = 'Registration failed. Please try again.';
-                    
-                    if (e.message === 'DUPLICATE_EMAIL') {
-                        errorMsg = 'This email is already registered. Please use a different email.';
-                    } else if (e.message && e.message.includes('permission-denied')) {
-                        errorMsg = 'Database permission error. Please contact support.';
-                    } else if (e.message && (e.message.includes('unavailable') || e.message.includes('network'))) {
-                        errorMsg = 'Network error. Please check your connection and try again.';
-                    }
-                    
+                    if (e.message === 'DUPLICATE_EMAIL') errorMsg = 'Email already registered.';
+                    else if (e.message && e.message.includes('permission-denied')) errorMsg = 'Permission error.';
                     toast(errorMsg, 'error');
                 }
             };
-            
-            // Celebration effects
+
             function createCelebrationEffects() {
                 for (let i = 0; i < 60; i++) {
                     const confetti = document.createElement('div');
-                    confetti.style.cssText = `
-                        position: fixed;
-                        width: ${Math.random() * 8 + 4}px;
-                        height: ${Math.random() * 8 + 4}px;
-                        background: ${['#7C5CFC', '#00E5A0', '#FFB800', '#FF4D6A'][Math.floor(Math.random() * 4)]};
-                        left: ${Math.random() * 100}%;
-                        top: -20px;
-                        border-radius: 50%;
-                        z-index: 10002;
-                        pointer-events: none;
-                    `;
-                    
+                    confetti.style.cssText = `position: fixed; width: ${Math.random()*8+4}px; height: ${Math.random()*8+4}px; background: ${['#7C5CFC','#00E5A0','#FFB800','#FF4D6A'][Math.floor(Math.random()*4)]}; left: ${Math.random()*100}%; top: -20px; border-radius: 50%; z-index: 10002; pointer-events: none;`;
                     document.body.appendChild(confetti);
-                    
-                    confetti.animate([
-                        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-                        { transform: `translate(${(Math.random() - 0.5) * 300}px, 105vh) scale(0)`, opacity: 0 }
-                    ], {
-                        duration: Math.random() * 2000 + 1500,
-                        delay: Math.random() * 1000,
-                        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                        fill: 'forwards'
-                    }).onfinish = function() {
-                        confetti.remove();
-                    };
+                    confetti.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${(Math.random()-0.5)*300}px,105vh) scale(0)`,opacity:0}],{duration:Math.random()*2000+1500,delay:Math.random()*1000,easing:'cubic-bezier(0.25,0.46,0.45,0.94)',fill:'forwards'}).onfinish=()=>confetti.remove();
                 }
             }
 
             // ============ LIVE PREVIEW UPDATES ============
-            document.getElementById('fullName').addEventListener('input', function() {
-                document.getElementById('previewName').textContent = this.value || 'Your Name';
-            });
-            
-            document.getElementById('qualification').addEventListener('change', function() {
-                document.getElementById('previewQualification').textContent = this.value || 'Qualification';
-            });
-            
-            document.getElementById('area').addEventListener('change', function() {
-                document.getElementById('previewArea').textContent = (this.value || 'Area') + ', Prayagraj';
-            });
-            
-            document.querySelectorAll('#subjectsGroup input').forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    const subjects = gv('subjectsGroup');
-                    document.getElementById('previewSubjects').textContent = 
-                        subjects.slice(0, 3).join(', ') || 'Subjects you teach';
-                });
-            });
-            
-            document.querySelectorAll('#classesGroup input').forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    const classes = gv('classesGroup');
-                    document.getElementById('previewClasses').textContent = 
-                        classes.length ? 'Class ' + classes.join(', ') : 'Class levels';
-                });
-            });
-            
-            document.getElementById('expectedFees').addEventListener('input', function() {
-                document.getElementById('previewFees').textContent = 
-                    this.value ? '₹' + this.value + '/hour' : 'Fees per hour';
-            });
+            document.getElementById('fullName').addEventListener('input', function() { document.getElementById('previewName').textContent = this.value || 'Your Name'; });
+            document.getElementById('qualification').addEventListener('change', function() { document.getElementById('previewQualification').textContent = this.value || 'Qualification'; });
+            document.getElementById('area').addEventListener('change', function() { document.getElementById('previewArea').textContent = (this.value || 'Area') + ', Prayagraj'; });
+            document.querySelectorAll('#subjectsGroup input').forEach(cb => cb.addEventListener('change', function() { const sub = gv('subjectsGroup'); document.getElementById('previewSubjects').textContent = sub.slice(0,3).join(', ') || 'Subjects you teach'; }));
+            document.querySelectorAll('#classesGroup input').forEach(cb => cb.addEventListener('change', function() { const cls = gv('classesGroup'); document.getElementById('previewClasses').textContent = cls.length ? 'Class ' + cls.join(', ') : 'Class levels'; }));
+            document.getElementById('expectedFees').addEventListener('input', function() { document.getElementById('previewFees').textContent = this.value ? '₹' + this.value + '/hour' : 'Fees per hour'; });
 
-            console.log('✅ THP Registration System Ready');
-            console.log('📊 Firebase Status:', firebaseReady ? 'Connected' : 'Offline Mode');
-            console.log('💡 All buttons attached to window object');
-            
-        })(); // End of main application
+            console.log('✅ THP Registration System Ready (Razorpay enabled)');
+            console.log('💳 Razorpay Key:', RAZORPAY_KEY_ID);
+        })();
     </script>
 </body>
 </html>
