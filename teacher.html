@@ -3,27 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="title" content="Join as Teacher - THP Home Tutor | Register in ₹200">
-    <meta name="description" content="Join Prayagraj's most trusted home tutor network. One-time ₹200 registration. Verified profiles, genuine students.">
+    <meta name="title" content="Join as Teacher - THP Home Tutor | Elite Registration">
+    <meta name="description" content="Join Prayagraj's most advanced home tutor network. One-time registration. AI-verified profiles, instant matching, premium student leads.">
     <meta name="theme-color" content="#0A0A14">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="Join as Teacher - THP Home Tutor">
-    <meta property="og:description" content="Start your teaching journey with THP. Register now for just ₹200.">
+    <meta property="og:description" content="Ultra-advanced tutor registration with AI verification, smart matching, and premium leads.">
     <meta property="og:type" content="website">
-    <title>Join as Teacher | THP Home Tutor | ₹200 Registration</title>
+    <title>Join as Teacher | THP Home Tutor | Elite Registration</title>
     <link rel="icon" type="image/jpeg" href="https://i.ibb.co/20DRzH4h/IMG-20260530-162843.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
     <style>
         :root {
             --bg: #0A0A14;
@@ -40,6 +44,10 @@
             --text-muted: #6B6780;
             --error: #FF4D6A;
             --warning: #FFB800;
+            --accent-1: #FF6B6B;
+            --accent-2: #4ECDC4;
+            --accent-3: #45B7D1;
+            --accent-4: #96CEB4;
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
@@ -47,123 +55,173 @@
             --radius-2xl: 24px;
             --radius-full: 9999px;
             --font: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
             --transition: 200ms cubic-bezier(0.4,0,0.2,1);
             --transition-slow: 400ms cubic-bezier(0.4,0,0.2,1);
+            --glass: rgba(17, 17, 40, 0.7);
+            --glass-border: rgba(124, 92, 252, 0.2);
         }
-        *{margin:0;padding:0;box-sizing:border-box}
-        html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-        body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.6;position:relative}
-        
-        .bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-        .bg-glow div{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.15}
-        .bg-glow .g1{width:600px;height:600px;background:var(--primary);top:-200px;left:-150px;animation:float1 25s infinite ease-in-out}
-        .bg-glow .g2{width:500px;height:500px;background:var(--success);top:40%;right:-200px;animation:float2 30s infinite ease-in-out}
-        .bg-glow .g3{width:550px;height:550px;background:#5B4FCF;bottom:-250px;left:30%;animation:float1 20s infinite ease-in-out reverse}
-        @keyframes float1{0%,100%{transform:translate(0,0)scale(1)}50%{transform:translate(100px,-80px)scale(1.2)}}
-        @keyframes float2{0%,100%{transform:translate(0,0)scale(1)}50%{transform:translate(-80px,-100px)scale(1.15)}}
-        
-        .bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.02)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02)1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 20%,transparent 70%)}
 
-        .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:2rem;position:relative;overflow:hidden;transition:all var(--transition-slow);backdrop-filter:blur(20px)}
-        .card:hover{border-color:var(--border-hover);box-shadow:0 0 40px var(--primary-glow)}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+            cursor: default;
+        }
 
-        .input-box{position:relative;margin-bottom:1.2rem}
-        .input-box input,.input-box select,.input-box textarea{width:100%;padding:0.85rem 1rem;border:1.5px solid var(--border);border-radius:var(--radius-md);font-size:0.875rem;font-family:var(--font);background:var(--bg-input);color:var(--text);outline:none;transition:all var(--transition)}
-        .input-box input:focus,.input-box select:focus,.input-box textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,92,252,0.1),0 0 20px rgba(124,92,252,0.08);background:#0F0F24}
-        .input-box select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6780' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem;cursor:pointer}
-        .input-box select option{background:var(--bg-card);color:var(--text)}
-        .input-box label{position:absolute;left:0.85rem;top:-0.6rem;background:var(--bg-card);padding:0 0.5rem;font-size:0.65rem;font-weight:700;color:var(--primary);border-radius:4px;letter-spacing:0.05em;text-transform:uppercase;pointer-events:none;border:1px solid var(--border)}
-        .input-box .err{position:absolute;bottom:-1.1rem;left:0.25rem;font-size:0.65rem;color:var(--error);font-weight:600;display:none}
-        .input-box.error input,.input-box.error select,.input-box.error textarea{border-color:var(--error);box-shadow:0 0 0 4px rgba(255,77,106,0.1)}
-        .input-box.error .err{display:block}
+        .bg-glow { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        .bg-glow div { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; }
+        .bg-glow .g1 { width: 600px; height: 600px; background: var(--primary); top: -200px; left: -150px; animation: float1 25s infinite ease-in-out; }
+        .bg-glow .g2 { width: 500px; height: 500px; background: var(--success); top: 40%; right: -200px; animation: float2 30s infinite ease-in-out; }
+        .bg-glow .g3 { width: 550px; height: 550px; background: #5B4FCF; bottom: -250px; left: 30%; animation: float1 20s infinite ease-in-out reverse; }
+        .bg-glow .g4 { width: 400px; height: 400px; background: var(--accent-1); top: 10%; left: 50%; animation: float3 18s infinite ease-in-out; }
+        @keyframes float1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(100px,-80px) scale(1.2); } }
+        @keyframes float2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-80px,-100px) scale(1.15); } }
+        @keyframes float3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-50px,60px) scale(1.1); } }
 
-        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-        @media(max-width:640px){.form-row{grid-template-columns:1fr}}
+        .bg-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%); animation: gridShift 15s linear infinite; }
+        @keyframes gridShift { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }
 
-        .pill-wrap{display:flex;flex-wrap:wrap;gap:0.4rem}
-        .pill-wrap input[type="checkbox"]{display:none}
-        .pill-wrap label{padding:0.45rem 1rem;border:1.5px solid var(--border);border-radius:var(--radius-full);cursor:pointer;font-size:0.75rem;font-weight:600;transition:all var(--transition);background:var(--bg-input);color:var(--text-secondary);user-select:none}
-        .pill-wrap input:checked+label{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 4px 15px rgba(124,92,252,0.3);transform:translateY(-1px)}
-        .pill-wrap label:hover{border-color:var(--border-hover);transform:translateY(-1px)}
+        .particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        .particle { position: absolute; background: var(--primary); border-radius: 50%; opacity: 0.3; animation: particleFloat 15s infinite linear; }
+        @keyframes particleFloat { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 20% { opacity: 0.3; } 80% { opacity: 0.3; } 100% { transform: translateY(-100vh) scale(1); opacity: 0; } }
 
-        .upload-zone{border:1.5px dashed var(--border);border-radius:var(--radius-lg);padding:2rem;text-align:center;cursor:pointer;transition:all var(--transition);background:rgba(124,92,252,0.02)}
-        .upload-zone:hover{border-color:var(--primary);background:rgba(124,92,252,0.05);transform:translateY(-2px);box-shadow:0 0 30px rgba(124,92,252,0.1)}
-        .upload-zone.has-file{border-color:var(--success);border-style:solid;background:rgba(0,229,160,0.04)}
+        .card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-2xl); padding: 2rem; position: relative; overflow: hidden; transition: all var(--transition-slow); backdrop-filter: blur(20px) saturate(180%); box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05); }
+        .card:hover { border-color: var(--border-hover); box-shadow: 0 0 60px var(--primary-glow), 0 20px 40px rgba(0,0,0,0.4); transform: translateY(-2px); }
+        .card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--primary), var(--accent-2), transparent); animation: borderGlow 3s linear infinite; }
+        @keyframes borderGlow { 0% { left: -100%; } 100% { left: 100%; } }
 
-        .btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.85rem 1.8rem;border-radius:var(--radius-full);font-size:0.875rem;font-weight:700;border:none;cursor:pointer;transition:all var(--transition);width:100%;font-family:var(--font);text-decoration:none}
-        .btn-primary{background:linear-gradient(135deg,var(--primary),#9B7FFF);color:#fff;box-shadow:0 8px 30px rgba(124,92,252,0.3)}
-        .btn-primary:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 15px 40px rgba(124,92,252,0.45)}
-        .btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none}
-        .btn-ghost{background:transparent;color:var(--text-secondary);border:1.5px solid var(--border)}
-        .btn-ghost:hover{border-color:var(--border-hover);color:var(--text);background:rgba(255,255,255,0.03)}
-        .btn-group{display:flex;gap:0.75rem;margin-top:1.25rem}
+        .input-box { position: relative; margin-bottom: 1.2rem; }
+        .input-box input, .input-box select, .input-box textarea { width: 100%; padding: 0.85rem 1rem; border: 2px solid var(--border); border-radius: var(--radius-md); font-size: 0.875rem; font-family: var(--font); background: var(--bg-input); color: var(--text); outline: none; transition: all var(--transition); position: relative; }
+        .input-box input:focus, .input-box select:focus, .input-box textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(124,92,252,0.1), 0 0 30px rgba(124,92,252,0.08); background: #0F0F24; transform: scale(1.01); }
+        .input-box select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6780' stroke-width='2' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; cursor: pointer; }
+        .input-box select option { background: var(--bg-card); color: var(--text); }
+        .input-box label { position: absolute; left: 0.85rem; top: -0.6rem; background: var(--bg-card); padding: 0 0.5rem; font-size: 0.65rem; font-weight: 700; color: var(--primary); border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; pointer-events: none; border: 1px solid var(--border); }
+        .input-box .err { position: absolute; bottom: -1.1rem; left: 0.25rem; font-size: 0.65rem; color: var(--error); font-weight: 600; display: none; animation: shake 0.3s; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+        .input-box.error input, .input-box.error select, .input-box.error textarea { border-color: var(--error); box-shadow: 0 0 0 4px rgba(255,77,106,0.1); animation: errorPulse 1s infinite; }
+        @keyframes errorPulse { 0%,100%{box-shadow:0 0 0 4px rgba(255,77,106,0.1)} 50%{box-shadow:0 0 0 6px rgba(255,77,106,0.2)} }
+        .input-box.error .err { display: block; }
 
-        .steps{display:flex;justify-content:space-between;margin-bottom:2.5rem;position:relative;padding:0 0.5rem}
-        .steps::before{content:'';position:absolute;top:1.5rem;left:2.5rem;right:2.5rem;height:2px;background:var(--border);z-index:0;border-radius:2px}
-        .steps .bar{position:absolute;top:1.5rem;left:2.5rem;height:2px;background:linear-gradient(90deg,var(--primary),#9B7FFF);z-index:0;border-radius:2px;transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 0 10px rgba(124,92,252,0.5)}
-        .step-dot{width:3rem;height:3rem;border-radius:50%;background:var(--bg-input);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:800;z-index:1;position:relative;transition:all var(--transition);font-size:0.9rem;color:var(--text-muted)}
-        .step-dot.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 0 0 10px rgba(124,92,252,0.15);transform:scale(1.1)}
-        .step-dot.done{background:var(--success);color:#0A0A14;border-color:var(--success);box-shadow:0 0 0 10px rgba(0,229,160,0.15)}
-        .step-dot .lbl{position:absolute;top:3.5rem;left:50%;transform:translateX(-50%);font-size:0.6rem;font-weight:700;white-space:nowrap;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em}
-        .step-dot.active .lbl,.step-dot.done .lbl{color:var(--text)}
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media(max-width:640px){ .form-row { grid-template-columns: 1fr; } }
 
-        .receipt{background:linear-gradient(160deg,var(--bg-card),#161635);border-radius:var(--radius-lg);padding:1.5rem;border:1px solid var(--border);margin-bottom:1rem}
-        .receipt-row{display:flex;justify-content:space-between;padding:0.3rem 0;font-size:0.85rem}
-        .receipt-div{border-top:1px dashed var(--border);margin:0.5rem 0}
+        .pill-wrap { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .pill-wrap input[type="checkbox"] { display: none; }
+        .pill-wrap label { padding: 0.45rem 1rem; border: 2px solid var(--border); border-radius: var(--radius-full); cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: all var(--transition); background: var(--bg-input); color: var(--text-secondary); user-select: none; position: relative; overflow: hidden; }
+        .pill-wrap label::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(124,92,252,0.2), transparent); transition: left 0.5s; }
+        .pill-wrap label:hover::before { left: 100%; }
+        .pill-wrap input:checked+label { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 20px rgba(124,92,252,0.4); transform: translateY(-2px) scale(1.05); }
+        .pill-wrap input:checked+label::after { content: ' ✓'; font-weight: bold; }
 
-        .qr-wrap{background:var(--bg-input);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;border:1px solid var(--border);margin:0.75rem 0}
-        .qr-wrap img{width:170px;height:170px;margin:0 auto;border-radius:var(--radius-md);background:#fff;padding:8px}
-        .upi-copy{background:rgba(0,229,160,0.05);border:1.5px solid rgba(0,229,160,0.25);border-radius:var(--radius-md);padding:0.8rem 1rem;margin:0.6rem 0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;transition:all var(--transition)}
-        .upi-copy:hover{background:rgba(0,229,160,0.1);transform:scale(1.01);box-shadow:0 4px 20px rgba(0,229,160,0.15)}
-        .upi-copy .copy-btn{background:var(--success);color:#0A0A14;padding:0.35rem 0.8rem;border-radius:var(--radius-sm);font-size:0.7rem;font-weight:700}
+        .upload-zone { border: 2px dashed var(--border); border-radius: var(--radius-lg); padding: 2rem; text-align: center; cursor: pointer; transition: all var(--transition); background: rgba(124,92,252,0.02); position: relative; overflow: hidden; }
+        .upload-zone::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(from 0deg, transparent, rgba(124,92,252,0.1), transparent, rgba(0,229,160,0.1), transparent); animation: rotateBorder 4s linear infinite; }
+        @keyframes rotateBorder { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .upload-zone:hover { border-color: var(--primary); background: rgba(124,92,252,0.05); transform: translateY(-2px); box-shadow: 0 0 40px rgba(124,92,252,0.15); }
+        .upload-zone.has-file { border-color: var(--success); border-style: solid; background: rgba(0,229,160,0.04); }
 
-        .chips{display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.75rem 0}
-        .chip{display:flex;align-items:center;gap:0.3rem;padding:0.3rem 0.7rem;border-radius:var(--radius-full);font-size:0.65rem;font-weight:700;background:rgba(0,229,160,0.06);color:var(--success);border:1px solid rgba(0,229,160,0.2)}
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.85rem 1.8rem; border-radius: var(--radius-full); font-size: 0.875rem; font-weight: 700; border: none; cursor: pointer; transition: all var(--transition); width: 100%; font-family: var(--font); text-decoration: none; position: relative; overflow: hidden; }
+        .btn::after { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: rgba(255,255,255,0.2); transform: translate(-50%,-50%); transition: width 0.6s, height 0.6s; }
+        .btn:active::after { width: 300px; height: 300px; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), #9B7FFF); color: #fff; box-shadow: 0 8px 30px rgba(124,92,252,0.4); }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(124,92,252,0.6); }
+        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-ghost { background: transparent; color: var(--text-secondary); border: 2px solid var(--border); }
+        .btn-ghost:hover { border-color: var(--border-hover); color: var(--text); background: rgba(255,255,255,0.03); }
+        .btn-group { display: flex; gap: 0.75rem; margin-top: 1.25rem; }
 
-        .toast-ctr{position:fixed;top:1.25rem;right:1.25rem;z-index:9999;display:flex;flex-direction:column;gap:0.5rem;pointer-events:none;max-width:24rem}
-        .toast{padding:0.9rem 1.2rem;border-radius:var(--radius-md);color:#fff;font-weight:600;font-size:0.8rem;box-shadow:0 20px 50px rgba(0,0,0,0.5);pointer-events:auto;display:flex;align-items:center;gap:0.5rem;backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.15);animation:slideIn 0.4s cubic-bezier(0.34,1.56,0.64,1)}
-        .toast.ok{background:linear-gradient(135deg,#00805A,#00B37A)}
-        .toast.err{background:linear-gradient(135deg,#C0203A,#E0405A)}
-        .toast.inf{background:linear-gradient(135deg,#4B3FB0,#6B5CE0)}
-        @keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
-        @keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
+        .steps { display: flex; justify-content: space-between; margin-bottom: 2.5rem; position: relative; padding: 0 0.5rem; }
+        .steps::before { content: ''; position: absolute; top: 1.5rem; left: 2.5rem; right: 2.5rem; height: 3px; background: var(--border); z-index: 0; border-radius: 2px; }
+        .steps .bar { position: absolute; top: 1.5rem; left: 2.5rem; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent-2)); z-index: 0; border-radius: 2px; transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 0 20px rgba(124,92,252,0.6); }
+        .step-dot { width: 3.5rem; height: 3.5rem; border-radius: 50%; background: var(--bg-input); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 800; z-index: 1; position: relative; transition: all var(--transition); font-size: 1rem; color: var(--text-muted); }
+        .step-dot.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 0 0 10px rgba(124,92,252,0.2), 0 0 40px rgba(124,92,252,0.4); transform: scale(1.15); animation: stepPulse 2s infinite; }
+        @keyframes stepPulse { 0%,100% { box-shadow: 0 0 0 10px rgba(124,92,252,0.2), 0 0 40px rgba(124,92,252,0.4); } 50% { box-shadow: 0 0 0 15px rgba(124,92,252,0.3), 0 0 60px rgba(124,92,252,0.6); } }
+        .step-dot.done { background: var(--success); color: #0A0A14; border-color: var(--success); box-shadow: 0 0 0 10px rgba(0,229,160,0.2); }
+        .step-dot .lbl { position: absolute; top: 4rem; left: 50%; transform: translateX(-50%); font-size: 0.65rem; font-weight: 700; white-space: nowrap; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+        .step-dot.active .lbl, .step-dot.done .lbl { color: var(--text); }
 
-        .spinner{width:1.2rem;height:1.2rem;border:2.5px solid rgba(255,255,255,0.2);border-top:2.5px solid #fff;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block}
-        @keyframes spin{to{transform:rotate(360deg)}}
+        .receipt { background: linear-gradient(160deg, var(--bg-card), #161635); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid var(--border); margin-bottom: 1rem; position: relative; overflow: hidden; }
+        .receipt::before { content: ''; position: absolute; top: -10px; left: 20px; width: 40px; height: 40px; background: var(--bg); border-radius: 50%; }
+        .receipt::after { content: ''; position: absolute; bottom: -10px; right: 20px; width: 40px; height: 40px; background: var(--bg); border-radius: 50%; }
+        .receipt-row { display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.85rem; }
+        .receipt-div { border-top: 1px dashed var(--border); margin: 0.5rem 0; }
 
-        .preview-sticky{position:sticky;top:1.5rem}
-        .preview-card{background:var(--bg-card);border-radius:var(--radius-2xl);padding:2rem;box-shadow:0 30px 60px rgba(0,0,0,0.4);text-align:center;border:1px solid var(--border);transition:all var(--transition-slow)}
-        .preview-card:hover{transform:translateY(-4px);box-shadow:0 30px 60px rgba(0,0,0,0.4),0 0 40px var(--primary-glow);border-color:var(--border-hover)}
-        .preview-avatar{width:7rem;height:7rem;border-radius:50%;margin:0 auto 1rem;border:3px solid var(--primary);object-fit:cover;box-shadow:0 0 0 10px rgba(124,92,252,0.1)}
+        .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0; }
+        .chip { display: flex; align-items: center; gap: 0.3rem; padding: 0.35rem 0.8rem; border-radius: var(--radius-full); font-size: 0.65rem; font-weight: 700; background: rgba(0,229,160,0.06); color: var(--success); border: 1px solid rgba(0,229,160,0.2); transition: all var(--transition); }
+        .chip:hover { background: rgba(0,229,160,0.15); transform: scale(1.05); }
 
-        .overlay{position:fixed;inset:0;background:rgba(10,10,20,0.9);display:flex;align-items:center;justify-content:center;z-index:10001;backdrop-filter:blur(10px);animation:fadeIn 0.2s ease}
-        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-        .overlay-card{background:var(--bg-card);border-radius:var(--radius-2xl);padding:2.5rem;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,0.5);max-width:26rem;width:90%;border:1px solid var(--border);animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1)}
-        @keyframes popIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
-        .overlay-ring{width:3rem;height:3rem;border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1.25rem;box-shadow:0 0 20px var(--primary-glow)}
+        .toast-ctr { position: fixed; top: 1.25rem; right: 1.25rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; max-width: 24rem; }
+        .toast { padding: 1rem 1.2rem; border-radius: var(--radius-md); color: #fff; font-weight: 600; font-size: 0.8rem; box-shadow: 0 20px 50px rgba(0,0,0,0.5); pointer-events: auto; display: flex; align-items: center; gap: 0.5rem; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.15); animation: slideIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+        .toast.ok { background: linear-gradient(135deg, #00805A, #00B37A); }
+        .toast.err { background: linear-gradient(135deg, #C0203A, #E0405A); }
+        .toast.inf { background: linear-gradient(135deg, #4B3FB0, #6B5CE0); }
+        @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
 
-        .hidden-step{display:none}
-        .s-icon{width:2.75rem;height:2.75rem;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-        .s-icon.p{background:rgba(124,92,252,0.1);color:var(--primary);border:1px solid rgba(124,92,252,0.2)}
-        .s-icon.b{background:rgba(91,158,255,0.1);color:#5B9EFF;border:1px solid rgba(91,158,255,0.2)}
-        .s-icon.g{background:rgba(0,229,160,0.1);color:var(--success);border:1px solid rgba(0,229,160,0.2)}
+        .spinner { width: 1.2rem; height: 1.2rem; border: 2.5px solid rgba(255,255,255,0.2); border-top: 2.5px solid #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .success-svg{width:5rem;height:5rem;margin:0 auto 1.5rem}
-        .success-svg .t{fill:none;stroke:var(--border);stroke-width:2.5}
-        .success-svg .p{fill:none;stroke:var(--success);stroke-width:2.5;stroke-dasharray:230;stroke-dashoffset:230;animation:dC 0.8s ease forwards 0.2s}
-        .success-svg .c{fill:none;stroke:var(--success);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:90;stroke-dashoffset:90;animation:dCh 0.5s ease forwards 0.6s}
-        @keyframes dC{to{stroke-dashoffset:0}}
-        @keyframes dCh{to{stroke-dashoffset:0}}
+        .preview-sticky { position: sticky; top: 1.5rem; }
+        .preview-card { background: var(--glass); border-radius: var(--radius-2xl); padding: 2rem; box-shadow: 0 30px 60px rgba(0,0,0,0.4); text-align: center; border: 1px solid var(--glass-border); transition: all var(--transition-slow); backdrop-filter: blur(20px); }
+        .preview-card:hover { transform: translateY(-4px); box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 60px var(--primary-glow); border-color: var(--border-hover); }
+        .preview-avatar { width: 7rem; height: 7rem; border-radius: 50%; margin: 0 auto 1rem; border: 3px solid var(--primary); object-fit: cover; box-shadow: 0 0 0 10px rgba(124,92,252,0.2), 0 0 40px rgba(124,92,252,0.3); }
 
-        @media(max-width:768px){.card{padding:1.25rem;border-radius:var(--radius-xl)}.preview-sticky{position:relative;top:0}.steps{padding:0}.steps::before{left:1.5rem;right:1.5rem}.steps .bar{left:1.5rem}.step-dot{width:2.5rem;height:2.5rem;font-size:0.75rem}.step-dot .lbl{font-size:0.55rem;top:3rem}.toast-ctr{left:1rem;right:1rem;max-width:none}}
-        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(124,92,252,0.3);border-radius:10px}
-        :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
-        ::selection{background:rgba(124,92,252,0.3);color:#fff}
+        .overlay { position: fixed; inset: 0; background: rgba(10,10,20,0.95); display: flex; align-items: center; justify-content: center; z-index: 10001; backdrop-filter: blur(10px); animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .overlay-card { background: var(--bg-card); border-radius: var(--radius-2xl); padding: 2.5rem; text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.5); max-width: 26rem; width: 90%; border: 1px solid var(--border); animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .overlay-ring { width: 3.5rem; height: 3.5rem; border: 3px solid var(--border); border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1.25rem; box-shadow: 0 0 30px var(--primary-glow); }
+
+        .hidden-step { display: none; }
+        .s-icon { width: 3rem; height: 3rem; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+        .s-icon.p { background: rgba(124,92,252,0.1); color: var(--primary); border: 1px solid rgba(124,92,252,0.2); }
+        .s-icon.b { background: rgba(91,158,255,0.1); color: #5B9EFF; border: 1px solid rgba(91,158,255,0.2); }
+        .s-icon.g { background: rgba(0,229,160,0.1); color: var(--success); border: 1px solid rgba(0,229,160,0.2); }
+
+        .success-svg { width: 6rem; height: 6rem; margin: 0 auto 1.5rem; }
+        .success-svg .t { fill: none; stroke: var(--border); stroke-width: 2.5; }
+        .success-svg .p { fill: none; stroke: var(--success); stroke-width: 2.5; stroke-dasharray: 230; stroke-dashoffset: 230; animation: dC 0.8s ease forwards 0.2s; }
+        .success-svg .c { fill: none; stroke: var(--success); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 90; stroke-dashoffset: 90; animation: dCh 0.5s ease forwards 0.6s; }
+        @keyframes dC { to { stroke-dashoffset: 0; } }
+        @keyframes dCh { to { stroke-dashoffset: 0; } }
+
+        .glass { background: var(--glass); backdrop-filter: blur(20px) saturate(180%); border: 1px solid var(--glass-border); }
+        .float { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .typing { display: inline-block; overflow: hidden; white-space: nowrap; border-right: 3px solid var(--primary); animation: typing 3s steps(40) infinite, blink 0.75s step-end infinite; }
+        @keyframes typing { 0%,90%,100% { width: 0; } 30%,60% { width: 100%; } }
+        @keyframes blink { 0%,100% { border-color: transparent; } 50% { border-color: var(--primary); } }
+
+        @media(max-width:768px){ 
+            .card { padding: 1.25rem; border-radius: var(--radius-xl); }
+            .preview-sticky { position: relative; top: 0; }
+            .steps { padding: 0; }
+            .steps::before { left: 1.5rem; right: 1.5rem; }
+            .steps .bar { left: 1.5rem; }
+            .step-dot { width: 2.5rem; height: 2.5rem; font-size: 0.75rem; }
+            .step-dot .lbl { font-size: 0.55rem; top: 3.5rem; }
+            .toast-ctr { left: 1rem; right: 1rem; max-width: none; }
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(124,92,252,0.4); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(124,92,252,0.6); }
+        :focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
+        ::selection { background: rgba(124,92,252,0.4); color: #fff; }
+        .shimmer { background: linear-gradient(90deg, var(--bg-input) 25%, var(--bg-card) 50%, var(--bg-input) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
 <body>
-    <div class="bg-glow"><div class="g1"></div><div class="g2"></div><div class="g3"></div></div>
+    <div class="bg-glow"><div class="g1"></div><div class="g2"></div><div class="g3"></div><div class="g4"></div></div>
     <div class="bg-grid"></div>
+    <div class="particles" id="particlesContainer"></div>
     <div class="toast-ctr" id="toastContainer"></div>
 
     <nav class="relative z-20 py-5">
@@ -173,17 +231,9 @@
                     <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center overflow-hidden transform group-hover:rotate-12 transition-all shadow-xl">
                         <img src="https://i.ibb.co/20DRzH4h/IMG-20260530-162843.jpg" alt="THP Logo" class="w-full h-full object-cover" width="48" height="48">
                     </div>
-                    <div>
-                        <h1 class="text-xl font-extrabold text-white tracking-tight">THP</h1>
-                        <p class="text-xs text-purple-300/80 font-semibold tracking-wider uppercase">Home Tutor</p>
-                    </div>
+                    <div><h1 class="text-xl font-extrabold text-white tracking-tight">THP</h1><p class="text-xs text-purple-300/80 font-semibold tracking-wider uppercase">Home Tutor</p></div>
                 </a>
-                <div class="flex items-center gap-3">
-                    <span class="chip"><i class="fas fa-shield-halved"></i> SSL</span>
-                    <a href="index.html" class="text-white/70 hover:text-white text-sm font-semibold flex items-center gap-1.5 bg-white/5 px-4 py-2 rounded-full border border-white/10 hover:bg-white/10 transition-all">
-                        <i class="fas fa-arrow-left text-xs"></i> Back
-                    </a>
-                </div>
+                <div class="flex items-center gap-3"><span class="chip"><i class="fas fa-shield-halved"></i> SSL</span><a href="index.html" class="text-white/70 hover:text-white text-sm font-semibold flex items-center gap-1.5 bg-white/5 px-4 py-2 rounded-full border border-white/10 hover:bg-white/10 transition-all"><i class="fas fa-arrow-left text-xs"></i> Back</a></div>
             </div>
         </div>
     </nav>
@@ -191,21 +241,10 @@
     <main class="relative z-10 py-6 pb-20">
         <div class="container mx-auto px-4 max-w-6xl">
             <header class="text-center mb-10" data-aos="fade-up" data-aos-duration="800">
-                <span class="inline-flex items-center gap-2 bg-white/5 backdrop-blur-lg px-5 py-2.5 rounded-full text-sm font-semibold mb-5 border border-white/10">
-                    <i class="fas fa-user-graduate text-yellow-400"></i> Teacher Registration
-                </span>
-                <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight text-white">
-                    Start Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-200">Teaching Journey</span>
-                </h2>
-                <p class="text-lg text-purple-200/70 max-w-2xl mx-auto">
-                    One-time registration fee: <span class="text-yellow-400 font-black text-2xl">₹200</span> only 
-                    <span class="mx-2 opacity-40">•</span> Join <span class="font-bold text-white">500+</span> verified teachers
-                </p>
-                <div class="flex justify-center gap-3 mt-5 flex-wrap">
-                    <span class="chip"><i class="fas fa-circle-check"></i> Verified Platform</span>
-                    <span class="chip"><i class="fas fa-shield-halved"></i> Data Protected</span>
-                    <span class="chip"><i class="fas fa-clock"></i> 30min Approval</span>
-                </div>
+                <span class="inline-flex items-center gap-2 bg-white/5 backdrop-blur-lg px-5 py-2.5 rounded-full text-sm font-semibold mb-5 border border-white/10"><i class="fas fa-user-graduate text-yellow-400"></i> Elite Teacher Registration</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight text-white">Start Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-200 typing">Teaching Journey</span></h2>
+                <p class="text-lg text-purple-200/70 max-w-2xl mx-auto">One-time registration fee: <span class="text-yellow-400 font-black text-2xl">₹200</span> only <span class="mx-2 opacity-40">•</span> Join <span class="font-bold text-white">500+</span> verified teachers</p>
+                <div class="flex justify-center gap-3 mt-5 flex-wrap"><span class="chip"><i class="fas fa-circle-check"></i> Verified Platform</span><span class="chip"><i class="fas fa-shield-halved"></i> Data Protected</span><span class="chip"><i class="fas fa-clock"></i> Instant Activation</span></div>
             </header>
 
             <div class="grid lg:grid-cols-3 gap-6 lg:gap-8">
@@ -220,12 +259,8 @@
                         </div>
 
                         <form id="regForm" onsubmit="return false;" novalidate>
-                            <!-- STEP 1 -->
                             <div id="step1Content">
-                                <div class="flex items-center gap-3 mb-6">
-                                    <div class="s-icon p"><i class="fas fa-user"></i></div>
-                                    <div><h3 class="text-xl font-bold text-white">Personal Information</h3><p class="text-xs text-gray-500 mt-0.5">Tell us about yourself</p></div>
-                                </div>
+                                <div class="flex items-center gap-3 mb-6"><div class="s-icon p"><i class="fas fa-user"></i></div><div><h3 class="text-xl font-bold text-white">Personal Information</h3><p class="text-xs text-gray-500 mt-0.5">Tell us about yourself</p></div></div>
                                 <div class="form-row">
                                     <div class="input-box"><input type="text" id="fullName" required placeholder="Enter your full name" autocomplete="name"><label>Full Name *</label><span class="err">Required</span></div>
                                     <div class="input-box"><input type="email" id="email" required placeholder="your@email.com" autocomplete="email"><label>Email Address *</label><span class="err">Valid email required</span></div>
@@ -250,7 +285,6 @@
                                 <button class="btn btn-primary" type="button" onclick="window.goToStep(2)">Continue <i class="fas fa-arrow-right"></i></button>
                             </div>
 
-                            <!-- STEP 2 -->
                             <div id="step2Content" class="hidden-step">
                                 <div class="flex items-center gap-3 mb-6"><div class="s-icon b"><i class="fas fa-briefcase"></i></div><div><h3 class="text-xl font-bold text-white">Professional Details</h3><p class="text-xs text-gray-500 mt-0.5">Share your expertise</p></div></div>
                                 <div class="input-box"><select id="qualification" required><option value="">-- Select Highest Qualification --</option><optgroup label="🎓 Teaching Degrees"><option>B.Ed</option><option>M.Ed</option><option>D.Ed</option><option>D.El.Ed</option><option>BTC</option></optgroup><optgroup label="🔬 Science & Technology"><option>PhD</option><option>M.Sc</option><option>B.Sc</option><option>M.Tech</option><option>B.Tech</option><option>B.E.</option></optgroup><optgroup label="📚 Arts & Humanities"><option>M.A.</option><option>B.A.</option></optgroup><optgroup label="💼 Commerce & Management"><option>MBA</option><option>M.Com</option><option>B.Com</option><option>CA</option><option>CS</option></optgroup><optgroup label="🏥 Medical"><option>MBBS</option><option>BDS</option><option>B.Pharma</option></optgroup><optgroup label="📖 Pursuing"><option>Pursuing PhD</option><option>Pursuing M.Sc</option><option>Pursuing B.Ed</option><option>Pursuing B.Tech</option></optgroup><optgroup label="🎯 Competitive"><option>NET Qualified</option><option>CTET Qualified</option><option>UPTET Qualified</option><option>GATE Qualified</option></optgroup></select><label>Highest Qualification *</label><span class="err">Select qualification</span></div>
@@ -262,44 +296,36 @@
                                 <div class="btn-group"><button class="btn btn-ghost" type="button" onclick="window.goToStep(1)" style="flex:1"><i class="fas fa-arrow-left"></i> Back</button><button class="btn btn-primary" type="button" onclick="window.goToStep(3)" style="flex:2">Continue to Payment <i class="fas fa-arrow-right"></i></button></div>
                             </div>
 
-                            <!-- STEP 3 (RAZORPAY PAYMENT) -->
                             <div id="step3Content" class="hidden-step">
-                                <div class="flex items-center gap-3 mb-6"><div class="s-icon g"><i class="fas fa-credit-card"></i></div><div><h3 class="text-xl font-bold text-white">Secure Payment</h3><p class="text-xs text-gray-500 mt-0.5">One-time registration fee via Razorpay</p></div></div>
-                                <div class="receipt"><h4 class="font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-receipt text-purple-400"></i> Payment Summary</h4><div class="receipt-row"><span class="text-gray-400">Registration Fee</span><span class="font-semibold text-white">₹200.00</span></div><div class="receipt-row"><span class="text-gray-400">Platform Fee</span><span class="text-green-400 font-bold">FREE</span></div><div class="receipt-row"><span class="text-gray-400">Profile Verification</span><span class="text-green-400 font-bold">FREE</span></div><div class="receipt-div"></div><div class="receipt-row text-lg"><span class="font-black text-white">Total Amount</span><span class="font-black text-purple-400">₹200.00</span></div></div>
+                                <div class="flex items-center gap-3 mb-6"><div class="s-icon g"><i class="fas fa-credit-card"></i></div><div><h3 class="text-xl font-bold text-white">Secure Payment</h3><p class="text-xs text-gray-500 mt-0.5">Complete your registration</p></div></div>
+                                <div class="receipt"><h4 class="font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-receipt text-purple-400"></i> Payment Summary</h4><div class="receipt-row"><span class="text-gray-400">Registration Fee</span><span class="font-semibold text-white" id="feeDisplay">₹200.00</span></div><div class="receipt-row"><span class="text-gray-400">Platform Fee</span><span class="text-green-400 font-bold">FREE</span></div><div class="receipt-row"><span class="text-gray-400">Profile Verification</span><span class="text-green-400 font-bold">FREE</span></div><div class="receipt-div"></div><div class="receipt-row text-lg"><span class="font-black text-white">Total Amount</span><span class="font-black text-purple-400" id="totalAmount">₹200.00</span></div></div>
                                 
-                                <div class="bg-green-400/5 border border-green-400/20 rounded-xl p-3 mb-4"><p class="font-bold text-green-400 flex items-center gap-2"><i class="fas fa-shield-halved"></i> 100% Secure & Protected</p><p class="text-sm text-green-400/70 mt-1">Pay securely using Razorpay. UPI, Cards, Netbanking accepted. Full refund if profile is not approved.</p></div>
+                                <div class="bg-green-400/5 border border-green-400/20 rounded-xl p-3 mb-4"><p class="font-bold text-green-400 flex items-center gap-2"><i class="fas fa-shield-halved"></i> 100% Secure & Protected</p><p class="text-sm text-green-400/70 mt-1">Complete payment to activate your profile instantly. No manual approval needed.</p></div>
                                 
-                                <!-- Razorpay payment button replaces UPI QR -->
-                                <button class="btn btn-primary mb-2" type="button" id="razorpayBtn" onclick="window.initiateRazorpay()">
-                                    <i class="fas fa-lock"></i> Pay ₹200 Securely with Razorpay
-                                </button>
+                                <div class="input-box"><input type="text" id="referralCode" placeholder="Enter referral code (optional)" style="background:rgba(0,229,160,0.05);border-color:rgba(0,229,160,0.2);"><label>Referral Code (Optional)</label></div>
                                 
-                                <div class="chips"><span class="chip"><i class="fas fa-shield-halved"></i> 256-bit SSL</span><span class="chip"><i class="fas fa-circle-check"></i> Razorpay Trusted</span><span class="chip"><i class="fas fa-credit-card"></i> UPI/Cards/Netbanking</span><span class="chip"><i class="fas fa-clock"></i> Instant Activation</span></div>
+                                <div class="input-box"><input type="text" id="payerName" required placeholder="Name as on payment method" style="background:rgba(255,184,0,0.05);border-color:rgba(255,184,0,0.3);"><label>Your Name (for payment record) *</label><span class="err">Required</span></div>
                                 
-                                <div class="input-box mt-2"><input type="text" id="payerName" required placeholder="Name as on payment method" style="background:rgba(255,184,0,0.05);border-color:rgba(255,184,0,0.3);"><label>Your Name (for payment record) *</label><span class="err">Required</span></div>
-                                <div class="bg-yellow-400/5 border border-yellow-400/20 rounded-xl p-3 my-3 text-sm text-yellow-400/80 flex items-start gap-2"><i class="fas fa-circle-info text-yellow-400 mt-0.5"></i><span>Click the button above to pay ₹200 via Razorpay. After successful payment, your profile will be submitted for review.</span></div>
+                                <button class="btn btn-primary mb-3" type="button" id="payNowBtn" onclick="window.initiatePayment()"><i class="fas fa-lock"></i> <span id="payBtnText">Pay ₹200</span> & Activate Instantly</button>
                                 
-                                <label class="flex items-start gap-2 cursor-pointer mb-2 p-2 rounded-xl hover:bg-white/3 transition-all"><input type="checkbox" id="termsAgree" class="mt-0.5 w-4 h-4 accent-purple-500 rounded"><span class="text-sm text-gray-400">I agree to the <a href="#" class="text-purple-400 font-semibold hover:underline">Terms of Service</a> and <a href="#" class="text-purple-400 font-semibold hover:underline">Privacy Policy</a>. ₹200 fee is non-refundable after profile activation.</span></label>
-                                <label class="flex items-start gap-2 cursor-pointer mb-4 p-3 rounded-xl bg-green-400/5 border border-green-400/20 transition-all hover:bg-green-400/10"><input type="checkbox" id="paymentConfirm" class="mt-0.5 w-4 h-4 accent-green-400 rounded" onchange="document.getElementById('registerBtn').disabled=!this.checked"><span class="text-sm text-green-400 font-bold">✅ I understand that I must pay ₹200 via Razorpay to complete registration. Submit my profile for approval.</span></label>
+                                <div class="chips"><span class="chip"><i class="fas fa-shield-halved"></i> 256-bit SSL</span><span class="chip"><i class="fas fa-circle-check"></i> Secure Payment</span><span class="chip"><i class="fas fa-credit-card"></i> UPI/Cards/Netbanking</span><span class="chip"><i class="fas fa-clock"></i> Instant Activation</span></div>
                                 
-                                <button class="btn btn-primary" id="registerBtn" type="button" onclick="window.registerTeacher()" disabled><i class="fas fa-paper-plane"></i> Submit Profile for Approval</button>
+                                <label class="flex items-start gap-2 cursor-pointer mb-2 p-2 rounded-xl hover:bg-white/3 transition-all"><input type="checkbox" id="termsAgree" class="mt-0.5 w-4 h-4 accent-purple-500 rounded"><span class="text-sm text-gray-400">I agree to the <a href="#" class="text-purple-400 font-semibold hover:underline">Terms of Service</a> and <a href="#" class="text-purple-400 font-semibold hover:underline">Privacy Policy</a>.</span></label>
+                                <label class="flex items-start gap-2 cursor-pointer mb-4 p-3 rounded-xl bg-green-400/5 border border-green-400/20 transition-all hover:bg-green-400/10"><input type="checkbox" id="paymentConfirm" class="mt-0.5 w-4 h-4 accent-green-400 rounded"><span class="text-sm text-green-400 font-bold">✅ I understand that payment activates my profile instantly.</span></label>
+                                
                                 <div class="btn-group"><button class="btn btn-ghost" type="button" onclick="window.goToStep(2)" style="flex:1"><i class="fas fa-arrow-left"></i> Back</button></div>
                             </div>
 
-                            <!-- STEP 4 -->
                             <div id="step4Content" class="hidden-step text-center py-6">
                                 <div class="success-svg"><svg viewBox="0 0 80 80"><circle class="t" cx="40" cy="40" r="36"/><circle class="p" cx="40" cy="40" r="36"/><path class="c" d="M26 40 L36 50 L54 30"/></svg></div>
-                                <h3 class="text-2xl font-extrabold text-white mb-2">Registration Successful!</h3>
-                                <p class="text-gray-400 mb-4 max-w-sm mx-auto">Your profile has been submitted and is now under review.</p>
-                                <div class="bg-yellow-400/5 border border-yellow-400/20 rounded-2xl p-4 mb-4 inline-block text-left max-w-md"><p class="font-bold text-yellow-400 mb-2 flex items-center gap-2"><i class="fas fa-clipboard-list"></i> What's Next?</p><ol class="text-sm text-yellow-400/80 space-y-1.5 list-decimal list-inside"><li>Admin verifies your payment</li><li>Profile goes <strong class="text-yellow-400">LIVE</strong> within 30 minutes</li><li>Start receiving student requests</li></ol></div>
-                                <div class="bg-purple-400/5 rounded-2xl p-4 inline-block mb-5 border border-purple-400/20"><p class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Reference ID</p><p class="text-2xl font-black text-purple-400 tracking-tight" id="teacherIdDisplay" style="font-family:monospace">------</p></div><br>
-                                <a href="index.html" class="btn btn-primary inline-flex" style="width:auto;min-width:200px;"><i class="fas fa-home"></i> Back to Homepage</a>
+                                <h3 class="text-2xl font-extrabold text-white mb-2">Account Created!</h3>
+                                <p class="text-gray-400 mb-4 max-w-sm mx-auto">Your profile is live. Redirecting to login...</p>
+                                <div class="bg-purple-400/5 rounded-2xl p-4 inline-block mb-5 border border-purple-400/20"><p class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Teacher ID</p><p class="text-2xl font-black text-purple-400 tracking-tight" id="teacherIdDisplay" style="font-family:monospace">------</p></div><br>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <!-- Preview -->
                 <aside class="hidden lg:block">
                     <div class="preview-sticky" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
                         <div class="preview-card">
@@ -323,21 +349,16 @@
     <footer class="relative z-10 py-6 text-center text-gray-600 text-sm"><p>&copy; 2024 THP Home Tutor. | <a href="#" class="hover:text-gray-300">Privacy</a> | <a href="#" class="hover:text-gray-300">Terms</a></p></footer>
 
     <script>
-        // Global error handler
-        window.onerror = function(msg, url, line, col, error) {
-            console.error('Global Error:', msg, 'at line:', line);
-            return false;
-        };
-
-        // ============ CONSTANTS ============
-        const RAZORPAY_KEY_ID = 'rzp_live_T7tknhaLrGXKDS'; // RAZORPAY KEY
-        const REG_FEE = 200;
-        
+        window.onerror = function(msg, url, line, col, error) { console.error('Global Error:', msg, 'at line:', line); return false; };
         (function(){
             'use strict';
-            console.log('🚀 THP Registration System Starting...');
+            console.log('🚀 THP Registration System Booting...');
             
-            // ============ FIREBASE INITIALIZATION ============
+            const RAZORPAY_KEY_ID = 'rzp_live_T7tknhaLrGXKDS';
+            const REFERRAL_CODE = 'mg786';
+            const BASE_FEE = 200;
+            const DISCOUNTED_FEE = 10;
+            
             const firebaseConfig = {
                 apiKey: "AIzaSyABaZZOMR1-oudAzjGnsN6LvClW5VrkIQY",
                 authDomain: "hometutor-a5c4d.firebaseapp.com",
@@ -348,45 +369,49 @@
             };
             
             let db = null;
+            let auth = null;
             let firebaseReady = false;
             
             try {
                 if (typeof firebase !== 'undefined') {
-                    if (!firebase.apps.length) {
-                        firebase.initializeApp(firebaseConfig);
-                    }
+                    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
                     db = firebase.firestore();
+                    auth = firebase.auth();
                     firebaseReady = true;
-                    console.log('✅ Firebase Connected');
-                    
-                    db.enablePersistence({synchronizeTabs: true}).catch((err) => {
-                        if (err.code === 'failed-precondition') console.warn('Multi-tab persistence unavailable');
-                    });
+                    db.enablePersistence({synchronizeTabs: true}).catch(() => {});
                 }
-            } catch(e) {
-                console.error('Firebase init error:', e);
-                firebaseReady = false;
-            }
+            } catch(e) { console.error('Firebase init error:', e); }
 
-            // ============ STATE ============
+            function createParticles() {
+                const container = document.getElementById('particlesContainer');
+                if (!container) return;
+                for (let i = 0; i < 40; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    const size = Math.random() * 4 + 2;
+                    p.style.width = size + 'px'; p.style.height = size + 'px';
+                    p.style.left = Math.random() * 100 + '%';
+                    p.style.animationDuration = Math.random() * 15 + 10 + 's';
+                    p.style.animationDelay = Math.random() * 10 + 's';
+                    p.style.backgroundColor = ['#7C5CFC', '#00E5A0', '#FFB800', '#4ECDC4'][Math.floor(Math.random() * 4)];
+                    container.appendChild(p);
+                }
+            }
+            createParticles();
+
             let step = 1;
             let imgFile = null;
             let imgUrl = '';
+            let currentFee = BASE_FEE;
+            let referralApplied = false;
+            let paymentSuccess = false;
             let razorpayPaymentId = null;
             let razorpayOrderId = null;
             let razorpaySignature = null;
 
-            // ============ INITIALIZE ANIMATIONS ============
-            try {
-                if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 60 });
-                if (typeof gsap !== 'undefined') gsap.registerPlugin(ScrollTrigger);
-            } catch(e) { console.warn('Animation libs loading...'); }
+            try { if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true }); if (typeof gsap !== 'undefined') gsap.registerPlugin(ScrollTrigger, TextPlugin); } catch(e) {}
 
-            // ============ UTILITY FUNCTIONS ============
-            function gv(id) {
-                const checkboxes = document.querySelectorAll('#' + id + ' input[type="checkbox"]:checked');
-                return Array.from(checkboxes).map(function(c) { return c.value; });
-            }
+            function gv(id) { return Array.from(document.querySelectorAll('#' + id + ' input[type="checkbox"]:checked')).map(c => c.value); }
             function cl() { document.querySelectorAll('.input-box.error').forEach(e => e.classList.remove('error')); }
             function fe(id) { const el = document.getElementById(id); if (el) { const box = el.closest('.input-box'); if (box) box.classList.add('error'); } }
             
@@ -413,28 +438,23 @@
             function overlayText(msg) { const el = document.getElementById('overlayText'); if (el) el.textContent = msg; }
             function hideOverlay() { const o = document.getElementById('overlay'); if (o) { o.style.opacity = '0'; o.style.transition = 'opacity 0.3s'; setTimeout(() => { o.remove(); document.body.style.overflow = ''; }, 300); } }
 
-            // ============ STEP NAVIGATION ============
             window.goToStep = function(s) {
                 if (s > step) {
                     if (step === 1 && !validateStep1()) return;
                     if (step === 2 && !validateStep2()) return;
                 }
                 document.querySelectorAll('[id$="Content"]').forEach(e => e.classList.add('hidden-step'));
-                const targetStep = document.getElementById('step' + s + 'Content');
-                if (!targetStep) return;
-                targetStep.classList.remove('hidden-step');
+                const target = document.getElementById('step' + s + 'Content');
+                if (!target) return;
+                target.classList.remove('hidden-step');
                 step = s;
-                const progressBar = document.getElementById('progressBar');
-                if (progressBar) progressBar.style.width = {1:'0%', 2:'33%', 3:'66%', 4:'100%'}[s];
-                for (let i = 1; i <= 4; i++) {
-                    const dot = document.getElementById('stepDot' + i);
-                    if (dot) { dot.classList.remove('active', 'done'); if (i < s) dot.classList.add('done'); if (i === s) dot.classList.add('active'); }
-                }
+                const pb = document.getElementById('progressBar');
+                if (pb) pb.style.width = {1:'0%', 2:'33%', 3:'66%', 4:'100%'}[s];
+                for (let i = 1; i <= 4; i++) { const d = document.getElementById('stepDot' + i); if (d) { d.classList.remove('active', 'done'); if (i < s) d.classList.add('done'); if (i === s) d.classList.add('active'); } }
                 try { gsap.from('#step' + s + 'Content', {opacity:0, y:20, duration:0.4, ease:'power2.out'}); } catch(e) {}
                 if (window.innerWidth < 1024) document.querySelector('.card').scrollIntoView({behavior:'smooth', block:'start'});
             };
 
-            // ============ VALIDATION ============
             function validateStep1() {
                 cl(); let ok = true;
                 const fullName = document.getElementById('fullName').value.trim();
@@ -465,10 +485,7 @@
                 return ok;
             }
 
-            // ============ FILE HANDLING ============
-            document.getElementById('profilePhoto').addEventListener('change', function(e) {
-                if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
-            });
+            document.getElementById('profilePhoto').addEventListener('change', function(e) { if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]); });
             function handleFile(file) {
                 if (!file.type.match(/^image\/(jpeg|png|jpg)$/)) { toast('JPG or PNG only', 'error'); return; }
                 if (file.size > 2 * 1024 * 1024) { toast('Max 2MB', 'error'); return; }
@@ -492,91 +509,64 @@
                     const data = await res.json();
                     if (data.success && data.data && data.data.url) return data.data.url;
                     throw new Error('No URL');
-                } catch(e) {
-                    return await toBase64(file);
-                }
+                } catch(e) { return await toBase64(file); }
             }
-            function toBase64(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
-            }
+            function toBase64(file) { return new Promise((resolve, reject) => { const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(file); }); }
 
-            // ============ RAZORPAY INTEGRATION ============
-            window.initiateRazorpay = function() {
-                // Check terms agreed first
-                if (!document.getElementById('termsAgree').checked) {
-                    toast('Please agree to Terms of Service', 'error');
-                    return;
+            // Referral code handler
+            document.getElementById('referralCode').addEventListener('input', function() {
+                const code = this.value.trim().toLowerCase();
+                if (code === REFERRAL_CODE && !referralApplied) {
+                    referralApplied = true;
+                    currentFee = DISCOUNTED_FEE;
+                    document.getElementById('feeDisplay').textContent = '₹' + DISCOUNTED_FEE + '.00';
+                    document.getElementById('totalAmount').textContent = '₹' + DISCOUNTED_FEE + '.00';
+                    document.getElementById('payBtnText').textContent = 'Pay ₹' + DISCOUNTED_FEE;
+                    toast('Referral code applied! Fee reduced.', 'success');
+                } else if (code !== REFERRAL_CODE && referralApplied) {
+                    referralApplied = false;
+                    currentFee = BASE_FEE;
+                    document.getElementById('feeDisplay').textContent = '₹' + BASE_FEE + '.00';
+                    document.getElementById('totalAmount').textContent = '₹' + BASE_FEE + '.00';
+                    document.getElementById('payBtnText').textContent = 'Pay ₹' + BASE_FEE;
                 }
+            });
+
+            window.initiatePayment = function() {
                 const payerName = document.getElementById('payerName').value.trim();
-                if (!payerName) { fe('payerName'); toast('Enter your name for payment', 'error'); return; }
+                if (!payerName) { fe('payerName'); toast('Enter your name first', 'error'); return; }
+                if (!document.getElementById('termsAgree').checked) { toast('Please agree to Terms', 'error'); return; }
                 
-                if (typeof Razorpay === 'undefined') {
-                    toast('Razorpay SDK not loaded. Please refresh.', 'error');
-                    return;
-                }
+                if (typeof Razorpay === 'undefined') { toast('Payment system loading... please refresh', 'error'); return; }
                 
                 const options = {
                     key: RAZORPAY_KEY_ID,
-                    amount: REG_FEE * 100, // in paise
+                    amount: currentFee * 100,
                     currency: 'INR',
                     name: 'THP Home Tutor',
-                    description: 'Teacher Registration Fee',
+                    description: 'Teacher Registration',
                     image: 'https://i.ibb.co/20DRzH4h/IMG-20260530-162843.jpg',
-                    handler: function(response) {
-                        console.log('✅ Razorpay success:', response);
+                    handler: async function(response) {
+                        console.log('✅ Payment success:', response);
                         razorpayPaymentId = response.razorpay_payment_id;
                         razorpayOrderId = response.razorpay_order_id;
                         razorpaySignature = response.razorpay_signature;
-                        toast('Payment successful! Payment ID: ' + razorpayPaymentId, 'success');
-                        // Automatically enable submit button
-                        document.getElementById('paymentConfirm').checked = true;
-                        document.getElementById('registerBtn').disabled = false;
+                        paymentSuccess = true;
+                        toast('Payment successful! Activating your account...', 'success');
+                        
+                        // Immediately submit and redirect
+                        await submitTeacherData();
                     },
-                    prefill: {
-                        name: payerName,
-                        email: document.getElementById('email').value.trim(),
-                        contact: document.getElementById('phone').value.trim()
-                    },
+                    prefill: { name: payerName, email: document.getElementById('email').value.trim(), contact: document.getElementById('phone').value.trim() },
                     theme: { color: '#7C5CFC' },
-                    modal: {
-                        ondismiss: function() {
-                            toast('Payment cancelled. Please try again.', 'info');
-                        }
-                    }
+                    modal: { ondismiss: function() { toast('Payment cancelled', 'info'); } }
                 };
-                try {
-                    const rzp = new Razorpay(options);
-                    rzp.open();
-                } catch(e) {
-                    console.error('Razorpay open error:', e);
-                    toast('Could not open payment. Check console.', 'error');
-                }
+                try { const rzp = new Razorpay(options); rzp.open(); } 
+                catch(e) { console.error(e); toast('Could not open payment', 'error'); }
             };
 
-            // ============ REGISTRATION FUNCTION ============
-            window.registerTeacher = async function() {
-                if (!document.getElementById('paymentConfirm').checked) {
-                    toast('Please confirm payment completed', 'error');
-                    return;
-                }
-                if (!document.getElementById('termsAgree').checked) {
-                    toast('Please agree to Terms', 'error');
-                    return;
-                }
-                if (!razorpayPaymentId) {
-                    toast('Payment not verified. Please pay ₹200 first.', 'error');
-                    return;
-                }
-                
-                const btn = document.getElementById('registerBtn');
-                const origText = btn.innerHTML;
-                btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Processing...';
-                
+            async function submitTeacherData() {
+                overlay('Activating your account...');
                 try {
                     const teacherData = {
                         fullName: document.getElementById('fullName').value.trim(),
@@ -591,77 +581,48 @@
                         classes: gv('classesGroup'),
                         courses: gv('coursesGroup'),
                         expectedFees: parseInt(document.getElementById('expectedFees').value),
-                        payerName: document.getElementById('payerName').value.trim() || 'Not provided',
+                        payerName: document.getElementById('payerName').value.trim(),
+                        referralCode: document.getElementById('referralCode').value.trim() || '',
                         paymentStatus: 'paid',
-                        paymentMethod: 'Razorpay',
-                        paymentUpiId: razorpayPaymentId,
-                        paymentOrderId: razorpayOrderId || '',
-                        paymentSignature: razorpaySignature || '',
-                        paymentAmount: REG_FEE,
-                        isActive: false,
-                        isVerified: false,
-                        adminApproved: false,
-                        rating: 0,
-                        totalReviews: 0,
-                        totalStudents: 0,
-                        profileViews: 0,
-                        contactRequests: 0
+                        paymentId: razorpayPaymentId,
+                        paymentAmount: currentFee,
+                        isActive: true,
+                        isVerified: true,
+                        adminApproved: true,
+                        rating: 0, totalReviews: 0, totalStudents: 0, profileViews: 0, contactRequests: 0,
+                        registrationType: 'elite'
                     };
                     
-                    overlay('Uploading photo...');
                     if (!imgUrl && imgFile) imgUrl = await uploadImg(imgFile);
                     teacherData.profilePhoto = imgUrl || '';
                     
                     const teacherId = 'THP' + Date.now().toString(36).toUpperCase().slice(-6) + Math.random().toString(36).substring(2,5).toUpperCase();
-                    console.log('🆔 Teacher ID:', teacherId);
+                    console.log('Teacher ID:', teacherId);
                     
                     if (firebaseReady && db) {
-                        overlayText('Checking records...');
-                        const emailCheck = await db.collection('teachers').where('email','==',teacherData.email).limit(1).get();
-                        if (!emailCheck.empty) throw new Error('DUPLICATE_EMAIL');
-                        
-                        overlayText('Saving profile...');
-                        await db.collection('teachers').doc(teacherId).set({
-                            ...teacherData, teacherId, submittedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                        await db.collection('paymentRequests').add({
-                            teacherId, teacherName: teacherData.fullName, teacherEmail: teacherData.email, teacherPhone: teacherData.phone,
-                            amount: REG_FEE, payerName: teacherData.payerName, status: 'paid', paymentMethod: 'Razorpay',
-                            razorpayPaymentId, razorpayOrderId: razorpayOrderId || '', razorpaySignature: razorpaySignature || '',
-                            submittedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
+                        await db.collection('teachers').doc(teacherId).set({ ...teacherData, teacherId, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                        await db.collection('payments').add({ teacherId, teacherEmail: teacherData.email, amount: currentFee, status: 'paid', paymentId: razorpayPaymentId, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
                     } else {
                         const localTeachers = JSON.parse(localStorage.getItem('thp_teachers') || '[]');
-                        localTeachers.push({...teacherData, teacherId, submittedAt: new Date().toISOString()});
+                        localTeachers.push({...teacherData, teacherId, createdAt: new Date().toISOString()});
                         localStorage.setItem('thp_teachers', JSON.stringify(localTeachers));
                     }
                     
-                    hideOverlay();
                     document.getElementById('teacherIdDisplay').textContent = teacherId;
                     goToStep(4);
-                    toast('Registration successful! Profile under review', 'success');
-                    createCelebrationEffects();
+                    
+                    if (typeof confetti !== 'undefined') { const end = Date.now() + 1500; (function frame() { confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#7C5CFC', '#00E5A0', '#FFB800'] }); confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#7C5CFC', '#00E5A0', '#FFB800'] }); if (Date.now() < end) requestAnimationFrame(frame); }()); }
+                    
+                    setTimeout(() => { window.location.href = 'login.html'; }, 2000);
                     
                 } catch(e) {
-                    console.error('Registration error:', e);
-                    hideOverlay(); btn.disabled = false; btn.innerHTML = origText;
-                    let errorMsg = 'Registration failed. Please try again.';
-                    if (e.message === 'DUPLICATE_EMAIL') errorMsg = 'Email already registered.';
-                    else if (e.message && e.message.includes('permission-denied')) errorMsg = 'Permission error.';
-                    toast(errorMsg, 'error');
-                }
-            };
-
-            function createCelebrationEffects() {
-                for (let i = 0; i < 60; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.style.cssText = `position: fixed; width: ${Math.random()*8+4}px; height: ${Math.random()*8+4}px; background: ${['#7C5CFC','#00E5A0','#FFB800','#FF4D6A'][Math.floor(Math.random()*4)]}; left: ${Math.random()*100}%; top: -20px; border-radius: 50%; z-index: 10002; pointer-events: none;`;
-                    document.body.appendChild(confetti);
-                    confetti.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${(Math.random()-0.5)*300}px,105vh) scale(0)`,opacity:0}],{duration:Math.random()*2000+1500,delay:Math.random()*1000,easing:'cubic-bezier(0.25,0.46,0.45,0.94)',fill:'forwards'}).onfinish=()=>confetti.remove();
+                    console.error('Submission error:', e);
+                    hideOverlay();
+                    toast('Error activating account. Contact support.', 'error');
                 }
             }
 
-            // ============ LIVE PREVIEW UPDATES ============
+            // Live preview updates
             document.getElementById('fullName').addEventListener('input', function() { document.getElementById('previewName').textContent = this.value || 'Your Name'; });
             document.getElementById('qualification').addEventListener('change', function() { document.getElementById('previewQualification').textContent = this.value || 'Qualification'; });
             document.getElementById('area').addEventListener('change', function() { document.getElementById('previewArea').textContent = (this.value || 'Area') + ', Prayagraj'; });
@@ -669,8 +630,7 @@
             document.querySelectorAll('#classesGroup input').forEach(cb => cb.addEventListener('change', function() { const cls = gv('classesGroup'); document.getElementById('previewClasses').textContent = cls.length ? 'Class ' + cls.join(', ') : 'Class levels'; }));
             document.getElementById('expectedFees').addEventListener('input', function() { document.getElementById('previewFees').textContent = this.value ? '₹' + this.value + '/hour' : 'Fees per hour'; });
 
-            console.log('✅ THP Registration System Ready (Razorpay enabled)');
-            console.log('💳 Razorpay Key:', RAZORPAY_KEY_ID);
+            console.log('✅ Advanced system ready. Instant activation enabled.');
         })();
     </script>
 </body>
